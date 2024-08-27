@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-:root {
+  :root {
     --background: #ffffff;
     --foreground: #999999;
     --card: #ffffff;
-    --card-foreground: #999999;
+    --card-foreground: #000;
     --popover: #ffffff;
     --popover-foreground: #999999;
     --primary: #ff3131;
@@ -20,7 +20,6 @@
     --accent-foreground: #999999;
     --destructive: #ff3131;
     --destructive-foreground: #ffffff;
-    --border: #999999;
     --input: #f7f7f7;
     --ring: #999999;
     --radius: 0.5rem;
@@ -30,7 +29,7 @@
     --chart-4: #a3c2ff;
     --chart-5: #a3f7a3;
   }
-  
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -60,9 +59,6 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-black;
   }
