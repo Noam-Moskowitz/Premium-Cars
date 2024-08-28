@@ -146,7 +146,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
           />
         </div>
         <div className="flex flex-col items-center justify-around gap-2 md:w-1/3">
-          <h2 className="font-bold text-primary text-2xl text-center">Final Price:</h2>
+          <h2 className="font-bold text-2xl text-center">Final Price:</h2>
           <h3 className="font-bold text-primary text-2xl">{carPrice * dayAmount}$</h3>
           {/* Submit */}
           <Button type="submit">Submit</Button>

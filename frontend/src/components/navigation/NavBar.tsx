@@ -27,10 +27,10 @@ const NavBar = () => {
         </div>
       </div>
       <div className="flex items-center px-5 gap-5">
-        <div className="border-2 border-secondary p-2 rounded cursor-pointer hover:bg-primary-foreground">
+        <div className="border-2 border-secondary p-2 rounded cursor-pointer">
           <FiSun size={18} className="text-secondary" />
         </div>
-        <div className="border-2 border-secondary p-2 rounded-full cursor-pointer hover:bg-primary-foreground">
+        <div className="border-2 border-secondary p-2 rounded-full cursor-pointer ">
           <FiUser size={18} className="text-secondary" />
         </div>
       </div>
