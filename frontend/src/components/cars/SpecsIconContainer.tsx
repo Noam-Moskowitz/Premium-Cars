@@ -13,9 +13,9 @@ const SpecsIconContainer: React.FC<SpecsIconContainerProps> = ({ specs, gap = `m
 
   return (
     <div className={`flex justify-center px-3 py-5 ${gap === `medium` ? `gap-4` : `gap-1`}`}>
-      <CarSpecsIcon icon={<GiCarDoor />} specs={doors} />
-      <CarSpecsIcon icon={<GiGearStickPattern />} specs={gear} />
-      <CarSpecsIcon icon={<GiCarSeat />} specs={seatAmount} />
+      <CarSpecsIcon icon={<GiCarDoor className="text-background" />} specs={doors} />
+      <CarSpecsIcon icon={<GiGearStickPattern className="text-background" />} specs={gear} />
+      <CarSpecsIcon icon={<GiCarSeat className="text-background" />} specs={seatAmount} />
     </div>
   );
 };

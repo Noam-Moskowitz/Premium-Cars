@@ -19,7 +19,7 @@ const Home = () => {
         <h1 className="font-bold text-primary text-2xl">Rent Your Car At The Click Of A Button!</h1>
         <p className="font-bold">Choose A car from our huge selection!</p>
       </header>
-      <div className="grid grid-cols-4 gap-10 p-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 p-10">
         <CarCard car={car} />
         <CarCard car={car} />
         <CarCard car={car} />
