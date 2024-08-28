@@ -1,10 +1,12 @@
-import { navBarArray } from "@/consts/navBar";
+import { navBarArray, adminNavBarArray } from "@/consts/navBar";
 import { FiSun } from "react-icons/fi";
 import { FiUser } from "react-icons/fi";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
+  const [activePage, setActivePage] = useState<string>(`Home`);
+
   return (
     <nav className="w-full h-16 bg-primary shadow-md flex justify-between">
       <div className="flex gap-10">
@@ -13,8 +15,11 @@ const NavBar = () => {
           {navBarArray.map((navItem, i) => (
             <Link
               key={i}
-              className="border-b-4 border-primary hover:border-secondary cursor-pointer"
+              className={`${
+                activePage === navItem.label && `border-secondary`
+              } border-b-4 border-primary hover:border-secondary cursor-pointer`}
               to={navItem.navTo}
+              onClick={() => setActivePage(navItem.label)}
             >
               {navItem.label}
             </Link>
