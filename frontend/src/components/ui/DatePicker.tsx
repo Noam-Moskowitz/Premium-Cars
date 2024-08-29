@@ -17,21 +17,23 @@ interface DatePickerProps {
 export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   setDayAmount,
-  existingValue = {
-    from: new Date(),
-    to: addDays(new Date(), 1),
-  },
+  existingValue,
 }) => {
-  const [date, setDate] = useState<DateRange>(existingValue);
+  const [date, setDate] = useState<DateRange | undefined>(existingValue);
 
   const handleSelect = (range?: DateRange) => {
-    if (!range) return;
+    if (
+      !range ||
+      !range.from ||
+      !range.to ||
+      range.to?.getTime() < new Date().getTime() ||
+      range.from?.getTime() < new Date().getTime()
+    )
+      return;
 
     setDate(range);
 
     const { from, to } = range;
-
-    if (!from || !to) return;
 
     const timeDifference = to.getTime() - from.getTime();
     const dayAmount = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
