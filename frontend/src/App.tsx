@@ -1,14 +1,17 @@
 import "./App.css";
 import NavBar from "./components/navigation/NavBar";
-import MainRouter from "./routes/mainRouter";
+import MainRouter from "./routes/MainRouter";
+import { ThemeProvider } from "./theme/ThemeProvider";
 
 function App() {
   return (
     <>
-      <NavBar />
-      <div className="size-full">
-        <MainRouter />
-      </div>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <NavBar />
+        <div className="size-full">
+          <MainRouter />
+        </div>
+      </ThemeProvider>
     </>
   );
 }

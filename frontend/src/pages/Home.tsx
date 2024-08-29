@@ -1,4 +1,5 @@
 import CarCard from "@/components/cars/CarCard";
+import { carsArray } from "@/consts/cars";
 import React from "react";
 
 export const car = {
@@ -9,7 +10,7 @@ export const car = {
   pricePerDay: 45,
   gear: "Automatic",
   doors: 4,
-  image: "https://th.bing.com/th/id/OIP.daHYkY2TSKoZpRovfI79YwAAAA?rs=1&pid=ImgDetMain",
+  image: "https://noam-moskowitz.github.io/premium-cars-images/cars/hyundai_I10.png",
 };
 
 const Home = () => {
@@ -20,14 +21,9 @@ const Home = () => {
         <p className="font-bold">Choose A car from our huge selection!</p>
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 p-10">
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
-        <CarCard car={car} />
+        {carsArray.map((car, i) => (
+          <CarCard key={i} car={car} />
+        ))}
       </div>
     </div>
   );
