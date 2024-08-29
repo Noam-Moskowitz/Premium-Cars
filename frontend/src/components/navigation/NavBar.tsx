@@ -4,6 +4,7 @@ import { FiUser } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/theme/ThemeProvider";
+import UserDropdown from "./UserDropdown";
 
 const NavBar = () => {
   const { setTheme } = useTheme();
@@ -53,9 +54,7 @@ const NavBar = () => {
             <FiMoon size={18} className="text-primary-foreground" />
           )}
         </div>
-        <div className="border-2 border-secondary p-2 rounded-full cursor-pointer ">
-          <FiUser size={18} className="text-secondary" />
-        </div>
+        <UserDropdown />
       </div>
     </nav>
   );
