@@ -28,7 +28,11 @@ const UserDropdown = () => {
       icon: <HiArrowRightEndOnRectangle size={18} />,
       action: () => navigate(`user/login/`),
     },
-    { label: `Register`, icon: <HiOutlineUserPlus size={18} /> },
+    {
+      label: `Register`,
+      icon: <HiOutlineUserPlus size={18} />,
+      action: () => navigate("user/register"),
+    },
   ];
   const [dropdownMenuContent, setDropdownMenuContent] = useState<IDropDown[]>(signedOutMenu);
 

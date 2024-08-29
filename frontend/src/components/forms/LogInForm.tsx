@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import PasswordInput from "../ui/PasswordInput";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -63,12 +64,7 @@ const LogInForm = () => {
             <FormItem>
               <FormLabel className="text-primary font-bold">Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  {...field}
-                  className="border-0 p-2 w-full"
-                  placeholder="*******"
-                />
+                <PasswordInput value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage className="text-primary" />
             </FormItem>
