@@ -9,9 +9,6 @@ const MyOrders = () => {
         <OrderCard />
         <OrderCard />
         <OrderCard />
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
       </div>
     </div>
   );
