@@ -24,8 +24,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const handleSelect = (range?: DateRange) => {
     if (
       !range ||
-      !range.from ||
-      !range.to ||
       range.to?.getTime() < new Date().getTime() ||
       range.from?.getTime() < new Date().getTime()
     )

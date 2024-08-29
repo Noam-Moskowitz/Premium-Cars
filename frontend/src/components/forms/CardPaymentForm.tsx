@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { SiVisa } from "react-icons/si";
+import { FaCcMastercard } from "react-icons/fa6";
 
 const formSchema = z.object({
   cardName: z.string().min(1, "Cardholder name is required"),
@@ -68,12 +70,18 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay }) => {
             <FormItem className="w-full">
               <FormLabel className="text-primary font-bold">Card Number</FormLabel>
               <FormControl>
-                <Input
-                  type="text"
-                  {...field}
-                  className="border-0 p-2 w-full"
-                  placeholder="1234 5678 9123 4567"
-                />
+                <div className="relative">
+                  <Input
+                    type="text"
+                    {...field}
+                    className="border-0 p-2 w-full"
+                    placeholder="1234 5678 9123 4567"
+                  />
+                  <div className="flex gap-1 absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <SiVisa />
+                    <FaCcMastercard />
+                  </div>
+                </div>
               </FormControl>
               <FormMessage className="text-primary" />
             </FormItem>
