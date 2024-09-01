@@ -38,7 +38,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md mt-5 w-2/3 md:w-auto"
+        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md mt-5 md:w-2/3 md:w-auto"
       >
         <h1 className="text-center font-bold text-primary text-2xl">Fee: {amountToPay}$</h1>
 

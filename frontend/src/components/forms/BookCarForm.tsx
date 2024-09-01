@@ -60,13 +60,13 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="h-full md:w-2/3 flex flex-col md:flex-row gap-5"
         >
-          <div className="h-full flex md:flex-col gap-24 md:gap-5 justify-center md:w-1/3">
+          <div className="h-full flex md:flex-col gap-5 md:gap-5 justify-center md:w-1/3">
             {/* Pickup Spot */}
             <FormField
               control={form.control}
               name="pickupSpot"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-full">
                   <FormLabel>Pickup Spot</FormLabel>
                   <FormControl>
                     <Select {...field}>
@@ -89,7 +89,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
               control={form.control}
               name="dropoffSpot"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col w-full">
                   <FormLabel>Dropoff Spot</FormLabel>
                   <FormControl>
                     <Select {...field}>

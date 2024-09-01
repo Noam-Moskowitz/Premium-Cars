@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import CardPaymentForm from "../forms/CardPaymentForm";
-import { number } from "zod";
 
 interface CardPaymentModalProps {
   open: boolean;

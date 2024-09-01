@@ -1,6 +1,7 @@
 import { ICar } from "@/interfaces/car";
 import React from "react";
 import SpecsIconContainer from "./SpecsIconContainer";
+import "animate.css";
 
 interface CarDetailsProps {
   car: ICar;
@@ -16,7 +17,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car }) => {
   ];
 
   return (
-    <div className="bg-background md:rounded-3xl flex flex-col w-auto pt-3 md:p-5 md:absolute top-[15vh] md:ml-10 shadow-md">
+    <div className="bg-background md:rounded-3xl flex flex-col w-auto pt-3 md:p-5 md:absolute top-[15vh] md:ml-10 shadow-md animate__animated animate__fadeInLeft">
       <div className="flex md:flex-col items-center justify-center gap-4">
         {detailsArray.map((item) => (
           <div className="flex flex-col items-center">
