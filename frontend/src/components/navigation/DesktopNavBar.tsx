@@ -6,7 +6,7 @@ import { useTheme } from "@/theme/ThemeProvider";
 import UserDropdown from "./UserDropdown";
 import { Switch } from "@/components/ui/switch";
 
-const NavBar = () => {
+const DesktopNavBar = () => {
   const { setTheme } = useTheme();
 
   const [activePage, setActivePage] = useState<string>(`Home`);
@@ -65,4 +65,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default DesktopNavBar;
