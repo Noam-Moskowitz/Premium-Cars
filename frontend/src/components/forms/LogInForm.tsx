@@ -6,6 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -18,6 +19,8 @@ const formSchema = z.object({
 });
 
 const LogInForm = () => {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +36,7 @@ const LogInForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md w-96 mt-5"
+        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md w-96 mt-5 animate__animated animate__fadeIn"
       >
         <h1 className="text-primary text-center font-bold text-3xl uppercase">log in</h1>
         {/* Email Field */}
@@ -75,7 +78,9 @@ const LogInForm = () => {
         <Button type="submit">Login</Button>
         <div className="flex justify-between text-primary underline">
           <p className="cursor-pointer">Forgot Password</p>
-          <p className="cursor-pointer">Register</p>
+          <p className="cursor-pointer" onClick={() => navigate(`/user/register`)}>
+            Register
+          </p>
         </div>
       </form>
     </Form>

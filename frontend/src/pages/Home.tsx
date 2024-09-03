@@ -2,6 +2,7 @@ import CarCard from "@/components/cars/CarCard";
 import { carsArray } from "@/consts/cars";
 import React from "react";
 import "animate.css";
+import { animationDelays } from "@/consts/style";
 
 export const car = {
   make: "Toyota",
@@ -13,18 +14,6 @@ export const car = {
   doors: 4,
   image: "https://noam-moskowitz.github.io/premium-cars-images/cars/hyundai_I10.png",
 };
-
-const animationDelays = [
-  `delay-0`,
-  `delay-75`,
-  `delay-100`,
-  `delay-150`,
-  `delay-200`,
-  `delay-300`,
-  `delay-500`,
-  `delay-700`,
-  `delay-1000`,
-];
 
 const Home = () => {
   return (
