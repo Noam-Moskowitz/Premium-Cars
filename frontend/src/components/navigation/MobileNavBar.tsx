@@ -28,7 +28,11 @@ const MobileNavBar = () => {
     <nav className="w-full h-16 bg-primary shadow-md flex items-center justify-between z-50">
       <div className="border-2 rounded-lg ml-3 z-[100]">
         <Toggle onClick={() => setOpenNav(!openNav)}>
-          {openNav ? <IoMdClose size={25} /> : <BiMenu size={25} />}
+          {openNav ? (
+            <IoMdClose className="animate__animated animate__rotateIn" size={25} />
+          ) : (
+            <BiMenu className="animate__animated animate__rotateIn" size={25} />
+          )}
         </Toggle>
       </div>
       <div className="flex items-center px-5 gap-5">
@@ -51,7 +55,7 @@ const MobileNavBar = () => {
       </div>
       <div
         className={`animate__animated ${
-          openNav ? `animate__fadeInDown` : `animate__fadeOutUp`
+          openNav ? `animate__fadeInDown` : `animate__fadeOutUp `
         } flex flex-col px-10 py-2 pt-16 z-50 bg-primary border-2 w-full absolute top-0 left-0  text-secondary gap-5 font-bold`}
       >
         {navBarArray.map((navItem, i) => (
