@@ -6,10 +6,14 @@ import { useTheme } from "@/theme/ThemeProvider";
 import UserDropdown from "./UserDropdown";
 import { Switch } from "@/components/ui/switch";
 
-const DesktopNavBar = () => {
+interface DesktopNavBarProps {
+  currentPage: string;
+}
+
+const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
   const { setTheme } = useTheme();
 
-  const [activePage, setActivePage] = useState<string>(`Home`);
+  const [activePage, setActivePage] = useState<string>(currentPage);
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,7 +37,7 @@ const DesktopNavBar = () => {
             <Link
               key={i}
               className={`${
-                activePage === navItem.label && `border-secondary`
+                activePage.toLowerCase() === navItem.label.toLowerCase() && `border-secondary`
               } border-b-4 border-primary hover:border-secondary cursor-pointer`}
               to={navItem.navTo}
               onClick={() => setActivePage(navItem.label)}

@@ -1,10 +1,9 @@
-import CarForm from "@/components/forms/CarForm";
-import React from "react";
+import Loader from "@/components/ui/Loader";
 
 const About = () => {
   return (
     <div className="flex items-center justify-center">
-      <CarForm />
+      <Loader size="small" />
     </div>
   );
 };

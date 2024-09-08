@@ -9,10 +9,14 @@ import { Toggle } from "../ui/toggle";
 import { BiMenu } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
 
-const MobileNavBar = () => {
+interface MobileNavBarProps {
+  currentPage: string;
+}
+
+const MobileNavBar: React.FC<MobileNavBarProps> = ({ currentPage }) => {
   const { setTheme } = useTheme();
 
-  const [activePage, setActivePage] = useState<string>(`Home`);
+  const [activePage, setActivePage] = useState<string>(currentPage);
   const [darkMode, setDarkMode] = useState(false);
   const [openNav, setOpenNav] = useState(false);
 
@@ -31,7 +35,7 @@ const MobileNavBar = () => {
           {openNav ? (
             <IoMdClose className="animate__animated animate__rotateIn" size={25} />
           ) : (
-            <BiMenu className="animate__animated animate__rotateIn" size={25} />
+            <BiMenu size={25} />
           )}
         </Toggle>
       </div>
@@ -55,14 +59,15 @@ const MobileNavBar = () => {
       </div>
       <div
         className={`animate__animated ${
-          openNav ? `animate__fadeInDown` : `animate__fadeOutUp `
+          openNav ? `animate__fadeInDown` : `hidden `
         } flex flex-col px-10 py-2 pt-16 z-50 bg-primary border-2 w-full absolute top-0 left-0  text-secondary gap-5 font-bold`}
       >
         {navBarArray.map((navItem, i) => (
           <Link
             key={i}
             className={`${
-              activePage === navItem.label && `bg-secondary text-secondary-foreground`
+              activePage.toLowerCase() === navItem.label.toLowerCase() &&
+              `bg-secondary text-secondary-foreground`
             }  hover:border-secondary cursor-pointer text-lg px-2 rounded`}
             to={navItem.navTo}
             onClick={() => setActivePage(navItem.label)}
