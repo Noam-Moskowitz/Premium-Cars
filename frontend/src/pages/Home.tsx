@@ -3,6 +3,7 @@ import { carsArray } from "@/consts/cars";
 import React from "react";
 import "animate.css";
 import { animationDelays } from "@/consts/style";
+import Hero from "@/components/Hero";
 
 export const car = {
   make: "Toyota",
@@ -18,9 +19,14 @@ export const car = {
 const Home = () => {
   return (
     <div>
-      <header className="p-5 ">
-        <h1 className="font-bold text-primary text-2xl">Rent Your Car At The Click Of A Button!</h1>
-        <p className="font-bold">Choose A car from our huge selection!</p>
+      <header className="">
+        <div className="pt-4 pl-5">
+          <h1 className="font-bold text-accent-foreground text-2xl">
+            Rent Your Car At The Click Of A Button!
+          </h1>
+          <p className="font-bold text-accent-foreground">Choose A car from our huge selection!</p>
+        </div>
+        <Hero />
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 p-10 ">
         {carsArray.map((car, i) => (
