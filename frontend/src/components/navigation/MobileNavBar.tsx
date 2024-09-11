@@ -14,19 +14,10 @@ interface MobileNavBarProps {
 }
 
 const MobileNavBar: React.FC<MobileNavBarProps> = ({ currentPage }) => {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   const [activePage, setActivePage] = useState<string>(currentPage);
-  const [darkMode, setDarkMode] = useState(false);
   const [openNav, setOpenNav] = useState(false);
-
-  useEffect(() => {
-    if (darkMode) {
-      setTheme(`dark`);
-    } else {
-      setTheme(`light`);
-    }
-  }, [darkMode]);
 
   return (
     <nav className="w-full h-16 bg-primary shadow-md flex items-center justify-between z-50">
@@ -41,8 +32,11 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ currentPage }) => {
       </div>
       <div className="flex items-center px-5 gap-5">
         <div className="relative">
-          <Switch onClick={() => setDarkMode(!darkMode)} />
-          {darkMode ? (
+          <Switch
+            checked={theme == `dark` ? true : false}
+            onClick={() => setTheme(theme == `light` ? `dark` : `light`)}
+          />
+          {theme == `dark` ? (
             <FiSun
               size={20}
               className="absolute left-0.5 top-1/2 transform -translate-y-1/2 pb-1"

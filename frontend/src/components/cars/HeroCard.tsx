@@ -11,12 +11,12 @@ interface HeroCardProps {
 const HeroCard: React.FC<HeroCardProps> = ({ img, price, make, model }) => {
   return (
     <div className="flex flex-col items-center gap-3 py-5">
-      <img className="w-[500px]" src={img} alt="" />
-      <h1 className="font-bold text-3xl">
+      <img className="w-full md:w-[500px]" src={img} alt="" />
+      <h1 className="font-bold text-lg md:text-3xl">
         {make} {model}
       </h1>
-      <h2 className="text-2xl text-primary font-bold">{price}$ Per Day</h2>
-      <Button>Rent Now</Button>
+      <h2 className="md:text-2xl text-primary font-bold">{price}$ Per Day</h2>
+      <Button className="text-sm md:text-md">Rent Now</Button>
     </div>
   );
 };

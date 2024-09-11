@@ -1,9 +1,7 @@
-import CarCard from "@/components/cars/CarCard";
-import { carsArray } from "@/consts/cars";
-import React from "react";
+import React, { useState } from "react";
 import "animate.css";
-import { animationDelays } from "@/consts/style";
 import Hero from "@/components/Hero";
+import CarListDropdown from "@/components/cars/CarListDropdown";
 
 export const car = {
   make: "Toyota",
@@ -17,24 +15,29 @@ export const car = {
 };
 
 const Home = () => {
+  const [isOpen, setisOpen] = useState(false);
+
   return (
-    <div>
-      <header className="">
-        <div className="pt-4 pl-5">
-          <h1 className="font-bold text-accent-foreground text-2xl">
+    <div className="scroll-smooth">
+      <header>
+        <div className="pb-4 md:pb-0 pt-4 pl-5 animate__animated animate__fadeIn">
+          <h1 className="font-bold text-accent-foreground text-lg md:text-2xl">
             Rent Your Car At The Click Of A Button!
           </h1>
-          <p className="font-bold text-accent-foreground">Choose A car from our huge selection!</p>
+          <p className="font-bold text-accent-foreground text-sm">
+            Choose A car from our huge selection!
+          </p>
         </div>
-        <Hero />
+        <Hero
+          isOpen={isOpen}
+          handleClick={() =>
+            setisOpen((prevState) => {
+              return !prevState;
+            })
+          }
+        />
       </header>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 p-10 ">
-        {carsArray.map((car, i) => (
-          <div className={`animate__animated animate__fadeInUp ${animationDelays[i]} `}>
-            <CarCard key={i} car={car} />
-          </div>
-        ))}
-      </div>
+      <CarListDropdown open={isOpen} />
     </div>
   );
 };

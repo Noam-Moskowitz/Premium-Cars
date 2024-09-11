@@ -17,7 +17,10 @@ const GenericCarousel: React.FC<GenericCarouselProps> = ({ data }) => {
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
   return (
-    <Carousel plugins={[plugin.current]}>
+    <Carousel
+      className="animate__animated animate__fadeIn animate__slower"
+      plugins={[plugin.current]}
+    >
       <CarouselContent>
         {data.map((item, i) => (
           <CarouselItem key={i}>

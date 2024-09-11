@@ -11,25 +11,17 @@ interface DesktopNavBarProps {
 }
 
 const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+  console.log(theme);
 
   const [activePage, setActivePage] = useState<string>(currentPage);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (darkMode) {
-      setTheme(`dark`);
-    } else {
-      setTheme(`light`);
-    }
-  }, [darkMode]);
 
   return (
     <nav className="w-full h-16 bg-primary shadow-md flex justify-between">
       <div className="flex gap-10">
         <img
           className="p-1"
-          src={darkMode ? "/images/logo-dark-mode.png" : "/images/logo.png"}
+          src={theme == `dark` ? "/images/logo-dark-mode.png" : "/images/logo.png"}
           alt="Company Logo"
         />
         <div className="flex py-2 h-full items-end text-secondary gap-8 font-bold">
@@ -49,8 +41,11 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
       </div>
       <div className="flex items-center px-5 gap-5">
         <div className="relative">
-          <Switch onClick={() => setDarkMode(!darkMode)} />
-          {darkMode ? (
+          <Switch
+            checked={theme == `dark` ? true : false}
+            onClick={() => setTheme(theme == `light` ? `dark` : `light`)}
+          />
+          {theme == `dark` ? (
             <FiSun
               size={20}
               className="absolute left-0.5 top-1/2 transform -translate-y-1/2 pb-1"
