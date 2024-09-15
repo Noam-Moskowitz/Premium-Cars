@@ -1,10 +1,22 @@
 import { User } from "./UserModel.js";
 
 export class UserServices {
-  static async addUser(user) {}
+  static async addUser(user) {
+    try {
+      const newUser = await User.create(user);
+
+      return newUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async updateUser(userId, newUser) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(userId, newUser, { new: true });
+      const updatedUser = await User.findByIdAndUpdate(userId, newUser, { new: true }).select([
+        `-password`,
+        `-isAdmin`,
+      ]);
 
       return updatedUser;
     } catch (error) {
@@ -14,7 +26,7 @@ export class UserServices {
 
   static async deleteUser(userId) {
     try {
-      const deletedUser = await User.findByIdAndDelete(userId);
+      const deletedUser = await User.findByIdAndDelete(userId).select([`-password`, `-isAdmin`]);
 
       return deletedUser;
     } catch (error) {
@@ -24,7 +36,7 @@ export class UserServices {
 
   static async getOneUser(userId) {
     try {
-      const user = await User.findOneById(userId);
+      const user = await User.findById(userId).select([`-password`, `-isAdmin`]);
 
       return user;
     } catch (error) {
@@ -34,7 +46,7 @@ export class UserServices {
 
   static async getAllUsers() {
     try {
-      const users = await User.find();
+      const users = await User.find({}, { password: 0, isAdmin: 0 });
 
       return users;
     } catch (error) {

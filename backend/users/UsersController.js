@@ -1,4 +1,6 @@
 import { UserServices } from "./UserServices.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export class UsersController {
   static async logIn(req, res) {
@@ -6,12 +8,13 @@ export class UsersController {
 
     try {
       const user = await UserServices.logInUser(email);
+      console.log(user);
 
       const token = jwt.sign(
         {
           _id: user._id,
-          first: user.name.first,
-          last: user.name.last,
+          first: user.firstName,
+          last: user.lastName,
           isAdmin: user.isAdmin,
         },
         process.env.JWT_SECRET,
@@ -20,10 +23,27 @@ export class UsersController {
 
       res.send(token);
     } catch (error) {
-      res.status(500).send({ message: error });
+      res.status(500).send({ message: error.message });
     }
   }
-  static async addUser(req, res) {}
+
+  static async addUser(req, res) {
+    const user = {
+      ...req.body,
+      password: await bcrypt.hash(req.body.password, 10),
+    };
+
+    try {
+      const newUser = await UserServices.addUser(user);
+
+      res.send(newUser);
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).send({ message: error.message });
+    }
+  }
+
   static async updateUser(req, res) {
     const { id } = req.params;
     const newUserInfo = req.body;
@@ -31,9 +51,12 @@ export class UsersController {
     try {
       const updatedUser = await UserServices.updateUser(id, newUserInfo);
 
-      if (!updatedUser) return;
+      if (!updatedUser)
+        return res.status(404).send({ message: `Could not find user with ID ${id} to update!` });
+
+      res.send(updatedUser);
     } catch (error) {
-      res.status(500).send({ message: error });
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -48,7 +71,7 @@ export class UsersController {
 
       res.send(deletedUser);
     } catch (error) {
-      res.status(500).send({ message: error });
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -62,7 +85,7 @@ export class UsersController {
 
       res.send(user);
     } catch (error) {
-      res.status(500).send({ message: error });
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -72,7 +95,7 @@ export class UsersController {
 
       res.send(allUsers);
     } catch (error) {
-      res.status(500).send({ message: error });
+      res.status(500).send({ message: error.message });
     }
   }
 }
