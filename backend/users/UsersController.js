@@ -24,14 +24,53 @@ export class UsersController {
     }
   }
   static async addUser(req, res) {}
-  static async updateUser(req, res) {}
-  static async deleteUser(req, res) {}
-  static async getUser(req, res) {}
+  static async updateUser(req, res) {
+    const { id } = req.params;
+    const newUserInfo = req.body;
+
+    try {
+      const updatedUser = await UserServices.updateUser(id, newUserInfo);
+
+      if (!updatedUser) return;
+    } catch (error) {
+      res.status(500).send({ message: error });
+    }
+  }
+
+  static async deleteUser(req, res) {
+    const { id } = req.params;
+
+    try {
+      const deletedUser = await UserServices.deleteUser(id);
+
+      if (!deletedUser)
+        return res.status(404).send({ message: `Could not find user with ID ${id} to delete!` });
+
+      res.send(deletedUser);
+    } catch (error) {
+      res.status(500).send({ message: error });
+    }
+  }
+
+  static async getUser(req, res) {
+    const { id } = req.params;
+
+    try {
+      const user = await UserServices.getOneUser(id);
+
+      if (!user) return res.status(404).send({ message: `Could not find user with ID ${id}` });
+
+      res.send(user);
+    } catch (error) {
+      res.status(500).send({ message: error });
+    }
+  }
+
   static async getAllUsers(req, res) {
     try {
       const allUsers = await UserServices.getAllUsers();
 
-      res.status(200).send(allUsers);
+      res.send(allUsers);
     } catch (error) {
       res.status(500).send({ message: error });
     }
