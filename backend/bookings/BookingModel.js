@@ -12,6 +12,7 @@ const bookingSchema = new Schema(
     pickupSpot: { type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: true },
     dropOffSpot: { type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: true },
     dates: { type: DateRangeSchema, required: true },
+    paid: { type: Boolean, required: true, default: false },
     status: {
       type: String,
       enum: ["active", "canceled"],
@@ -34,5 +35,6 @@ export const bookingValidationSchema = Joi.object({
   pickupSpot: Joi.string().required(),
   dropOffSpot: Joi.string().required(),
   dates: dateRangeSchema.required(),
+  paid: Joi.boolean(),
   status: Joi.string().valid("active", "canceled").required(),
 });
