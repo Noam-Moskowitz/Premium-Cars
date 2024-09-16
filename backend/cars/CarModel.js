@@ -42,6 +42,11 @@ const carSchema = new Schema({
     min: 2,
     max: 8,
   },
+  image: {
+    type: String,
+    required: true,
+    minLength: 8,
+  },
 });
 
 export const Car = model(`Cars`, carSchema);
@@ -92,4 +97,5 @@ export const carValidationSchema = Joi.object({
     "number.max": "Doors cannot exceed 8.",
     "any.required": "Doors are required.",
   }),
+  image: Joi.string().uri().required(),
 });

@@ -1,11 +1,53 @@
+import { Car } from "./CarModel.js";
+
 export class CarServices {
-  static async getAllCars() {}
+  static async getAllCars() {
+    try {
+      const allCars = await Car.find();
 
-  static async getOneCar(carId) {}
+      return allCars;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  static async addCar(carInfo) {}
+  static async getOneCar(carId) {
+    try {
+      const car = await Car.findById(carId);
 
-  static async updateCar(carId, carInfo) {}
+      return car;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  static async updateCar(carId, carInfo) {}
+  static async addCar(carInfo) {
+    try {
+      const newCar = await Car.create(carInfo);
+
+      return newCar;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateCar(carId, carInfo) {
+    try {
+      const updatedCar = Car.findByIdAndUpdate(carId, carInfo, { new: true });
+
+      return updatedCar;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteCar(carId) {
+    try {
+      const deletedCar = await Car.findByIdAndDelete(carId);
+
+      return deletedCar;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

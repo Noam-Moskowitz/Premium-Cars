@@ -31,7 +31,7 @@ export const validateNewUserDetails = async (req, res, next) => {
 
   const { error } = userValidation.validate(userInfo);
 
-  if (error) return res.status(400).send({ message: error.message });
+  if (error) return res.status(400).send({ message: error.details[0] });
 
   next();
 };
