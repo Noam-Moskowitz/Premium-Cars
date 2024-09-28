@@ -38,6 +38,7 @@ const addressSchema = new Schema({
 const branchSchema = new Schema({
   name: {
     type: String,
+    unique: true,
     required: true,
     minlength: 1,
     maxlength: 150,
