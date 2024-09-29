@@ -99,10 +99,10 @@ export const carColumns: ColumnDef<ICar>[] = [
             <DropdownMenuSeparator />
 
             <DropdownMenuItem onClick={() => handleViewUser && handleViewUser(user)}>
-              View user
+              View Car
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDeleteUser && handleDeleteUser(user)}>
-              Delete User
+              Delete Car
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

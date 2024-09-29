@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,8 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import useCarsApi from "@/hooks/useCarsApi";
-import { toast } from "sonner";
 
 const formSchema = z.object({
   make: z.string().min(1, "Make is required"),
@@ -25,10 +23,10 @@ const formSchema = z.object({
 
 interface CarFormProps {
   handleSubmit: (params?: any) => void;
-  id?: string;
+  existingData?: any;
 }
 
-const CarForm: React.FC<CarFormProps> = ({ handleSubmit, id }) => {
+const CarForm: React.FC<CarFormProps> = ({ handleSubmit, existingData }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,9 +41,14 @@ const CarForm: React.FC<CarFormProps> = ({ handleSubmit, id }) => {
     },
   });
 
+  useEffect(() => {
+    if (existingData) {
+      form.reset(existingData);
+    }
+  }, [existingData]);
+
   const onSubmit = (data: any) => {
-    const payload = id ? { id, data } : data;
-    handleSubmit(payload);
+    handleSubmit(data);
   };
 
   return (

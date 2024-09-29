@@ -33,6 +33,8 @@ import { RowData } from "@tanstack/react-table";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  handleActionButton?: () => void;
+  actionButtonTitle?: string;
   handleViewData: (data: TData) => void;
   handleSetData: (data: TData) => void;
   handleDeleteData: (data: TData) => void;
@@ -51,6 +53,8 @@ declare module "@tanstack/table-core" {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  actionButtonTitle,
+  handleActionButton,
   handleViewData,
   handleDeleteData,
   handleViewNestedData,
@@ -147,6 +151,9 @@ export function DataTable<TData, TValue>({
             >
               <Trash2Icon className="cursor-pointer" />
             </div>
+          )}
+          {actionButtonTitle && handleActionButton && (
+            <Button onClick={handleActionButton}>{actionButtonTitle}</Button>
           )}
         </div>
       </div>
