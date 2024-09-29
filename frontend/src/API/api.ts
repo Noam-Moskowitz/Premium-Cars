@@ -13,7 +13,7 @@ async function request<T>(
     url: endpoint,
     data,
     params,
-    headers,
+    headers: { ...headers, authorization: localStorage.getItem(`authToken`) },
   };
 
   console.log("request", request);

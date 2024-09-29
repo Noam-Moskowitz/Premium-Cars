@@ -6,6 +6,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import useCarsApi from "@/hooks/useCarsApi";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   make: z.string().min(1, "Make is required"),
@@ -16,11 +18,14 @@ const formSchema = z.object({
     .max(new Date().getFullYear(), "Year cannot be in the future"),
   seatAmount: z.coerce.number().min(1, "Must have at least 1 seat"),
   pricePerDay: z.coerce.number().min(0, "Price must be a positive number"),
-  gear: z.enum(["automatic", "manual"], { required_error: "Please select a gear type" }),
+  gear: z.enum(["Automatic", "Manual"], { required_error: "Please select a gear type" }),
   doors: z.coerce.number().min(1, "Must have at least 1 door"),
+  image: z.string().url("Please provide a valid URL for the image"),
 });
 
 const CarForm = () => {
+  const { addCar } = useCarsApi();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,11 +36,18 @@ const CarForm = () => {
       pricePerDay: undefined,
       gear: "automatic",
       doors: undefined,
+      image: "",
     },
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    addCar(data)
+      .then(() => toast.success(`Car Added!`))
+      .catch((err) =>
+        toast.error(`Oops, something went wrong!`, {
+          description: err.response.data.message.message || err.response.data.message,
+        })
+      );
   };
 
   return (
@@ -58,7 +70,7 @@ const CarForm = () => {
                   type="text"
                   {...field}
                   className="border-0 p-2 w-full"
-                  placeholder="Toyota"
+                  placeholder="Please enter the car manufacturer.."
                 />
               </FormControl>
               <FormMessage className="text-primary" />
@@ -78,7 +90,7 @@ const CarForm = () => {
                   type="text"
                   {...field}
                   className="border-0 p-2 w-full"
-                  placeholder="Corolla"
+                  placeholder="Please enter the car model.."
                 />
               </FormControl>
               <FormMessage className="text-primary" />
@@ -99,7 +111,7 @@ const CarForm = () => {
                     type="number"
                     {...field}
                     className="border-0 p-2 w-full"
-                    placeholder="2020"
+                    placeholder="Model Year.."
                     min={0}
                   />
                 </FormControl>
@@ -165,8 +177,8 @@ const CarForm = () => {
                       <SelectValue placeholder="Automatic" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="automatic">Automatic</SelectItem>
-                      <SelectItem value="manual">Manual</SelectItem>
+                      <SelectItem value="Automatic">Automatic</SelectItem>
+                      <SelectItem value="Manual">Manual</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -190,6 +202,25 @@ const CarForm = () => {
                   {...field}
                   className="border-0 p-2 w-full"
                   placeholder="4"
+                />
+              </FormControl>
+              <FormMessage className="text-primary" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel className="text-primary font-bold">Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="string"
+                  {...field}
+                  className="border-0 p-2 w-full"
+                  placeholder="Please enter a image url!"
                 />
               </FormControl>
               <FormMessage className="text-primary" />

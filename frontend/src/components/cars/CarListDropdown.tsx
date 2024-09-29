@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { carsArray } from "@/consts/cars";
 import { animationDelays } from "@/consts/style";
 import CarCard from "./CarCard";

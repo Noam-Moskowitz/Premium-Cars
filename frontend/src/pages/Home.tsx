@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import "animate.css";
 import Hero from "@/components/Hero";
 import CarListDropdown from "@/components/cars/CarListDropdown";
+import { useQuery } from "@tanstack/react-query";
+import useCarsApi from "@/hooks/useCarsApi";
+import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import Loader from "@/components/ui/Loader";
+import { ICar } from "@/interfaces/car";
 
 export const car = {
   make: "Toyota",
@@ -15,7 +20,17 @@ export const car = {
 };
 
 const Home = () => {
+  const { getAllCars } = useCarsApi();
+
   const [isOpen, setisOpen] = useState(false);
+
+  const { data, error, isError, isLoading } = useQuery({
+    queryKey: [CAR_QUERY_KEY],
+    queryFn: getAllCars,
+    staleTime: ONE_HOUR,
+  });
+
+  if (isLoading) return <Loader size="large" />;
 
   return (
     <div className="scroll-smooth">
@@ -30,6 +45,7 @@ const Home = () => {
         </div>
         <Hero
           isOpen={isOpen}
+          carsArray={data || []}
           handleClick={() =>
             setisOpen((prevState) => {
               return !prevState;

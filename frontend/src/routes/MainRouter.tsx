@@ -1,3 +1,4 @@
+import CarForm from "@/components/forms/CarForm";
 import About from "@/pages/About";
 import Home from "@/pages/Home";
 import LogInPage from "@/pages/LogInPage";
@@ -14,6 +15,7 @@ const MainRouter = () => {
       <Route path="/my-orders" element={<MyOrders />} />
       <Route path="/about" element={<About />} />
       <Route path="/cars/rent/" element={<RentCarPage />} />
+      <Route path="/cars/new/" element={<CarForm />} />
       <Route path="/user/login" element={<LogInPage />} />
       <Route path="/user/register" element={<Register />} />
     </Routes>

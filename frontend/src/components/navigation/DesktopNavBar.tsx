@@ -1,10 +1,11 @@
-import { navBarArray /* adminNavBarArray */ } from "@/consts/navBar";
+import { navBarArray, adminNavBarArray } from "@/consts/navBar";
 import { FiMoon, FiSun } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/theme/ThemeProvider";
 import UserDropdown from "./UserDropdown";
 import { Switch } from "@/components/ui/switch";
+import { useSelector } from "react-redux";
 
 interface DesktopNavBarProps {
   currentPage: string;
@@ -12,8 +13,14 @@ interface DesktopNavBarProps {
 
 const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
   const { setTheme, theme } = useTheme();
+  const isAdmin = useSelector((store: any) => store.user.isAdmin);
 
+  const [navigationArray, setNavigationArray] = useState(navBarArray);
   const [activePage, setActivePage] = useState<string>(currentPage);
+
+  useEffect(() => {
+    setNavigationArray(isAdmin ? adminNavBarArray : navBarArray);
+  }, [isAdmin]);
 
   return (
     <nav className="w-full h-16 bg-primary shadow-md flex justify-between">
@@ -24,7 +31,7 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
           alt="Company Logo"
         />
         <div className="flex py-2 h-full items-end text-secondary gap-8 font-bold">
-          {navBarArray.map((navItem, i) => (
+          {navigationArray.map((navItem, i) => (
             <Link
               key={i}
               className={`${
