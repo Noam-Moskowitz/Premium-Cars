@@ -12,7 +12,6 @@ interface DesktopNavBarProps {
 
 const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
   const { setTheme, theme } = useTheme();
-  console.log(theme);
 
   const [activePage, setActivePage] = useState<string>(currentPage);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,13 +14,21 @@ import { IDropDown } from "@/interfaces/nav";
 import { HiArrowRightEndOnRectangle } from "react-icons/hi2";
 import { HiOutlineUserPlus } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "@/store/userSlice";
 
 const UserDropdown = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch()
+
+  const userInfo=useSelector((state:any)=>state.user._id)
+  
 
   const signedInMenu = [
     { label: `Profile`, icon: <HiOutlineUser size={18} /> },
-    { label: `Log Out`, icon: <HiMiniArrowLeftStartOnRectangle size={18} /> },
+    { label: `Log Out`, icon: <HiMiniArrowLeftStartOnRectangle size={18} />, action:()=>{
+      
+      dispatch(removeUser(`logOut`))} },
   ];
   const signedOutMenu = [
     {
@@ -34,7 +42,12 @@ const UserDropdown = () => {
       action: () => navigate("user/register"),
     },
   ];
-  const [dropdownMenuContent, setDropdownMenuContent] = useState<IDropDown[]>(signedOutMenu);
+  const [dropdownMenuContent, setDropdownMenuContent] = useState<IDropDown[]>(userInfo?._id ? signedInMenu : signedOutMenu);
+
+  useEffect(()=>{
+      setDropdownMenuContent(userInfo?signedInMenu:signedOutMenu)
+  },[userInfo])
+  
 
   return (
     <DropdownMenu>

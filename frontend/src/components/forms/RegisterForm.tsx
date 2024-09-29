@@ -6,6 +6,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
+import useUserApi from "@/hooks/useUserApi";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z
   .object({
@@ -27,6 +30,10 @@ const formSchema = z
   });
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
+  const { addUser } = useUserApi();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,7 +47,20 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    delete data.confirmPassword;
+
+    addUser(data)
+      .then(() => {
+        toast.success(`Registration Succesful!`);
+        navigate(`/user/login`);
+      })
+      .catch((err) => {
+        console.log(`err`, err);
+
+        toast.error(`Registration failed!`, {
+          description: err.response.data.message.message || err.response.data.message,
+        });
+      });
   };
 
   return (

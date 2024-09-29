@@ -7,6 +7,10 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
 import { useNavigate } from "react-router-dom";
+import useUserApi from "@/hooks/useUserApi";
+import { toast } from "sonner";
+import  userSlice, { saveUser } from "@/store/userSlice";
+import { useDispatch } from "react-redux";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -20,6 +24,9 @@ const formSchema = z.object({
 
 const LogInForm = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch()
+  const {logIn}=useUserApi();
+  
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -29,7 +36,13 @@ const LogInForm = () => {
     },
   });
   const onSubmit = (data: any) => {
-    console.log(data);
+    logIn(data)
+    .then(res=>{
+      toast.success(`Log in succesful`)
+      dispatch(saveUser(res))
+      navigate(`/`)
+    })
+    .catch(err=>toast.error(`Log in failed`, {description:err.response.data.message}))
   };
 
   return (
