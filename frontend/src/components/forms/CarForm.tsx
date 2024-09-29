@@ -23,9 +23,12 @@ const formSchema = z.object({
   image: z.string().url("Please provide a valid URL for the image"),
 });
 
-const CarForm = () => {
-  const { addCar } = useCarsApi();
+interface CarFormProps {
+  handleSubmit: (params?: any) => void;
+  id?: string;
+}
 
+const CarForm: React.FC<CarFormProps> = ({ handleSubmit, id }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,20 +37,15 @@ const CarForm = () => {
       year: undefined,
       seatAmount: undefined,
       pricePerDay: undefined,
-      gear: "automatic",
+      gear: "Automatic",
       doors: undefined,
       image: "",
     },
   });
 
   const onSubmit = (data: any) => {
-    addCar(data)
-      .then(() => toast.success(`Car Added!`))
-      .catch((err) =>
-        toast.error(`Oops, something went wrong!`, {
-          description: err.response.data.message.message || err.response.data.message,
-        })
-      );
+    const payload = id ? { id, data } : data;
+    handleSubmit(payload);
   };
 
   return (
