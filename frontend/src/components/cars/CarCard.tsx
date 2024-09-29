@@ -16,7 +16,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-accent shadow-md  hover:shadow-lg">
+    <Card className="bg-accent shadow-md  hover:shadow-lg ">
       <CardHeader>
         <img className="h-full" src={image} alt="Car" />
         <SpecsIconContainer specs={{ doors, gear, seatAmount }} />
@@ -27,7 +27,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <p className="font-bold">{pricePerDay}$ Per Day</p>
-        <Button className="text-accent" onClick={() => navigate(`cars/rent/`)}>
+        <Button className="text-accent w-full" onClick={() => navigate(`cars/rent/`)}>
           BOOK NOW
         </Button>
       </CardFooter>
