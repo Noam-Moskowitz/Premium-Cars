@@ -53,7 +53,7 @@ const Home = () => {
           }
         />
       </header>
-      <CarListDropdown open={isOpen} />
+      <CarListDropdown cars={data || []} open={isOpen} />
     </div>
   );
 };

@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import CarSpecsIcon from "./CarSpecsIcon";
-import { GiCarDoor, GiCarSeat, GiGearStickPattern } from "react-icons/gi";
 import { ICar } from "@/interfaces/car";
 import { useNavigate } from "react-router-dom";
 import SpecsIconContainer from "./SpecsIconContainer";
@@ -12,7 +10,7 @@ interface CarCardProps {
 }
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
-  const { doors, gear, image, make, model, pricePerDay, seatAmount, year } = car;
+  const { doors, gear, image, make, model, pricePerDay, seatAmount, year, _id } = car;
   const navigate = useNavigate();
 
   return (
@@ -27,7 +25,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <p className="font-bold">{pricePerDay}$ Per Day</p>
-        <Button className="text-accent w-full" onClick={() => navigate(`cars/rent/`)}>
+        <Button className="text-accent w-full" onClick={() => navigate(`cars/rent/${_id}`)}>
           BOOK NOW
         </Button>
       </CardFooter>

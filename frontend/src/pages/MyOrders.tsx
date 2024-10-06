@@ -1,8 +1,15 @@
 import OrderCard from "@/components/orders/OrderCard";
-import React from "react";
+import React, { useEffect } from "react";
 import "animate.css";
+import useCheckToken from "@/hooks/useCheckToken";
 
 const MyOrders = () => {
+  const { checkPermissions } = useCheckToken();
+
+  useEffect(() => {
+    checkPermissions();
+  }, []);
+
   return (
     <div className="size-full">
       <h1 className="text-3xl font-bold p-5">My Orders</h1>

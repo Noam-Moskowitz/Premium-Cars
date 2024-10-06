@@ -22,6 +22,8 @@ const CarFormPage = () => {
     enabled: !!id,
   });
 
+  console.log(`loading`, isLoading);
+
   const successFunc = () => {
     toast.success(`Car saved succesfully!`);
     queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
@@ -55,7 +57,7 @@ const CarFormPage = () => {
     }
   };
 
-  if (isLoading) return <Loader size="large" />;
+  if (isLoading && id) return <Loader size="large" />;
 
   return (
     <div className="size-full flex items-center justify-center p-10">

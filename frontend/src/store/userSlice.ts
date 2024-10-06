@@ -5,7 +5,7 @@ const initialState = {
   _id: null,
   first: null,
   last: null,
-  isAdmin: true,
+  isAdmin: false,
   iat: null,
   exp: null,
 };

@@ -25,6 +25,7 @@ const GenericCarousel: React.FC<GenericCarouselProps> = ({ data }) => {
         {data.map((item, i) => (
           <CarouselItem key={i}>
             <HeroCard
+              id={item._id}
               img={item.image}
               price={item.pricePerDay}
               make={item.make}

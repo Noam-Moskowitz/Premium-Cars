@@ -15,11 +15,12 @@ const MainRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/my-orders" element={<MyOrders />} />
       <Route path="/about" element={<About />} />
-      <Route path="/cars/rent" element={<RentCarPage />} />
+      <Route path="/cars/rent/:id" element={<RentCarPage />} />
       <Route path="/cars/new" element={<CarFormPage />} />
       <Route path="/cars/update/:id" element={<CarFormPage />} />
       <Route path="/cars" element={<CarsPage />} />
       <Route path="/user/login" element={<LogInPage />} />
+      <Route path="/user/login/alert" element={<LogInPage title />} />
       <Route path="/user/register" element={<Register />} />
     </Routes>
   );

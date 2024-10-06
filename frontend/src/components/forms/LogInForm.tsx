@@ -9,7 +9,7 @@ import PasswordInput from "../ui/PasswordInput";
 import { useNavigate } from "react-router-dom";
 import useUserApi from "@/hooks/useUserApi";
 import { toast } from "sonner";
-import  userSlice, { saveUser } from "@/store/userSlice";
+import { saveUser } from "@/store/userSlice";
 import { useDispatch } from "react-redux";
 
 const formSchema = z.object({
@@ -24,9 +24,8 @@ const formSchema = z.object({
 
 const LogInForm = () => {
   const navigate = useNavigate();
-  const dispatch=useDispatch()
-  const {logIn}=useUserApi();
-  
+  const dispatch = useDispatch();
+  const { logIn } = useUserApi();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -37,12 +36,12 @@ const LogInForm = () => {
   });
   const onSubmit = (data: any) => {
     logIn(data)
-    .then(res=>{
-      toast.success(`Log in succesful`)
-      dispatch(saveUser(res))
-      navigate(`/`)
-    })
-    .catch(err=>toast.error(`Log in failed`, {description:err.response.data.message}))
+      .then((res) => {
+        toast.success(`Log in succesful`);
+        dispatch(saveUser(res));
+        navigate(`/`);
+      })
+      .catch((err) => toast.error(`Log in failed`, { description: err.response.data.message }));
   };
 
   return (

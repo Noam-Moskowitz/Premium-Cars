@@ -1,22 +1,26 @@
-import { Provider } from "react-redux";
 import "./App.css";
 import Footer from "./components/footer/Footer";
 import NavBarWarpper from "./components/navigation/NavBarWarpper";
 import MainRouter from "./routes/MainRouter";
 import { ThemeProvider } from "./theme/ThemeProvider";
-import store from "./store/store";
+import { useEffect } from "react";
+import useCheckToken from "./hooks/useCheckToken";
 
 function App() {
+  const { checkIfLoggedIn } = useCheckToken();
+
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Provider store={store}>
-          <NavBarWarpper />
-          <div className="size-full">
-            <MainRouter />
-          </div>
-          <Footer />
-        </Provider>
+        <NavBarWarpper />
+        <div className="w-[100vw] min-h-[100vh]">
+          <MainRouter />
+        </div>
+        <Footer />
       </ThemeProvider>
     </>
   );
