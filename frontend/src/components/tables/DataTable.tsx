@@ -105,8 +105,8 @@ export function DataTable<TData, TValue>({
         <div className="flex items-center py-4 gap-4">
           <Input
             placeholder="Search..."
-            value={(table.getColumn("Make")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("Make")?.setFilterValue(event.target.value)}
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
             className="max-w-sm"
           />
           <div className="flex-1 text-sm text-muted-foreground">

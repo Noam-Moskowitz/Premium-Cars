@@ -78,6 +78,7 @@ export default class BranchController {
 
   static async favoriteBranch(req, res) {
     const { id, userId } = req.params;
+
     try {
       const branch = await BranchServices.favoriteBranch(id, userId);
 

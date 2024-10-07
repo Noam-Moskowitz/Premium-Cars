@@ -63,22 +63,21 @@ export default class BranchServices {
 
   static async favoriteBranch(branchId, userID) {
     try {
-      const branchFavorites = await Branch.findById(branchId).select(`favorites`);
-
-      if (!branchFavorites) return null;
+      const branch = await Branch.findById(branchId);
+      if (!branch) return null;
 
       let branchToReturn = {};
 
-      if (branchFavorites.includes(userID)) {
+      if (branch.favorites.includes(userID)) {
         branchToReturn = await Branch.findByIdAndUpdate(
           branchId,
-          { $pull: { favorites: userId } },
+          { $pull: { favorites: userID } },
           { new: true }
         );
       } else {
         branchToReturn = await Branch.findByIdAndUpdate(
           branchId,
-          { $addToSet: { favorites: userId } },
+          { $addToSet: { favorites: userID } },
           { new: true }
         );
       }

@@ -1,20 +1,12 @@
-import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectGroup,
-  SelectLabel,
-  SelectValue,
-  SelectSeparator,
-} from "./select";
+import React, { useEffect, useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { useQuery } from "@tanstack/react-query";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { BRANCH_NAMES_QUERY_KEY } from "@/consts/reactQuery";
 import FavortieIcon from "./FavortieIcon";
 import { IBranchNames } from "@/interfaces/branch";
 import { useSelector } from "react-redux";
+import { Skeleton } from "./skeleton";
 
 const SelectBranch = () => {
   const userId = useSelector((store: any) => store.user._id);
@@ -24,9 +16,16 @@ const SelectBranch = () => {
     queryKey: [BRANCH_NAMES_QUERY_KEY],
   });
 
-  const [favorites, setFavorites] = useState<IBranchNames[]>(
-    data?.filter((branch) => branch.favorites.includes(userId)) || []
-  );
+  const [branches, setBranches] = useState<IBranchNames[]>([]);
+
+  useEffect(() => {
+    if (!data) return;
+    const favorites = data?.filter((branch) => branch.favorites.includes(userId));
+    const nonFavorites = data?.filter((branch) => !branch.favorites.includes(userId));
+    setBranches([...favorites, ...nonFavorites]);
+  }, [data]);
+
+  if (isLoading) return <Skeleton />;
 
   return (
     <Select>
@@ -34,25 +33,7 @@ const SelectBranch = () => {
         <SelectValue placeholder="Select a branch" />
       </SelectTrigger>
       <SelectContent>
-        {favorites.length > 0 && (
-          <div>
-            <SelectSeparator />
-            <SelectGroup>
-              <SelectLabel>Favorties</SelectLabel>
-              {favorites.map(({ favorites, name, _id }) => (
-                <div className="flex justify-between w-full items-center">
-                  <SelectItem className="border-r-2" key={_id} value={name}>
-                    {name}
-                  </SelectItem>
-                  <FavortieIcon favorites={favorites} branchId={_id} />
-                </div>
-              ))}
-            </SelectGroup>
-            <SelectSeparator />
-          </div>
-        )}
-
-        {data?.map(({ name, _id, favorites }) => (
+        {branches?.map(({ name, _id, favorites }) => (
           <div className="flex justify-between w-full items-center">
             <SelectItem className="border-r-2" key={_id} value={name}>
               {name}

@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ICar } from "@/interfaces/car";
+import { IBranch } from "@/interfaces/branch";
 
-export const carColumns: ColumnDef<ICar>[] = [
+export const BranchColumns: ColumnDef<IBranch>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,7 +39,7 @@ export const carColumns: ColumnDef<ICar>[] = [
   },
 
   {
-    accessorKey: "make",
+    accessorKey: "name",
     id: `name`,
     header: ({ column }) => {
       return (
@@ -48,37 +48,45 @@ export const carColumns: ColumnDef<ICar>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Make
+          Name
           <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "model",
-    header: "Model",
-  },
-  {
-    accessorKey: "year",
-    header: "Year",
-  },
-  {
-    accessorKey: "pricePerDay",
-    header: "Price",
+    accessorKey: "phone",
+    header: "Phone",
   },
 
   {
-    accessorKey: "gear",
-    header: "Gear",
+    accessorKey: "address",
+    header: "Adress",
+    cell: ({ row }) => {
+      const { houseNumber, street } = row.original.address;
+
+      return `${street} ${houseNumber}`;
+    },
   },
   {
-    accessorKey: "seatAmount",
-    header: "Seats",
+    accessorKey: "address",
+    header: "City",
+    cell: ({ row }) => {
+      const { city } = row.original.address;
+
+      return city;
+    },
   },
   {
-    accessorKey: "doors",
-    header: "Doors",
+    accessorKey: "address",
+    header: "Country",
+    cell: ({ row }) => {
+      const { country } = row.original.address;
+
+      return country;
+    },
   },
+
   {
     id: "Actions",
     cell: ({ table, row }) => {
@@ -99,10 +107,10 @@ export const carColumns: ColumnDef<ICar>[] = [
             <DropdownMenuSeparator />
 
             <DropdownMenuItem onClick={() => handleViewUser && handleViewUser(user)}>
-              View Car
+              View Branch
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDeleteUser && handleDeleteUser(user)}>
-              Delete Car
+              Delete Branch
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

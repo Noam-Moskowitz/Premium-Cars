@@ -1,4 +1,6 @@
+import { BRANCH_NAMES_QUERY_KEY } from "@/consts/reactQuery";
 import useBranchApi from "@/hooks/api/useBranchApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { MdOutlineStarOutline, MdOutlineStarPurple500 } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -12,19 +14,24 @@ interface FavortieIconProps {
 const FavortieIcon: React.FC<FavortieIconProps> = ({ favorites, branchId }) => {
   const userId = useSelector((store: any) => store.user._id);
   const { favoriteBranch } = useBranchApi();
+  const queryClient = useQueryClient();
   const [isFavorited, setIsFavorited] = useState(favorites.includes(userId));
+
+  const favoriteABranch = useMutation({
+    mutationFn: ({ branchId, userId }: { branchId: string; userId: string }) =>
+      favoriteBranch(branchId, userId),
+    onSuccess: () => {
+      toast.info(`Updated favorites!`);
+      queryClient.invalidateQueries({ queryKey: [BRANCH_NAMES_QUERY_KEY] });
+      setIsFavorited((prevState) => !prevState);
+    },
+    onError: (err: any) =>
+      toast.error(`Oops, something went wrong!`, { description: err.response.data.message }),
+  });
 
   const handleClick = () => {
     if (!branchId || !userId) return;
-
-    favoriteBranch(branchId, userId)
-      .then((res) => {
-        toast.info(`Succecfully added branch to favroites`);
-        setIsFavorited((prevState) => !prevState);
-      })
-      .catch((err) =>
-        toast.error(`Oops, something went wrong!`, { description: err.response.data.message })
-      );
+    favoriteABranch.mutate({ branchId, userId });
   };
 
   return (
