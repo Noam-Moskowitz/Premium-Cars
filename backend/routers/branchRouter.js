@@ -16,4 +16,6 @@ router.put(`/:id`, validateBranch, BranchController.editBranch);
 
 router.delete(`/:id`, BranchController.deleteBranch);
 
+router.patch(`/:id/user/:userId`, BranchController.favoriteBranch);
+
 export default router;

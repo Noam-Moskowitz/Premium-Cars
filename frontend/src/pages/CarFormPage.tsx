@@ -2,7 +2,7 @@ import CarDetails from "@/components/cars/CarDetails";
 import CarForm from "@/components/forms/CarForm";
 import Loader from "@/components/ui/Loader";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
-import useCarsApi from "@/hooks/useCarsApi";
+import useCarsApi from "@/hooks/api/useCarsApi";
 import { ICar } from "@/interfaces/car";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";

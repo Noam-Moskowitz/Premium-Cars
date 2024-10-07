@@ -10,6 +10,7 @@ import { RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { DatePicker } from "../ui/DatePicker";
 import CardPaymentModal from "../orders/CardPaymentModal";
+import SelectBranch from "../ui/SelectBranch";
 
 const formSchema = z.object({
   pickupSpot: z.string().min(1, "Pickup spot is required"),
@@ -92,15 +93,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
                 <FormItem className="flex flex-col w-full">
                   <FormLabel>Dropoff Spot</FormLabel>
                   <FormControl>
-                    <Select {...field}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Spot 1" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="spot1">Spot 1</SelectItem>
-                        <SelectItem value="spot2">Spot 2</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <SelectBranch />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

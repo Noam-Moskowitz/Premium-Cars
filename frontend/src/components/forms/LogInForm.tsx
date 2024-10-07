@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
 import { useNavigate } from "react-router-dom";
-import useUserApi from "@/hooks/useUserApi";
+import useUserApi from "@/hooks/api/useUserApi";
 import { toast } from "sonner";
 import { saveUser } from "@/store/userSlice";
 import { useDispatch } from "react-redux";

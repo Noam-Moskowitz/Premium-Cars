@@ -54,7 +54,7 @@ export default class BranchController {
     try {
       const branch = await BranchServices.getOneBranch(id);
 
-      if (!branch) res.status(404).send({ message: `Branch not found!` });
+      if (!branch) return res.status(404).send({ message: `Branch not found!` });
 
       res.send(branch);
     } catch (error) {
@@ -68,7 +68,22 @@ export default class BranchController {
     try {
       const removedBranch = await BranchServices.deleteBranch(id);
 
-      if (!removedBranch) res.status(404).send({ message: `Branch not found!` });
+      if (!removedBranch) return res.status(404).send({ message: `Branch not found!` });
+
+      res.send(removedBranch);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+
+  static async favoriteBranch(req, res) {
+    const { id, userId } = req.params;
+    try {
+      const branch = await BranchServices.favoriteBranch(id, userId);
+
+      if (!branch) return res.status(404).send({ message: `Branch not found!` });
+
+      res.send(branch);
     } catch (error) {
       res.status(500).send({ message: error.message });
     }

@@ -3,7 +3,7 @@ import "animate.css";
 import Hero from "@/components/Hero";
 import CarListDropdown from "@/components/cars/CarListDropdown";
 import { useQuery } from "@tanstack/react-query";
-import useCarsApi from "@/hooks/useCarsApi";
+import useCarsApi from "@/hooks/api/useCarsApi";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import Loader from "@/components/ui/Loader";
 import { ICar } from "@/interfaces/car";

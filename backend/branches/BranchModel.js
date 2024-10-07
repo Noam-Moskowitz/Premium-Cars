@@ -53,6 +53,10 @@ const branchSchema = new Schema({
     minlength: 10,
     maxlength: 12,
   },
+  favorites: {
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    default: [],
+  },
 });
 
 export const Branch = model(`Branches`, branchSchema);

@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
-import useUserApi from "@/hooks/useUserApi";
+import useUserApi from "@/hooks/api/useUserApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 

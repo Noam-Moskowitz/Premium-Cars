@@ -4,7 +4,7 @@ import BookCarForm from "@/components/forms/BookCarForm";
 import "animate.css";
 import useCheckToken from "@/hooks/useCheckToken";
 import { useParams } from "react-router-dom";
-import useCarsApi from "@/hooks/useCarsApi";
+import useCarsApi from "@/hooks/api/useCarsApi";
 import { useQuery } from "@tanstack/react-query";
 import { ONE_HOUR } from "@/consts/reactQuery";
 import Loader from "@/components/ui/Loader";

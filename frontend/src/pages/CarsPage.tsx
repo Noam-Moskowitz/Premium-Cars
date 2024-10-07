@@ -2,7 +2,7 @@ import { carColumns } from "@/components/tables/columns/CarColumns";
 import { DataTable } from "@/components/tables/DataTable";
 import Loader from "@/components/ui/Loader";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
-import useCarsApi from "@/hooks/useCarsApi";
+import useCarsApi from "@/hooks/api/useCarsApi";
 import useCheckToken from "@/hooks/useCheckToken";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";

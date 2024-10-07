@@ -33,7 +33,7 @@ export default class BranchServices {
 
   static async getAllBranchNames() {
     try {
-      const allBranchNames = await Branch.find().select(`name`);
+      const allBranchNames = await Branch.find().select({ name: 1, favorites: 1 });
 
       return allBranchNames;
     } catch (error) {
@@ -56,6 +56,34 @@ export default class BranchServices {
       const removedBranch = await Branch.findByIdAndDelete(id);
 
       return removedBranch;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async favoriteBranch(branchId, userID) {
+    try {
+      const branchFavorites = await Branch.findById(branchId).select(`favorites`);
+
+      if (!branchFavorites) return null;
+
+      let branchToReturn = {};
+
+      if (branchFavorites.includes(userID)) {
+        branchToReturn = await Branch.findByIdAndUpdate(
+          branchId,
+          { $pull: { favorites: userId } },
+          { new: true }
+        );
+      } else {
+        branchToReturn = await Branch.findByIdAndUpdate(
+          branchId,
+          { $addToSet: { favorites: userId } },
+          { new: true }
+        );
+      }
+
+      return branchToReturn;
     } catch (error) {
       throw error;
     }
