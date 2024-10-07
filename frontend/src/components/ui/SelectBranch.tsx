@@ -8,7 +8,12 @@ import { IBranchNames } from "@/interfaces/branch";
 import { useSelector } from "react-redux";
 import { Skeleton } from "./skeleton";
 
-const SelectBranch = () => {
+interface SelectBranchProps {
+  handleChange: () => void;
+  value: string;
+}
+
+const SelectBranch: React.FC<SelectBranchProps> = ({ handleChange, value }) => {
   const userId = useSelector((store: any) => store.user._id);
   const { getAllBranchNames } = useBranchApi();
   const { data, error, isError, isLoading } = useQuery({
@@ -28,9 +33,9 @@ const SelectBranch = () => {
   if (isLoading) return <Skeleton />;
 
   return (
-    <Select>
+    <Select onValueChange={handleChange}>
       <SelectTrigger>
-        <SelectValue placeholder="Select a branch" />
+        <SelectValue placeholder={value || "Select a branch"} />
       </SelectTrigger>
       <SelectContent>
         {branches?.map(({ name, _id, favorites }) => (

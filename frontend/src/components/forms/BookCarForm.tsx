@@ -3,7 +3,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { RadioGroupItem } from "../ui/radio-group";
@@ -37,8 +36,8 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pickupSpot: "spot1",
-      dropoffSpot: "spot2",
+      pickupSpot: "",
+      dropoffSpot: "",
       paymentMethod: "cash",
       dates: {
         from: "",
@@ -46,6 +45,10 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
       },
     },
   });
+
+  const {
+    formState: { errors },
+  } = form;
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -70,15 +73,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
                 <FormItem className="flex flex-col w-full">
                   <FormLabel>Pickup Spot</FormLabel>
                   <FormControl>
-                    <Select {...field}>
-                      <SelectTrigger className="border-border">
-                        <SelectValue placeholder="Spot 1" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="spot1">Spot 1</SelectItem>
-                        <SelectItem value="spot2">Spot 2</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <SelectBranch handleChange={field.onChange} value={field.value} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,7 +88,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
                 <FormItem className="flex flex-col w-full">
                   <FormLabel>Dropoff Spot</FormLabel>
                   <FormControl>
-                    <SelectBranch />
+                    <SelectBranch handleChange={field.onChange} value={field.value} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

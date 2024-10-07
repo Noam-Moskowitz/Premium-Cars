@@ -33,7 +33,7 @@ const RentCarPage = () => {
         <img className=" md:w-[500px] lg:w-[700px] m-auto" src={data?.image} alt="Car Image" />
       </div>
       <CarDetails car={data} />
-      <div className="w-full md:h-[30vh] bg-background md:rounded-t-lg animate__animated animate__fadeInUp  flex justify-center items-center py-5  md:border-2 ">
+      <div className="w-full  bg-background md:rounded-t-lg animate__animated animate__fadeInUp  flex justify-center items-center py-5  md:border-2 ">
         <BookCarForm carPrice={data?.pricePerDay || 0} />
       </div>
     </div>
