@@ -44,7 +44,7 @@ const SelectBranch = () => {
                   <SelectItem className="border-r-2" key={_id} value={name}>
                     {name}
                   </SelectItem>
-                  <FavortieIcon favorites={favorites} />
+                  <FavortieIcon favorites={favorites} branchId={_id} />
                 </div>
               ))}
             </SelectGroup>
@@ -57,7 +57,7 @@ const SelectBranch = () => {
             <SelectItem className="border-r-2" key={_id} value={name}>
               {name}
             </SelectItem>
-            <FavortieIcon favorites={favorites} />
+            <FavortieIcon favorites={favorites} branchId={_id} />
           </div>
         ))}
       </SelectContent>
