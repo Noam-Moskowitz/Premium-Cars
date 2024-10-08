@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get(`/`, checkIfAdmin, BookingController.getAllBookings);
 
-router.get(`/:id`, BookingController.getOneBooking);
+router.get(`/one/:id`, BookingController.getOneBooking);
 
 router.get(`/user/:userId`, checkIfAdmin, BookingController.getBookingsByUser);
 

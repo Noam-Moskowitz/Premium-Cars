@@ -40,7 +40,7 @@ const SelectBranch: React.FC<SelectBranchProps> = ({ handleChange, value }) => {
       <SelectContent>
         {branches?.map(({ name, _id, favorites }) => (
           <div className="flex justify-between w-full items-center">
-            <SelectItem className="border-r-2" key={_id} value={name}>
+            <SelectItem className="border-r-2" key={_id} value={_id || ``}>
               {name}
             </SelectItem>
             <FavortieIcon favorites={favorites} branchId={_id} />

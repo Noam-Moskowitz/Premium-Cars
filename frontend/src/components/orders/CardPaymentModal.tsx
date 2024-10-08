@@ -12,9 +12,15 @@ interface CardPaymentModalProps {
   open: boolean;
   closeModal: () => void;
   price: number;
+  hasPaid: () => void;
 }
 
-const CardPaymentModal: React.FC<CardPaymentModalProps> = ({ open, closeModal, price }) => {
+const CardPaymentModal: React.FC<CardPaymentModalProps> = ({
+  open,
+  closeModal,
+  price,
+  hasPaid,
+}) => {
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent className="max-h-screen overflow-y-auto">
@@ -25,7 +31,13 @@ const CardPaymentModal: React.FC<CardPaymentModalProps> = ({ open, closeModal, p
             payments. We advise against entering your actual credit card information.
           </DialogDescription>
         </DialogHeader>
-        <CardPaymentForm amountToPay={price} />
+        <CardPaymentForm
+          amountToPay={price}
+          paid={() => {
+            hasPaid();
+            closeModal();
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

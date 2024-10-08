@@ -17,9 +17,10 @@ const formSchema = z.object({
 
 interface CardPaymentFormProps {
   amountToPay: number;
+  paid: () => void;
 }
 
-const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay }) => {
+const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay, paid }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,6 +33,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay }) => {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    paid();
   };
 
   return (

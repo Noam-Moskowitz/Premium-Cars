@@ -12,12 +12,14 @@ interface DatePickerProps {
   onChange: (date: DateRange) => void;
   existingValue?: DateRange;
   setDayAmount: (days: number) => void;
+  bookedDates?: DateRange[];
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   setDayAmount,
   existingValue,
+  bookedDates,
 }) => {
   const [date, setDate] = useState<DateRange | undefined>(existingValue);
 
@@ -74,6 +76,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}
+            disabled={bookedDates}
           />
         </PopoverContent>
       </Popover>

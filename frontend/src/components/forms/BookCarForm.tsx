@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,10 +10,13 @@ import { Label } from "../ui/label";
 import { DatePicker } from "../ui/DatePicker";
 import CardPaymentModal from "../orders/CardPaymentModal";
 import SelectBranch from "../ui/SelectBranch";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { IBooking } from "@/interfaces/booking";
 
 const formSchema = z.object({
-  pickupSpot: z.string().min(1, "Pickup spot is required"),
-  dropoffSpot: z.string().min(1, "Dropoff spot is required"),
+  pickUpSpot: z.string().min(1, "Pickup spot is required"),
+  dropOffSpot: z.string().min(1, "Dropoff spot is required"),
   paymentMethod: z.enum(["cash", "credit"]),
   dates: z.object({
     from: z.date({
@@ -27,17 +30,22 @@ const formSchema = z.object({
 
 interface BookCarFormProps {
   carPrice: number;
+  existingBooking?: IBooking;
+  submitForm: (booking: IBooking) => void;
 }
 
-const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
+const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, submitForm }) => {
+  const { id } = useParams();
+  const userId = useSelector((store: any) => store.user._id);
   const [dayAmount, setDayAmount] = useState(1);
   const [openModal, setOpenModal] = useState(false);
+  const [paid, setPaid] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pickupSpot: "",
-      dropoffSpot: "",
+      pickUpSpot: "",
+      dropOffSpot: "",
       paymentMethod: "cash",
       dates: {
         from: "",
@@ -46,16 +54,32 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
     },
   });
 
-  const {
-    formState: { errors },
-  } = form;
+  const { reset } = form;
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    if (data.paymentMethod === `credit`) {
+    if (data.paymentMethod === `credit` && !paid) {
       setOpenModal(true);
+    } else {
+      const bookingObj = {
+        ...data,
+        carId: id,
+        userId,
+        paid,
+        price: carPrice * dayAmount,
+      };
+
+      delete bookingObj.paymentMethod;
+
+      submitForm(bookingObj);
+      console.log(bookingObj);
     }
   };
+
+  useEffect(() => {
+    if (!existingBooking) return;
+
+    reset(existingBooking);
+  }, [existingBooking]);
 
   return (
     <>
@@ -68,7 +92,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
             {/* Pickup Spot */}
             <FormField
               control={form.control}
-              name="pickupSpot"
+              name="pickUpSpot"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
                   <FormLabel>Pickup Spot</FormLabel>
@@ -83,7 +107,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
             {/* Dropoff Spot */}
             <FormField
               control={form.control}
-              name="dropoffSpot"
+              name="dropOffSpot"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
                   <FormLabel>Dropoff Spot</FormLabel>
@@ -141,7 +165,13 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
           </div>
           <div className="flex flex-col items-center justify-around gap-2 md:w-1/3">
             <h2 className="font-bold text-2xl text-center">Final Price:</h2>
-            <h3 className="font-bold text-primary text-2xl">{carPrice * dayAmount}$</h3>
+            <h3 className="font-bold text-primary text-2xl">
+              {paid ? (
+                <span className="uppercase text-green-500">Paid</span>
+              ) : (
+                carPrice * dayAmount + `$`
+              )}
+            </h3>
             {/* Submit */}
             <Button type="submit">Submit</Button>
           </div>
@@ -151,6 +181,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice }) => {
         open={openModal}
         closeModal={() => setOpenModal(false)}
         price={carPrice * dayAmount}
+        hasPaid={() => setPaid(true)}
       />
     </>
   );
