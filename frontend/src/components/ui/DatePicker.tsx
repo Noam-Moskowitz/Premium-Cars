@@ -7,21 +7,33 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { BOOKINGS_BY_CAR_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import { useParams } from "react-router-dom";
+import useBookingApi from "@/hooks/api/useBookingApi";
+import { useQuery } from "@tanstack/react-query";
 
 interface DatePickerProps {
   onChange: (date: DateRange) => void;
   existingValue?: DateRange;
   setDayAmount: (days: number) => void;
-  bookedDates?: DateRange[];
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   setDayAmount,
   existingValue,
-  bookedDates,
 }) => {
   const [date, setDate] = useState<DateRange | undefined>(existingValue);
+  const [bookedDates, setBookedDates] = useState<DateRange[]>([]);
+  const { id } = useParams();
+  const { getBookingsByCar } = useBookingApi();
+
+  const bookingsPerCar = useQuery({
+    queryFn: () => getBookingsByCar(id || ``),
+    queryKey: [BOOKINGS_BY_CAR_KEY + id],
+    staleTime: ONE_HOUR,
+    enabled: !!id,
+  });
 
   const handleSelect = (range?: DateRange) => {
     if (
@@ -41,6 +53,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     setDayAmount(dayAmount);
     onChange(range);
   };
+
+  useEffect(() => {
+    if (!bookingsPerCar.data) return;
+
+    const carsBbookedDates = [];
+    for (const booking of bookingsPerCar.data) {
+      carsBbookedDates.push(booking.dates);
+    }
+
+    setBookedDates(carsBbookedDates);
+  }, [bookingsPerCar]);
 
   return (
     <div>
@@ -77,6 +100,10 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             onSelect={handleSelect}
             numberOfMonths={2}
             disabled={bookedDates}
+            modifiers={{ occupiedDates: bookedDates }}
+            modifiersClassNames={{
+              occupiedDates: ` line-through bg-secondary`,
+            }}
           />
         </PopoverContent>
       </Popover>

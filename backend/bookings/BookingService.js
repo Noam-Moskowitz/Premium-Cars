@@ -44,6 +44,8 @@ export class BookingServices {
   static async getBookingsByCar(carId) {
     try {
       const bookings = await Booking.find({ carId });
+
+      return bookings;
     } catch (error) {
       throw error;
     }
