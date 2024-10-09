@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BOOKING_QUERY_KEY,
   BOOKINGS_BY_CAR_KEY,
+  BOOKINGS_BY_USER_KEY,
   ONE_HOUR,
   SINGLE_BOOKING_KEY,
   SINGLE_CAR_KEY,
@@ -17,6 +18,7 @@ import Loader from "@/components/ui/Loader";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import { IBooking } from "@/interfaces/booking";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const RentCarPage = () => {
   const { checkPermissions } = useCheckToken();
@@ -24,6 +26,7 @@ const RentCarPage = () => {
   const { getOneCar } = useCarsApi();
   const { getOneBooking, addBooking, updateBooking } = useBookingApi();
   const queryClient = useQueryClient();
+  const userId = useSelector((store: any) => store.user._id);
 
   const carResponse = useQuery({
     queryKey: [SINGLE_CAR_KEY + id],
@@ -32,7 +35,7 @@ const RentCarPage = () => {
     enabled: !!id,
   });
 
-  const existingBooking = useQuery({
+  const existingBookingResponse = useQuery({
     queryFn: () => getOneBooking(bookingId || ``),
     queryKey: [SINGLE_BOOKING_KEY + bookingId],
     staleTime: ONE_HOUR,
@@ -44,6 +47,7 @@ const RentCarPage = () => {
     queryClient.invalidateQueries({ queryKey: [SINGLE_BOOKING_KEY + bookingId] });
     queryClient.invalidateQueries({ queryKey: [BOOKING_QUERY_KEY] });
     queryClient.invalidateQueries({ queryKey: [BOOKINGS_BY_CAR_KEY + id] });
+    queryClient.invalidateQueries({ queryKey: [BOOKINGS_BY_USER_KEY + userId] });
   };
 
   const errFunc = (err: any) => {
@@ -74,7 +78,7 @@ const RentCarPage = () => {
     checkPermissions();
   }, []);
 
-  if (carResponse.isLoading || (existingBooking.isLoading && bookingId))
+  if (carResponse.isLoading || (existingBookingResponse.isLoading && bookingId))
     return <Loader size="large" />;
 
   return (
@@ -88,7 +92,11 @@ const RentCarPage = () => {
       </div>
       <CarDetails car={carResponse.data} />
       <div className="w-full  bg-background md:rounded-t-lg animate__animated animate__fadeInUp  flex justify-center items-center py-5  md:border-2 ">
-        <BookCarForm carPrice={carResponse.data?.pricePerDay || 0} submitForm={handleSubmit} />
+        <BookCarForm
+          carPrice={carResponse.data?.pricePerDay || 0}
+          submitForm={handleSubmit}
+          existingBooking={existingBookingResponse.data}
+        />
       </div>
     </div>
   );

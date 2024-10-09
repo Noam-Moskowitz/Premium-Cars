@@ -31,7 +31,7 @@ const MyOrders = () => {
       <h1 className="text-3xl font-bold p-5">My Orders</h1>
       <div className="flex flex-col m-auto w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
         {data?.map((booking) => (
-          <OrderCard key={booking._id} />
+          <OrderCard key={booking._id} order={booking} />
         ))}
       </div>
     </div>

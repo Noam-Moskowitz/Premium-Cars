@@ -37,9 +37,9 @@ interface BookCarFormProps {
 const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, submitForm }) => {
   const { id } = useParams();
   const userId = useSelector((store: any) => store.user._id);
-  const [dayAmount, setDayAmount] = useState(1);
+  const [price, setPrice] = useState(existingBooking?.price || carPrice);
   const [openModal, setOpenModal] = useState(false);
-  const [paid, setPaid] = useState(false);
+  const [paid, setPaid] = useState(existingBooking?.paid || false);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -65,7 +65,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
         carId: id,
         userId,
         paid,
-        price: carPrice * dayAmount,
+        price: price,
       };
 
       delete bookingObj.paymentMethod;
@@ -77,6 +77,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
 
   useEffect(() => {
     if (!existingBooking) return;
+    console.log(`booking`, existingBooking.dates);
 
     reset(existingBooking);
   }, [existingBooking]);
@@ -128,7 +129,11 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
                 <FormItem className="pb-4">
                   <FormLabel>Dates</FormLabel>
                   <FormControl>
-                    <DatePicker onChange={field.onChange} setDayAmount={setDayAmount} />
+                    <DatePicker
+                      existingValue={field.value}
+                      onChange={field.onChange}
+                      setDayAmount={(days) => setPrice(days * carPrice)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,11 +171,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
           <div className="flex flex-col items-center justify-around gap-2 md:w-1/3">
             <h2 className="font-bold text-2xl text-center">Final Price:</h2>
             <h3 className="font-bold text-primary text-2xl">
-              {paid ? (
-                <span className="uppercase text-green-500">Paid</span>
-              ) : (
-                carPrice * dayAmount + `$`
-              )}
+              {paid ? <span className="uppercase text-green-500">Paid</span> : price + `$`}
             </h3>
             {/* Submit */}
             <Button type="submit">Submit</Button>
@@ -180,7 +181,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
       <CardPaymentModal
         open={openModal}
         closeModal={() => setOpenModal(false)}
-        price={carPrice * dayAmount}
+        price={existingBooking?.price || price}
         hasPaid={() => setPaid(true)}
       />
     </>

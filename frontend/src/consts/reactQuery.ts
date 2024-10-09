@@ -8,5 +8,6 @@ export const BOOKINGS_BY_USER_KEY = `bookings-user-`;
 
 export const BRANCH_QUERY_KEY = `branch-list`;
 export const BRANCH_NAMES_QUERY_KEY = `branch-names-list`;
+export const SINGLE_BRANCH_KEY = `branch-`;
 
 export const ONE_HOUR = 3600000;

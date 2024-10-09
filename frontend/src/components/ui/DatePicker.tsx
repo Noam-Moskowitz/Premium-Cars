@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -23,7 +23,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   setDayAmount,
   existingValue,
 }) => {
-  const [date, setDate] = useState<DateRange | undefined>(existingValue);
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
   const [bookedDates, setBookedDates] = useState<DateRange[]>([]);
   const { id } = useParams();
   const { getBookingsByCar } = useBookingApi();
@@ -36,16 +36,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   });
 
   const handleSelect = (range?: DateRange) => {
-    if (
-      !range ||
-      range.to?.getTime() < new Date().getTime() ||
-      range.from?.getTime() < new Date().getTime()
-    )
-      return;
+    if (!range) return;
+
+    if (range.to) {
+      range.to = new Date(range.to);
+    }
+    if (range.from) {
+      range.from = new Date(range.from);
+    }
 
     setDate(range);
 
     const { from, to } = range;
+
+    if (!from || !to) return;
 
     const timeDifference = to.getTime() - from.getTime();
     const dayAmount = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
@@ -57,13 +61,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   useEffect(() => {
     if (!bookingsPerCar.data) return;
 
-    const carsBbookedDates = [];
-    for (const booking of bookingsPerCar.data) {
-      carsBbookedDates.push(booking.dates);
-    }
+    const carsBookedDates = bookingsPerCar.data
+      .filter(
+        (booking) =>
+          booking.dates.from !== existingValue?.from && booking.dates.to !== existingValue?.to
+      )
+      .map((booking) => booking.dates);
 
-    setBookedDates(carsBbookedDates);
-  }, [bookingsPerCar]);
+    setBookedDates(carsBookedDates);
+  }, [bookingsPerCar.data]);
+
+  useEffect(() => {
+    if (!existingValue) return;
+
+    setDate(existingValue);
+  }, [existingValue]);
 
   return (
     <div>
@@ -99,7 +111,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}
-            disabled={bookedDates}
+            disabled={[{ before: new Date() }, ...bookedDates]}
             modifiers={{ occupiedDates: bookedDates }}
             modifiersClassNames={{
               occupiedDates: ` line-through bg-secondary`,

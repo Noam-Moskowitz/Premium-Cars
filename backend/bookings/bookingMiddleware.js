@@ -13,14 +13,19 @@ export const validateBooking = (req, res, next) => {
 
 export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
   const token = req.headers.authorization;
-  const { id } = req.params;
+  const { id, userId } = req.params;
 
   if (!token) return res.status(401).send({ message: `User not authorized!` });
 
   let bookingsUser;
 
   try {
-    bookingsUser = await Booking.findById(id).select(`userId`);
+    if (userId) {
+      bookingsUser = await Booking.findOne({ userId }).select({ userId: 1 });
+    } else {
+      bookingsUser = await Booking.findById(id).select({ userId: 1 });
+    }
+    console.log(bookingsUser);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -28,7 +33,9 @@ export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.status(401).send(err.message);
 
-    if (decoded.isAdmin || bookingsUser === decoded._id) {
+    const idValue = bookingsUser.userId;
+
+    if (decoded.isAdmin || idValue.toString() === decoded._id) {
       return next();
     }
 
