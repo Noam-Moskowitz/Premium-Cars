@@ -11,4 +11,5 @@ export interface IBooking {
   status?: "active" | "canceled"; // Status of the booking
   createdAt?: string; // Timestamp for when the booking was created as an ISO string
   updatedAt?: string; // Timestamp for when the booking was last updated as an ISO string
+  _id?: string;
 }

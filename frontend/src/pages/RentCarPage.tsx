@@ -8,6 +8,7 @@ import useCarsApi from "@/hooks/api/useCarsApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BOOKING_QUERY_KEY,
+  BOOKINGS_BY_CAR_KEY,
   ONE_HOUR,
   SINGLE_BOOKING_KEY,
   SINGLE_CAR_KEY,
@@ -42,6 +43,7 @@ const RentCarPage = () => {
     toast.success(`Booking saved!`);
     queryClient.invalidateQueries({ queryKey: [SINGLE_BOOKING_KEY + bookingId] });
     queryClient.invalidateQueries({ queryKey: [BOOKING_QUERY_KEY] });
+    queryClient.invalidateQueries({ queryKey: [BOOKINGS_BY_CAR_KEY + id] });
   };
 
   const errFunc = (err: any) => {
