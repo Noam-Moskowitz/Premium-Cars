@@ -66,7 +66,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   useEffect(() => {
-    if (!bookingsPerCar.data || !existingBookingResponse.data) return;
+    if (!bookingsPerCar.data) return;
 
     const carsBookedDates = bookingsPerCar.data
       .filter((booking) => {
@@ -76,7 +76,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         return (
           toDate.getTime() > Date.now() &&
           fromDate.getTime() !==
-            new Date(existingBookingResponse.data.dates?.from || ``).getTime() &&
+            new Date(existingBookingResponse.data?.dates?.from || ``).getTime() &&
           toDate.getTime() !== new Date(existingBookingResponse.data?.dates?.to || ``).getTime()
         );
       })
