@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { BOOKINGS_BY_CAR_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import { BOOKINGS_BY_CAR_KEY, ONE_HOUR, SINGLE_BOOKING_KEY } from "@/consts/reactQuery";
 import { useParams } from "react-router-dom";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import { useQuery } from "@tanstack/react-query";
@@ -25,14 +25,21 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 }) => {
   const [date, setDate] = useState<DateRange | undefined>(undefined);
   const [bookedDates, setBookedDates] = useState<DateRange[]>([]);
-  const { id } = useParams();
-  const { getBookingsByCar } = useBookingApi();
+  const { id, bookingId } = useParams();
+  const { getBookingsByCar, getOneBooking } = useBookingApi();
 
   const bookingsPerCar = useQuery({
     queryFn: () => getBookingsByCar(id || ``),
     queryKey: [BOOKINGS_BY_CAR_KEY + id],
     staleTime: ONE_HOUR,
     enabled: !!id,
+  });
+
+  const existingBookingResponse = useQuery({
+    queryFn: () => getOneBooking(bookingId || ``),
+    queryKey: [SINGLE_BOOKING_KEY + bookingId],
+    staleTime: ONE_HOUR,
+    enabled: !!bookingId,
   });
 
   const handleSelect = (range?: DateRange) => {
@@ -59,17 +66,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   useEffect(() => {
-    if (!bookingsPerCar.data) return;
+    if (!bookingsPerCar.data || !existingBookingResponse.data) return;
 
     const carsBookedDates = bookingsPerCar.data
-      .filter(
-        (booking) =>
-          booking.dates.from !== existingValue?.from && booking.dates.to !== existingValue?.to
-      )
+      .filter((booking) => {
+        const fromDate = new Date(booking.dates.from || ``);
+        const toDate = new Date(booking.dates.to || ``);
+
+        return (
+          toDate.getTime() > Date.now() &&
+          fromDate.getTime() !==
+            new Date(existingBookingResponse.data.dates?.from || ``).getTime() &&
+          toDate.getTime() !== new Date(existingBookingResponse.data?.dates?.to || ``).getTime()
+        );
+      })
       .map((booking) => booking.dates);
 
     setBookedDates(carsBookedDates);
-  }, [bookingsPerCar.data]);
+  }, [bookingsPerCar.data, existingBookingResponse.data]);
 
   useEffect(() => {
     if (!existingValue) return;

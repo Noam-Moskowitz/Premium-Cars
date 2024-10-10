@@ -77,7 +77,6 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
 
   useEffect(() => {
     if (!existingBooking) return;
-    console.log(`booking`, existingBooking.dates);
 
     reset(existingBooking);
   }, [existingBooking]);
@@ -87,9 +86,9 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-full md:w-2/3 flex flex-col md:flex-row gap-5"
+          className="h-full md:w-2/3 flex flex-col md:flex-row gap-5 px-3"
         >
-          <div className="h-full flex md:flex-col gap-5 md:gap-5 justify-center md:w-1/3">
+          <div className="h-full flex flex-wrap  md:flex-col gap-5 md:gap-5 justify-center md:w-1/3">
             {/* Pickup Spot */}
             <FormField
               control={form.control}
