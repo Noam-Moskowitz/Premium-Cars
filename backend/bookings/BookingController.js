@@ -38,10 +38,10 @@ export class BookingController {
   }
 
   static async getBookingsByStatus(req, res) {
-    const { status } = req.params;
+    const { status, userId } = req.params;
 
     try {
-      const bookings = await BookingServices.getBookingsByStatus(status);
+      const bookings = await BookingServices.getBookingsByStatus(status, userId);
 
       res.send(bookings);
     } catch (error) {

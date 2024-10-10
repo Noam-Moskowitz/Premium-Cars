@@ -11,7 +11,11 @@ router.get(`/one/:id`, BookingController.getOneBooking);
 
 router.get(`/user/:userId`, checkIfUserWhoBookedOrAdmin, BookingController.getBookingsByUser);
 
-router.get(`/status/:status`, checkIfAdmin, BookingController.getBookingsByStatus);
+router.get(
+  `/status/:status/user/:userId`,
+  checkIfUserWhoBookedOrAdmin,
+  BookingController.getBookingsByStatus
+);
 
 router.get(`/car/:carId`, BookingController.getBookingsByCar);
 

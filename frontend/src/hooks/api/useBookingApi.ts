@@ -13,8 +13,8 @@ const useBookingApi = () => {
   const getBookingsByUser = (userId: string) =>
     fetchData<IBooking[]>(`${BOOKINGS_ENDPOINT}/user/${userId}`);
 
-  const getBookingsByStatus = (status: string) =>
-    fetchData<IBooking[]>(`${BOOKINGS_ENDPOINT}/status/${status}`);
+  const getBookingsByStatus = (status: string, userId: string) =>
+    fetchData<IBooking[]>(`${BOOKINGS_ENDPOINT}/status/${status}/user/${userId}`);
 
   const getBookingsByCar = (carId: string) =>
     fetchData<IBooking[]>(`${BOOKINGS_ENDPOINT}/car/${carId}`);

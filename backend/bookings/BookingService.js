@@ -31,9 +31,9 @@ export class BookingServices {
     }
   }
 
-  static async getBookingsByStatus(status) {
+  static async getBookingsByStatus(status, userId) {
     try {
-      const bookings = await Booking.find({ status });
+      const bookings = await Booking.find({ status, userId });
 
       return bookings;
     } catch (error) {

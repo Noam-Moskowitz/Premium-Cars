@@ -13,7 +13,7 @@ export const validateBooking = (req, res, next) => {
 
 export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
   const token = req.headers.authorization;
-  const { id, userId } = req.params;
+  const { id, userId, status } = req.params;
 
   if (!token) return res.status(401).send({ message: `User not authorized!` });
 
@@ -41,4 +41,24 @@ export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
 
     return res.status(401).send({ message: `User not authorized!` });
   });
+};
+
+export const checkIfBookingPassed = async (req, res, next) => {
+  try {
+    const now = Date.now();
+
+    const expiredBookings = await Booking.find({
+      "dates.to": { $lt: now },
+      status: { $ne: "passed" },
+    });
+
+    if (expiredBookings.length > 0) {
+      const bookingIds = expiredBookings.map((booking) => booking._id);
+      await Booking.updateMany({ _id: { $in: bookingIds } }, { status: "passed" });
+    }
+
+    next();
+  } catch (err) {
+    res.statu(500).send({ message: err });
+  }
 };

@@ -17,7 +17,7 @@ const bookingSchema = new Schema(
     price: { type: Number, min: 1, required: true },
     status: {
       type: String,
-      enum: ["active", "canceled"],
+      enum: ["active", "canceled", "passed"],
       required: true,
       default: "active",
     },
