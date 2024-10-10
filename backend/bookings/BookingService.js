@@ -73,19 +73,21 @@ export class BookingServices {
 
   static async changeBookingStatus(bookingId) {
     try {
-      const booking = await Booking.findByIdAndUpdate(
+      const booking = await Booking.findById(bookingId);
+
+      if (!booking) {
+        return null;
+      }
+
+      const newStatus = booking.status === "canceled" ? "active" : "canceled";
+
+      const updatedBooking = await Booking.findByIdAndUpdate(
         bookingId,
-        {
-          $set: {
-            status: {
-              $cond: { if: { $eq: ["$status", "canceled"] }, then: "active", else: "canceled" },
-            },
-          },
-        },
+        { $set: { status: newStatus } },
         { new: true }
       );
 
-      return booking;
+      return updatedBooking;
     } catch (error) {
       throw error;
     }

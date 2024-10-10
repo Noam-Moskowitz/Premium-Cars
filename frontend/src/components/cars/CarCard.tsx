@@ -26,7 +26,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
       <CardFooter className="flex flex-col gap-4">
         <p className="font-bold">{pricePerDay}$ Per Day</p>
         <Button className="text-accent w-full" onClick={() => navigate(`cars/rent/${_id}`)}>
-          BOOK NOW
+          RESERVE CAR
         </Button>
       </CardFooter>
     </Card>

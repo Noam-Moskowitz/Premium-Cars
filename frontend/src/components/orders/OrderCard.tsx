@@ -3,26 +3,38 @@ import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/
 import { FiChevronsRight } from "react-icons/fi";
 import { Button } from "../ui/button";
 import { IBooking } from "@/interfaces/booking";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useCarsApi from "@/hooks/api/useCarsApi";
-import { ONE_HOUR, SINGLE_BRANCH_KEY, SINGLE_CAR_KEY } from "@/consts/reactQuery";
+import {
+  BOOKING_QUERY_KEY,
+  BOOKINGS_BY_CAR_KEY,
+  BOOKINGS_BY_STATUS_KEY,
+  BOOKINGS_BY_USER_KEY,
+  ONE_HOUR,
+  SINGLE_BRANCH_KEY,
+  SINGLE_CAR_KEY,
+} from "@/consts/reactQuery";
 import Loader from "../ui/Loader";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import OrderCardBanner from "./OrderCardBanner";
+import useBookingApi from "@/hooks/api/useBookingApi";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
+import { useSelector } from "react-redux";
 
 interface OrderCardProps {
   order: IBooking;
 }
 
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
-  const { carId, price, paid, pickupSpot, dropOffSpot, dates, status, _id } = order;
+  const { carId, price, paid, pickUpSpot, dropOffSpot, dates, status, _id } = order;
+  const userId = useSelector((store: any) => store.user._id);
   const { getOneCar } = useCarsApi();
   const { getOneBranch } = useBranchApi();
+  const { changeBookingStatus } = useBookingApi();
+  const { errorFunc, successFunc } = useReactQueryUtils();
   const navigate = useNavigate();
-
-  const passedOrder = new Date(dates.to || ``).getTime() < Date.now();
 
   const carResponse = useQuery({
     queryFn: () => getOneCar(carId),
@@ -32,17 +44,29 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   });
 
   const pickUpSpotResponse = useQuery({
-    queryFn: () => getOneBranch(pickupSpot),
-    queryKey: [SINGLE_BRANCH_KEY],
+    queryFn: () => getOneBranch(pickUpSpot),
+    queryKey: [SINGLE_BRANCH_KEY + pickUpSpot],
     staleTime: ONE_HOUR,
-    enabled: !!pickupSpot,
+    enabled: !!pickUpSpot,
   });
 
   const dropOffSpotResponse = useQuery({
     queryFn: () => getOneBranch(dropOffSpot),
-    queryKey: [SINGLE_BRANCH_KEY],
+    queryKey: [SINGLE_BRANCH_KEY + dropOffSpot],
     staleTime: ONE_HOUR,
     enabled: !!dropOffSpot,
+  });
+
+  const changeStatus = useMutation({
+    mutationFn: () => changeBookingStatus(_id || ``),
+    onSuccess: () =>
+      successFunc(`Order cancled!`, [
+        BOOKING_QUERY_KEY,
+        BOOKINGS_BY_STATUS_KEY + `canceled`,
+        BOOKINGS_BY_STATUS_KEY + `active`,
+        BOOKINGS_BY_CAR_KEY + carId,
+        BOOKINGS_BY_USER_KEY + userId,
+      ]),
   });
 
   if (carResponse.isLoading || pickUpSpotResponse.isLoading || dropOffSpotResponse.isLoading)
@@ -81,13 +105,17 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         </div>
         <div className="flex flex-col  justify-center gap-3">
           <Button
-            disabled={passedOrder}
+            disabled={status !== `active`}
             variant="outline"
             onClick={() => navigate(`/cars/rent/${carId}/booking/${_id}`)}
           >
             Edit Order
           </Button>
-          <Button disabled={passedOrder} variant="destructive">
+          <Button
+            disabled={status !== `active`}
+            variant="destructive"
+            onClick={() => changeStatus.mutate()}
+          >
             Cancel Order
           </Button>
         </div>

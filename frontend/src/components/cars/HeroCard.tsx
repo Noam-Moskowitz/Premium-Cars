@@ -21,7 +21,7 @@ const HeroCard: React.FC<HeroCardProps> = ({ img, price, make, model, id }) => {
       </h1>
       <h2 className="md:text-2xl text-primary font-bold">{price}$ Per Day</h2>
       <Button className="text-sm md:text-md" onClick={() => navigate(`/cars/rent/${id}`)}>
-        Rent Now
+        Reserve Now
       </Button>
     </div>
   );
