@@ -10,6 +10,7 @@ import Loader from "../ui/Loader";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import OrderCardBanner from "./OrderCardBanner";
 
 interface OrderCardProps {
   order: IBooking;
@@ -20,6 +21,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const { getOneCar } = useCarsApi();
   const { getOneBranch } = useBranchApi();
   const navigate = useNavigate();
+
+  const passedOrder = new Date(dates.to || ``).getTime() < Date.now();
 
   const carResponse = useQuery({
     queryFn: () => getOneCar(carId),
@@ -47,17 +50,22 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
   return (
     <Card className="flex flex-col lg:flex-row relative">
-      {status === `canceled` && (
-        <div className="w-full bg-destructive text-destructive-foreground absolute top-5 shadow-lg p-1 flex items-center justify-center">
-          <p className="font-bold uppercase">Canceled</p>
-        </div>
-      )}
-      <CardHeader className="flex items-center lg:w-1/2">
+      {status === `canceled` && <OrderCardBanner color="destructive" text="Canceled" />}
+      {passedOrder && <OrderCardBanner color="blue-300" text="passed" />}
+      <CardHeader
+        className={`flex items-center lg:w-1/2 ${
+          (passedOrder || status === `canceled`) && `opacity-45`
+        }`}
+      >
         <img src={carResponse.data?.image} alt="Car" />
         <h2 className="font-bold text-lg">{`${carResponse.data?.make} ${carResponse.data?.model}`}</h2>
         <CardDescription>{carResponse.data?.year}</CardDescription>
       </CardHeader>
-      <CardContent className="lg:w-1/2 flex flex-col items-between justify-around gap-10">
+      <CardContent
+        className={`lg:w-1/2 flex flex-col items-between justify-around gap-10 ${
+          (passedOrder || status === `canceled`) && `opacity-45`
+        }`}
+      >
         <div className="pt-10">
           <h6 className="text-center font-bold text-lg">Price:</h6>
           <h6 className="text-center  font-bold text-2xl text-primary">{paid ? `PAID ` : price}</h6>
@@ -76,10 +84,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           </div>
         </div>
         <div className="flex flex-col  justify-center gap-3">
-          <Button variant="outline" onClick={() => navigate(`/cars/rent/${carId}/booking/${_id}`)}>
+          <Button
+            disabled={passedOrder}
+            variant="outline"
+            onClick={() => navigate(`/cars/rent/${carId}/booking/${_id}`)}
+          >
             Edit Order
           </Button>
-          <Button variant="destructive">Cancel Order</Button>
+          <Button disabled={passedOrder} variant="destructive">
+            Cancel Order
+          </Button>
         </div>
       </CardContent>
     </Card>
