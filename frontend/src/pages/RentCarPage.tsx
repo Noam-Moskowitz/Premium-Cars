@@ -5,7 +5,7 @@ import "animate.css";
 import useCheckToken from "@/hooks/useCheckToken";
 import { useParams } from "react-router-dom";
 import useCarsApi from "@/hooks/api/useCarsApi";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   BOOKING_QUERY_KEY,
   BOOKINGS_BY_CAR_KEY,
@@ -19,13 +19,14 @@ import useBookingApi from "@/hooks/api/useBookingApi";
 import { IBooking } from "@/interfaces/booking";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 
 const RentCarPage = () => {
   const { checkPermissions } = useCheckToken();
   const { id, bookingId } = useParams();
   const { getOneCar } = useCarsApi();
   const { getOneBooking, addBooking, updateBooking } = useBookingApi();
-  const queryClient = useQueryClient();
+  const { errorFunc, successFunc } = useReactQueryUtils();
   const userId = useSelector((store: any) => store.user._id);
 
   const carResponse = useQuery({
@@ -42,28 +43,32 @@ const RentCarPage = () => {
     enabled: !!bookingId,
   });
 
-  const successFunc = () => {
-    toast.success(`Booking saved!`);
-    queryClient.invalidateQueries({ queryKey: [SINGLE_BOOKING_KEY + bookingId] });
-    queryClient.invalidateQueries({ queryKey: [BOOKING_QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [BOOKINGS_BY_CAR_KEY + id] });
-    queryClient.invalidateQueries({ queryKey: [BOOKINGS_BY_USER_KEY + userId] });
-  };
-
   const errFunc = (err: any) => {
     toast.error(`Booking failed!`, { description: err.message });
   };
 
   const createNewBooking = useMutation({
     mutationFn: (bookingInfo: IBooking) => addBooking(bookingInfo),
-    onSuccess: successFunc,
-    onError: errFunc,
+    onSuccess: () =>
+      successFunc(`Booking saved!`, [
+        SINGLE_BOOKING_KEY + bookingId,
+        BOOKING_QUERY_KEY,
+        BOOKINGS_BY_CAR_KEY + id,
+        BOOKINGS_BY_USER_KEY + userId,
+      ]),
+    onError: errorFunc,
   });
 
   const editBooking = useMutation({
     mutationFn: (bookingInfo: IBooking) => updateBooking(bookingId || ``, bookingInfo),
-    onSuccess: successFunc,
-    onError: errFunc,
+    onSuccess: () =>
+      successFunc(`Booking updated!`, [
+        SINGLE_BOOKING_KEY + bookingId,
+        BOOKING_QUERY_KEY,
+        BOOKINGS_BY_CAR_KEY + id,
+        BOOKINGS_BY_USER_KEY + userId,
+      ]),
+    onError: errorFunc,
   });
 
   const handleSubmit = (bookingInfo: IBooking) => {

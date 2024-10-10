@@ -1,18 +1,23 @@
 import BranchForm from "@/components/forms/BranchForm";
-import { BRANCH_NAMES_QUERY_KEY, BRANCH_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import {
+  BRANCH_NAMES_QUERY_KEY,
+  BRANCH_QUERY_KEY,
+  ONE_HOUR,
+  SINGLE_BRANCH_KEY,
+} from "@/consts/reactQuery";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { IBranch } from "@/interfaces/branch";
 import { cleanUpBranch } from "@/utils/branch";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+import { useParams } from "react-router-dom";
 
 const BranchFormPage = () => {
   const { addBranch, updateBranch, getOneBranch } = useBranchApi();
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const { errorFunc, successFunc } = useReactQueryUtils();
+
   const { id } = useParams();
 
   const { data, error, isLoading, isError } = useQuery({
@@ -22,30 +27,26 @@ const BranchFormPage = () => {
     enabled: !!id,
   });
 
-  const successFunc = () => {
-    toast.success(`Branch saved succesfully!`);
-    queryClient.invalidateQueries({ queryKey: [BRANCH_QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [BRANCH_NAMES_QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [[`branch-${id}`]] });
-    navigate(`/branches`);
-  };
-
-  const errorFunc = (err: any) => {
-    toast.error(`Oops, something went wrong!`, {
-      description: err.response.data.message.message || err.response.data.message,
-    });
-  };
-
   const createBranch = useMutation({
     mutationFn: addBranch,
-    onSuccess: successFunc,
+    onSuccess: () =>
+      successFunc(
+        `Branch created succesfully!`,
+        [BRANCH_NAMES_QUERY_KEY, BRANCH_QUERY_KEY, SINGLE_BRANCH_KEY + id],
+        `/branches`
+      ),
     onError: errorFunc,
   });
 
   const editBranch = useMutation({
     mutationFn: ({ id, branchDetails }: { id: string; branchDetails: IBranch }) =>
       updateBranch(branchDetails, id),
-    onSuccess: successFunc,
+    onSuccess: () =>
+      successFunc(
+        `Branch updated succesfully!`,
+        [BRANCH_NAMES_QUERY_KEY, BRANCH_QUERY_KEY, SINGLE_BRANCH_KEY + id],
+        `/branches`
+      ),
     onError: errorFunc,
   });
 

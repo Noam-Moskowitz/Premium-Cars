@@ -1,51 +1,35 @@
-import CarDetails from "@/components/cars/CarDetails";
 import CarForm from "@/components/forms/CarForm";
 import Loader from "@/components/ui/Loader";
-import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import { CAR_QUERY_KEY, ONE_HOUR, SINGLE_CAR_KEY } from "@/consts/reactQuery";
 import useCarsApi from "@/hooks/api/useCarsApi";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 import { ICar } from "@/interfaces/car";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const CarFormPage = () => {
   const { addCar, updateCar, getOneCar } = useCarsApi();
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const { errorFunc, successFunc } = useReactQueryUtils();
   const { id } = useParams();
 
   const { data, error, isLoading, isError } = useQuery({
-    queryKey: [`car-${id}`],
+    queryKey: [SINGLE_CAR_KEY + id],
     queryFn: () => getOneCar(id || ``),
     staleTime: ONE_HOUR,
     enabled: !!id,
   });
 
-  console.log(`loading`, isLoading);
-
-  const successFunc = () => {
-    toast.success(`Car saved succesfully!`);
-    queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
-    queryClient.invalidateQueries({ queryKey: [[`car-${id}`]] });
-    navigate(`/cars`);
-  };
-
-  const errorFunc = (err: any) => {
-    toast.error(`Oops, something went wrong!`, {
-      description: err.response.data.message.message || err.response.data.message,
-    });
-  };
-
   const addNewCar = useMutation({
     mutationFn: addCar,
-    onSuccess: successFunc,
+    onSuccess: () =>
+      successFunc(`Car created succesfully!`, [CAR_QUERY_KEY, SINGLE_CAR_KEY + id], `/cars`),
     onError: errorFunc,
   });
 
   const editCar = useMutation({
     mutationFn: ({ id, carDetails }: { id: string; carDetails: ICar }) => updateCar(id, carDetails),
-    onSuccess: successFunc,
+    onSuccess: () =>
+      successFunc(`Car updated succesfully!`, [CAR_QUERY_KEY, SINGLE_CAR_KEY + id], `/cars`),
     onError: errorFunc,
   });
 

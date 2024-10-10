@@ -4,15 +4,15 @@ import Loader from "@/components/ui/Loader";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import useCarsApi from "@/hooks/api/useCarsApi";
 import useCheckToken from "@/hooks/useCheckToken";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 const CarsPage = () => {
   const { checkPermissions } = useCheckToken();
   const { getAllCars, deleteCar } = useCarsApi();
-  const queryClient = useQueryClient();
+  const { errorFunc, successFunc } = useReactQueryUtils();
   const navigate = useNavigate();
 
   const { data, error, isError, isLoading } = useQuery({
@@ -23,14 +23,8 @@ const CarsPage = () => {
 
   const removeCar = useMutation({
     mutationFn: (id: string) => deleteCar(id),
-    onSuccess: () => {
-      toast.success(`Car removed succesfully!`);
-      queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
-    },
-    onError: (e: any) =>
-      toast.error(`Oops, something went wrong!`, {
-        description: e.response.data,
-      }),
+    onSuccess: () => successFunc(`Car removed succesfully!`, [CAR_QUERY_KEY]),
+    onError: errorFunc,
   });
 
   useEffect(() => {

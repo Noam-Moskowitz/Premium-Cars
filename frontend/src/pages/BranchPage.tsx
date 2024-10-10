@@ -1,18 +1,18 @@
 import { BranchColumns } from "@/components/tables/columns/BranchColumns";
 import { DataTable } from "@/components/tables/DataTable";
 import Loader from "@/components/ui/Loader";
-import { BRANCH_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import { BRANCH_NAMES_QUERY_KEY, BRANCH_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import useCheckToken from "@/hooks/useCheckToken";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 const BranchPage = () => {
   const { checkPermissions } = useCheckToken();
   const { getAllBranches, deleteBranch } = useBranchApi();
-  const queryClient = useQueryClient();
+  const { errorFunc, successFunc } = useReactQueryUtils();
   const navigate = useNavigate();
 
   const { data, error, isError, isLoading } = useQuery({
@@ -23,14 +23,9 @@ const BranchPage = () => {
 
   const removeCar = useMutation({
     mutationFn: (id: string) => deleteBranch(id),
-    onSuccess: () => {
-      toast.success(`Branch removed succesfully!`);
-      queryClient.invalidateQueries({ queryKey: [BRANCH_QUERY_KEY] });
-    },
-    onError: (e: any) =>
-      toast.error(`Oops, something went wrong!`, {
-        description: e.response.data,
-      }),
+    onSuccess: () =>
+      successFunc(`Branch removed succesfully!`, [BRANCH_QUERY_KEY, BRANCH_NAMES_QUERY_KEY]),
+    onError: errorFunc,
   });
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import OrderCard from "@/components/orders/OrderCard";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "animate.css";
 import useCheckToken from "@/hooks/useCheckToken";
 import { useSelector } from "react-redux";
