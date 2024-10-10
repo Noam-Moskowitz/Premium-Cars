@@ -7,3 +7,5 @@ export const determineNavRoute = (route: string) => {
 
   return cleanedRoute;
 };
+
+export const isValidObjectId = (value: string) => /^[a-f\d]{24}$/i.test(value);

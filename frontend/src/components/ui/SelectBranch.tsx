@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { useQuery } from "@tanstack/react-query";
 import useBranchApi from "@/hooks/api/useBranchApi";
-import { BRANCH_NAMES_QUERY_KEY } from "@/consts/reactQuery";
+import { BRANCH_NAMES_QUERY_KEY, ONE_HOUR, SINGLE_BRANCH_KEY } from "@/consts/reactQuery";
 import FavortieIcon from "./FavortieIcon";
 import { IBranchNames } from "@/interfaces/branch";
 import { useSelector } from "react-redux";
 import { Skeleton } from "./skeleton";
+import { isValidObjectId } from "@/utils/utls";
 
 interface SelectBranchProps {
   handleChange: () => void;
@@ -15,10 +16,19 @@ interface SelectBranchProps {
 
 const SelectBranch: React.FC<SelectBranchProps> = ({ handleChange, value }) => {
   const userId = useSelector((store: any) => store.user._id);
-  const { getAllBranchNames } = useBranchApi();
+  const { getAllBranchNames, getOneBranch } = useBranchApi();
+
   const { data, error, isError, isLoading } = useQuery({
     queryFn: getAllBranchNames,
     queryKey: [BRANCH_NAMES_QUERY_KEY],
+    staleTime: ONE_HOUR,
+  });
+
+  const oneBranchResponse = useQuery({
+    queryFn: () => getOneBranch(value),
+    queryKey: [SINGLE_BRANCH_KEY + value],
+    staleTime: ONE_HOUR,
+    enabled: !!isValidObjectId(value),
   });
 
   const [branches, setBranches] = useState<IBranchNames[]>([]);
@@ -35,7 +45,7 @@ const SelectBranch: React.FC<SelectBranchProps> = ({ handleChange, value }) => {
   return (
     <Select onValueChange={handleChange}>
       <SelectTrigger>
-        <SelectValue placeholder={value || "Select a branch"} />
+        <SelectValue placeholder={oneBranchResponse.data?.name || value || "Select a branch"} />
       </SelectTrigger>
       <SelectContent>
         {branches?.map(({ name, _id, favorites }) => (
