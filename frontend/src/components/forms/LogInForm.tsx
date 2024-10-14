@@ -22,7 +22,12 @@ const formSchema = z.object({
     .regex(/[\W_]/, "Password must contain at least one special character"),
 });
 
-const LogInForm = () => {
+interface LogInFormProps {
+  selectedEmail: string | null;
+  handleClick?: () => void;
+}
+
+const LogInForm: React.FC<LogInFormProps> = ({ selectedEmail, handleClick }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { logIn } = useUserApi();
@@ -30,14 +35,26 @@ const LogInForm = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: selectedEmail || "",
       password: "",
     },
   });
+
+  const addToSavedUserList = (email: string) => {
+    const usersList = localStorage.getItem("users");
+
+    if (!usersList) return localStorage.setItem("users", JSON.stringify([email]));
+    if (usersList.includes(email)) return;
+
+    const updatedUsers = [...JSON.parse(usersList), email];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+  };
+
   const onSubmit = (data: any) => {
     logIn(data)
       .then((res) => {
         toast.success(`Log in succesful`);
+        addToSavedUserList(data.email);
         dispatch(saveUser(res));
         navigate(`/`);
       })
@@ -46,29 +63,37 @@ const LogInForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md w-96 mt-5 animate__animated animate__fadeIn"
-      >
-        <h1 className="text-primary text-center font-bold text-3xl uppercase">log in</h1>
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" flex flex-col gap-5 ">
         {/* Email Field */}
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-primary font-bold">Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  {...field}
-                  className="border-0 p-2 w-full"
-                  placeholder="example@email.com"
-                />
-              </FormControl>
-              <FormMessage className="text-primary" />
-            </FormItem>
-          )}
+          render={({ field }) =>
+            selectedEmail ? (
+              <div className="flex flex-col items-center pt-5">
+                <h3 className="text-primary text-left w-full">signing into:</h3>
+                <p className="text-center font-bold bg-background w-full rounded py-2 cursor-not-allowed">
+                  {selectedEmail}
+                </p>
+                <Button variant="link" className="px-0 mt-4 m-auto" onClick={handleClick}>
+                  Use a different account
+                </Button>
+              </div>
+            ) : (
+              <FormItem>
+                <FormLabel className="text-primary font-bold">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    {...field}
+                    className="border-0 p-2 w-full"
+                    placeholder="example@email.com"
+                  />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )
+          }
         />
 
         {/* Password Field */}
@@ -88,13 +113,12 @@ const LogInForm = () => {
 
         {/* Submit Button */}
         <Button type="submit">Login</Button>
-        <div className="flex justify-between text-primary underline">
-          <p className="cursor-pointer">Forgot Password</p>
-          <p className="cursor-pointer" onClick={() => navigate(`/user/register`)}>
-            Register
-          </p>
-        </div>
       </form>
+      {!selectedEmail && (
+        <Button variant="link" className="px-0 mt-4" onClick={handleClick}>
+          Use a saved account
+        </Button>
+      )}
     </Form>
   );
 };
