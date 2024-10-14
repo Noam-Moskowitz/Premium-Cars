@@ -3,6 +3,7 @@ import LogInForm from "../forms/LogInForm";
 import UserContainer from "./UserContainer";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
+import { deleteUser, retrieveUsers } from "@/utils/localStorage";
 
 const LoginContainer = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const LoginContainer = () => {
   const [openForm, setOpenForm] = useState(true);
 
   const getUsers = (): void => {
-    const userList: string | null = localStorage.getItem("users");
+    const userList = retrieveUsers();
 
     if (!userList) return;
 
@@ -28,6 +29,16 @@ const LoginContainer = () => {
   const handleManualSignIn = () => {
     setSelectedUser(null);
     setOpenForm(true);
+  };
+
+  const handleDeleteUser = (index: number) => {
+    const updatedUsers = deleteUser(index);
+    if (!updatedUsers) {
+      setOpenForm(true);
+      setUsers([]);
+    } else {
+      setUsers(updatedUsers);
+    }
   };
 
   useEffect(() => {
@@ -51,6 +62,7 @@ const LoginContainer = () => {
                   key={i}
                   email={account}
                   handleClick={() => handleSelectedUser(account)}
+                  handleDelete={() => handleDeleteUser(i)}
                 />
               ))
             )}

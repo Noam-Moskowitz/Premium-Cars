@@ -11,6 +11,7 @@ import useUserApi from "@/hooks/api/useUserApi";
 import { toast } from "sonner";
 import { saveUser } from "@/store/userSlice";
 import { useDispatch } from "react-redux";
+import { addToSavedUsers } from "@/utils/localStorage";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -40,21 +41,11 @@ const LogInForm: React.FC<LogInFormProps> = ({ selectedEmail, handleClick }) => 
     },
   });
 
-  const addToSavedUserList = (email: string) => {
-    const usersList = localStorage.getItem("users");
-
-    if (!usersList) return localStorage.setItem("users", JSON.stringify([email]));
-    if (usersList.includes(email)) return;
-
-    const updatedUsers = [...JSON.parse(usersList), email];
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-  };
-
   const onSubmit = (data: any) => {
     logIn(data)
       .then((res) => {
         toast.success(`Log in succesful`);
-        addToSavedUserList(data.email);
+        addToSavedUsers(data.email);
         dispatch(saveUser(res));
         navigate(`/`);
       })
