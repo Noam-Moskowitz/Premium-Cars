@@ -10,9 +10,9 @@ import { IBranch } from "@/interfaces/branch";
 import { cleanUpBranch } from "@/utils/branch";
 import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
-import React from "react";
 import { useParams } from "react-router-dom";
+import ErrorComponent from "@/components/ui/ErrorComponent";
+import Loader from "@/components/ui/Loader";
 
 const BranchFormPage = () => {
   const { addBranch, updateBranch, getOneBranch } = useBranchApi();
@@ -22,7 +22,7 @@ const BranchFormPage = () => {
 
   const { data, error, isLoading, isError } = useQuery({
     queryKey: [`branch-${id}`],
-    queryFn: () => getOneBranch(id || ``),
+    queryFn: () => getOneBranch(``),
     staleTime: ONE_HOUR,
     enabled: !!id,
   });
@@ -60,6 +60,7 @@ const BranchFormPage = () => {
   };
 
   if (isLoading && id) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error.message} />;
 
   return (
     <div className="size-full flex items-center justify-center p-10">

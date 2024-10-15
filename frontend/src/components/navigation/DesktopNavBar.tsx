@@ -46,11 +46,11 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
         </div>
       </div>
       <div className="flex items-center px-5 gap-5">
-        <div className="relative">
-          <Switch
-            checked={theme == `dark` ? true : false}
-            onClick={() => setTheme(theme == `light` ? `dark` : `light`)}
-          />
+        <div
+          className="relative cursor-pointer"
+          onClick={() => setTheme(theme == `light` ? `dark` : `light`)}
+        >
+          <Switch checked={theme == `dark` ? true : false} />
           {theme == `dark` ? (
             <FiSun
               size={20}

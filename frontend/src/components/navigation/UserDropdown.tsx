@@ -19,16 +19,20 @@ import { removeUser } from "@/store/userSlice";
 
 const UserDropdown = () => {
   const navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
-  const userInfo=useSelector((state:any)=>state.user._id)
-  
+  const userInfo = useSelector((state: any) => state.user);
+  console.log(userInfo);
 
   const signedInMenu = [
     { label: `Profile`, icon: <HiOutlineUser size={18} /> },
-    { label: `Log Out`, icon: <HiMiniArrowLeftStartOnRectangle size={18} />, action:()=>{
-      
-      dispatch(removeUser(`logOut`))} },
+    {
+      label: `Log Out`,
+      icon: <HiMiniArrowLeftStartOnRectangle size={18} />,
+      action: () => {
+        dispatch(removeUser(`logOut`));
+      },
+    },
   ];
   const signedOutMenu = [
     {
@@ -42,17 +46,27 @@ const UserDropdown = () => {
       action: () => navigate("user/register"),
     },
   ];
-  const [dropdownMenuContent, setDropdownMenuContent] = useState<IDropDown[]>(userInfo?._id ? signedInMenu : signedOutMenu);
+  const [dropdownMenuContent, setDropdownMenuContent] = useState<IDropDown[]>(
+    userInfo?._id ? signedInMenu : signedOutMenu
+  );
 
-  useEffect(()=>{
-      setDropdownMenuContent(userInfo?signedInMenu:signedOutMenu)
-  },[userInfo])
-  
+  useEffect(() => {
+    setDropdownMenuContent(userInfo._id ? signedInMenu : signedOutMenu);
+  }, [userInfo]);
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="border-2 border-secondary p-2 rounded-full cursor-pointer">
-        <FiUser size={18} className="text-primary-foreground" />
+      <DropdownMenuTrigger className="border-2 border-secondary p-2 hover:bg-secondary group rounded-full cursor-pointer transition-all duration-300">
+        {userInfo.first ? (
+          <div className="font-bold text-primary-foreground group-hover:text-primary">{`${userInfo.first.charAt(
+            0
+          )}${userInfo.last.charAt(0)}`}</div>
+        ) : (
+          <FiUser
+            size={18}
+            className="text-primary-foreground group-hover:text-secondary-foreground group-hover:scale-125 transition-all duration-300"
+          />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
