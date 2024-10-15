@@ -76,17 +76,17 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     <Card className="flex flex-col lg:flex-row relative">
       {status === `canceled` && <OrderCardBanner color="destructive" text="Canceled" />}
       {status === `passed` && <OrderCardBanner color="info" text="passed" />}
-      <CardHeader className={`flex items-center lg:w-1/2 ${status !== `active` && `opacity-45`}`}>
+      <CardHeader className={`flex items-center lg:w-1/2 ${status !== `active` && `opacity-45`} `}>
         <img src={carResponse.data?.image} alt="Car" />
         <h2 className="font-bold text-lg">{`${carResponse.data?.make} ${carResponse.data?.model}`}</h2>
         <CardDescription>{carResponse.data?.year}</CardDescription>
       </CardHeader>
       <CardContent
-        className={`lg:w-1/2 flex flex-col items-between justify-around gap-10 ${
+        className={`lg:w-1/2 flex flex-col items-between md:justify-around gap-2 md:gap-10  ${
           status !== `active` && `opacity-45`
         }`}
       >
-        <div className="pt-10">
+        <div className="md:pt-10">
           <h6 className="text-center font-bold text-lg">Price:</h6>
           <h6 className="text-center  font-bold text-2xl text-primary">{paid ? `PAID ` : price}</h6>
         </div>

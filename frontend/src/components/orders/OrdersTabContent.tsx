@@ -25,9 +25,9 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status, title }) =>
   if (isLoading) return <Loader size="large" />;
 
   return (
-    <div className="bg-secondary rounded shadow-md ">
+    <div className="bg-secondary rounded shadow-md overflow-hidden">
       <h1 className="text-3xl font-bold p-5">{title}</h1>
-      <div className="flex flex-col m-auto w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
+      <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
         {data?.length === 0 && (
           <div className="size-full flex items-center justify-center p-5">
             <h1>No orders found!</h1>

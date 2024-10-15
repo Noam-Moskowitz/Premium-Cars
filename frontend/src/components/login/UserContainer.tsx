@@ -14,11 +14,11 @@ const UserContainer: React.FC<UserContainerProps> = ({ email, handleClick, handl
 
   return (
     <div
-      className="w-full  flex items-center justify-start gap-6 bg-background p-4 rounded shadow cursor-pointer hover:opacity-75 font-bold flex-wrap relative"
+      className="w-full  flex items-center justify-start gap-1 md:gap-6 bg-background p-4 rounded shadow cursor-pointer hover:opacity-75 font-bold flex-wrap relative"
       onClick={handleClick}
     >
       <TbUserSquare size={23} />
-      <p>{email}</p>
+      <p className="text-sm">{email}</p>
       <div
         className="absolute right-2 h-full flex items-center text-primary"
         onClick={(e) => {

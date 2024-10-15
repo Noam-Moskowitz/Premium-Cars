@@ -5,6 +5,7 @@ export const navBarArray = [
 ];
 export const adminNavBarArray = [
   { label: `Home`, navTo: `/` },
+  { label: `My Orders`, navTo: `/my-orders` },
   { label: `Cars`, navTo: `/cars` },
   { label: `Branches`, navTo: `/branches` },
   { label: `About`, navTo: `/` },

@@ -33,7 +33,7 @@ const CarsPage = () => {
 
   if (isLoading) return <Loader size="large" />;
   return (
-    <div className="w-full h-[100vh] p-10">
+    <div className="w-full min-h-[100vh] p-10">
       <DataTable
         columns={carColumns}
         data={data || []}

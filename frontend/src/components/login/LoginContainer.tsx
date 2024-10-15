@@ -46,11 +46,11 @@ const LoginContainer = () => {
   }, []);
 
   return (
-    <div className="bg-accent p-10 rounded-md shadow-md w-96 mt-5 animate__animated animate__fadeIn">
+    <div className="bg-accent  p-10 rounded-md shadow-md md:w-96 mt-5 animate__animated animate__fadeIn">
       <h1 className="text-primary text-center font-bold text-3xl uppercase">log in</h1>
       {!openForm && (
         <>
-          <h3 className="pt-4">Select your account</h3>
+          <h3 className="pt-4 text-sm md:text-md">Select your account</h3>
           <div className="flex flex-col gap-2 items-center max-h-36  overflow-x-hidden scroll-bar">
             {users.length === 0 ? (
               <h2 className="p-4 bg-background w-full text-center rounded shadow">

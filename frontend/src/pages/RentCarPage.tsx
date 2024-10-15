@@ -9,6 +9,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   BOOKING_QUERY_KEY,
   BOOKINGS_BY_CAR_KEY,
+  BOOKINGS_BY_STATUS_KEY,
   BOOKINGS_BY_USER_KEY,
   ONE_HOUR,
   SINGLE_BOOKING_KEY,
@@ -55,6 +56,8 @@ const RentCarPage = () => {
         BOOKING_QUERY_KEY,
         BOOKINGS_BY_CAR_KEY + id,
         BOOKINGS_BY_USER_KEY + userId,
+        BOOKINGS_BY_STATUS_KEY + `canceled`,
+        BOOKINGS_BY_STATUS_KEY + `active`,
       ]),
     onError: errorFunc,
   });

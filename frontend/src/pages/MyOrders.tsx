@@ -54,7 +54,7 @@ const MyOrders = () => {
   if (isLoading) return <Loader size="large" />;
 
   return (
-    <div className="size-full p-10">
+    <div className="size-full p-5 md:p-10">
       <Tabs defaultValue="activeOrders" className="flex flex-col items-center">
         <TabsList className="w-fit">
           {tabs.headers.map(({ name, value }, i) => (

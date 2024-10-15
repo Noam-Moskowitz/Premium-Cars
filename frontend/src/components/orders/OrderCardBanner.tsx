@@ -8,7 +8,7 @@ interface OrderCardBannerProps {
 const OrderCardBanner: React.FC<OrderCardBannerProps> = ({ color, text }) => {
   return (
     <div
-      className={`w-full bg-${color} text-destructive-foreground absolute top-5 shadow-lg p-1 flex items-center justify-center`}
+      className={`w-full bg-${color}  text-destructive-foreground absolute top-5 shadow-lg p-1 flex items-center justify-center`}
     >
       <p className="font-bold uppercase">{text}</p>
     </div>

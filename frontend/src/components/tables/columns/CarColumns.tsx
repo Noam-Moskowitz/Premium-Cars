@@ -40,7 +40,7 @@ export const carColumns: ColumnDef<ICar>[] = [
 
   {
     accessorKey: "make",
-    id: `name`,
+    id: `make`,
     header: ({ column }) => {
       return (
         <Button
@@ -57,6 +57,7 @@ export const carColumns: ColumnDef<ICar>[] = [
   {
     accessorKey: "model",
     header: "Model",
+    id: `name`,
   },
   {
     accessorKey: "year",

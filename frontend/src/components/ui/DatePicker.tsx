@@ -77,11 +77,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           toDate.getTime() > Date.now() &&
           fromDate.getTime() !==
             new Date(existingBookingResponse.data?.dates?.from || ``).getTime() &&
-          toDate.getTime() !== new Date(existingBookingResponse.data?.dates?.to || ``).getTime()
+          toDate.getTime() !== new Date(existingBookingResponse.data?.dates?.to || ``).getTime() &&
+          booking.status === "active"
         );
       })
       .map((booking) => booking.dates);
-
     setBookedDates(carsBookedDates);
   }, [bookingsPerCar.data, existingBookingResponse.data]);
 
