@@ -22,7 +22,7 @@ const BranchFormPage = () => {
 
   const { data, error, isLoading, isError } = useQuery({
     queryKey: [`branch-${id}`],
-    queryFn: () => getOneBranch(``),
+    queryFn: () => getOneBranch(id || ``),
     staleTime: ONE_HOUR,
     enabled: !!id,
   });
