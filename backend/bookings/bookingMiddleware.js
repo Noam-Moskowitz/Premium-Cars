@@ -59,6 +59,6 @@ export const checkIfBookingPassed = async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.statu(500).send({ message: err });
+    res.status(500).send({ message: err });
   }
 };

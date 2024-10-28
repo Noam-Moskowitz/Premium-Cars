@@ -9,6 +9,7 @@ import PasswordInput from "../ui/PasswordInput";
 import useUserApi from "@/hooks/api/useUserApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Checkbox } from "../ui/checkbox";
 
 const formSchema = z
   .object({
@@ -23,6 +24,7 @@ const formSchema = z
       .regex(/\d/, "Password must contain at least one number")
       .regex(/[\W_]/, "Password must contain at least one special character"),
     confirmPassword: z.string(),
+    isAdmin: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",
@@ -43,6 +45,7 @@ const RegisterForm = () => {
       phone: "",
       password: "",
       confirmPassword: "",
+      isAdmin: false,
     },
   });
 
@@ -178,6 +181,24 @@ const RegisterForm = () => {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="isAdmin"
+          render={({ field }) => (
+            <FormItem className="w-full flex items-end gap-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(value) => field.onChange(value)}
+                />
+              </FormControl>
+              <FormLabel className="text-primary font-bold">
+                Admin Account <span className="font-normal">(For project purposes)</span>
+              </FormLabel>
+              <FormMessage className="text-primary" />
+            </FormItem>
+          )}
+        />
 
         {/* Submit Button */}
         <Button type="submit">Register</Button>

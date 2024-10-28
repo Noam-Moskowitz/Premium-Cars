@@ -44,6 +44,7 @@ export const userValidation = Joi.object({
   lastName: Joi.string().min(1).max(40).required(),
   email: Joi.string().email().min(5).max(50).required(),
   phone: Joi.string().min(10).max(15).required(),
+  isAdmin: Joi.boolean(),
   password: Joi.string()
     .pattern(new RegExp("(?=.*[a-z])"), "lowercase letter", {
       "string.pattern.name": "Password must contain at least one lowercase letter.",

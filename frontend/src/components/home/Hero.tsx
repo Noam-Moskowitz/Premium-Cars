@@ -1,6 +1,6 @@
 import React from "react";
-import GenericCarousel from "./ui/GenericCarousel";
 import { ICar } from "@/interfaces/car";
+import GenericCarousel from "../ui/GenericCarousel";
 
 interface HeroProps {
   handleClick: () => void;
