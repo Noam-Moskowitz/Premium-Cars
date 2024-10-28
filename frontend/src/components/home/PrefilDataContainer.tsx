@@ -5,9 +5,11 @@ import { BsShop } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { Card, CardTitle } from "../ui/card";
 import { useNavigate } from "react-router-dom";
+import useLoadSampleData from "@/hooks/useLoadSampleData";
 
 const PrefilDataContainer = () => {
   const navigate = useNavigate();
+  const { loadSampleData } = useLoadSampleData();
 
   const sampleDataCards = [
     {
@@ -43,7 +45,9 @@ const PrefilDataContainer = () => {
       </div>
       <h2 className="font-bold">Would you like to load sample data?</h2>
       <div className="flex gap-5">
-        <Button className="hover:opacity-75">Yes, load sample data</Button>
+        <Button className="hover:opacity-75" onClick={loadSampleData}>
+          Yes, load sample data
+        </Button>
         <Button variant="outline" onClick={() => navigate(`/user/register`)}>
           No, I’ll add data manually
         </Button>

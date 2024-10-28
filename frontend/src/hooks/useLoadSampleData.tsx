@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import useCarsApi from "./api/useCarsApi";
 import useBranchApi from "./api/useBranchApi";
 import useUserApi from "./api/useUserApi";
-import { ICar } from "@/interfaces/car";
-import { IUser } from "@/interfaces/user";
-import { IBranch } from "@/interfaces/branch";
+
 import { carsArray } from "@/consts/sample data/cars";
 import { branchArray } from "@/consts/sample data/branches";
 import { usersArray } from "@/consts/sample data/users";
@@ -46,10 +44,12 @@ const useLoadSampleData = () => {
   ];
 
   const loadSampleData = async () => {
+    console.log(`a`);
+
     sampleDataHandlers.forEach(async ({ data, postFunction, setLoader, setSuccessFlag }) => {
       try {
         setLoader(true);
-        postFunction(data);
+        await postFunction(data);
         setSuccessFlag(true);
       } catch (error) {
         return setError(error);
@@ -59,7 +59,16 @@ const useLoadSampleData = () => {
     });
   };
 
-  return {};
+  return {
+    loadSampleData,
+    usersCreatedSuccessfully,
+    usersLoading,
+    carsCreatedSuccessfully,
+    carsLoading,
+    branchesCreatedSuccessfully,
+    branchesLoading,
+    error,
+  };
 };
 
 export default useLoadSampleData;
