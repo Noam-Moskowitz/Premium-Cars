@@ -1,6 +1,20 @@
 import { Branch } from "./BranchModel.js";
 
 export default class BranchServices {
+  static async addManyBranches(branchArray) {
+    const createdBranches = [];
+    try {
+      branchArray.forEach(async (branch) => {
+        await Branch.create(branch);
+        createdBranches.push(branch);
+      });
+
+      return createdBranches;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async addBranch(branchInfo) {
     try {
       const branch = await Branch.create(branchInfo);

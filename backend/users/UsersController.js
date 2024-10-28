@@ -27,6 +27,18 @@ export class UsersController {
     }
   }
 
+  static async addManyUsers(req, res) {
+    const userArr = req.body;
+
+    try {
+      const users = UserServices.addManyUsers(userArr);
+
+      res.send(users);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+
   static async addUser(req, res) {
     const user = {
       ...req.body,

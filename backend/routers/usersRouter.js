@@ -6,6 +6,7 @@ import { checkIfAdmin, checkIfUserOrAdmin, validateToken } from "../token/tokenM
 const router = express.Router();
 
 router.post(`/login`, validateLoginCredentials, UsersController.logIn);
+router.post(`/many`, UsersController.addManyUsers);
 router.get(`/`, checkIfAdmin, UsersController.getAllUsers);
 router.get(`/:id`, checkIfUserOrAdmin, UsersController.getUser);
 router.post(`/`, validateNewUserDetails, UsersController.addUser);

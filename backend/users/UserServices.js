@@ -1,6 +1,20 @@
 import { User } from "./UserModel.js";
 
 export class UserServices {
+  static async addManyUsers(userArray) {
+    const createdUsers = [];
+    try {
+      userArray.forEach(async (user) => {
+        await User.create(user);
+        createdUsers.push(user);
+      });
+
+      return createdUsers;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async addUser(user) {
     try {
       const newUser = await User.create(user);

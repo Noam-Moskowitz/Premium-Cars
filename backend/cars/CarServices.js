@@ -31,6 +31,20 @@ export class CarServices {
     }
   }
 
+  static async addManyCars(carsArray) {
+    const createdCars = [];
+    try {
+      carsArray.forEach(async (car) => {
+        await Car.create(car);
+        createdCars.push(car);
+      });
+
+      return createdCars;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async updateCar(carId, carInfo) {
     try {
       const updatedCar = Car.findByIdAndUpdate(carId, carInfo, { new: true });

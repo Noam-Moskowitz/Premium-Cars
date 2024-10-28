@@ -37,6 +37,18 @@ export class CarController {
     }
   }
 
+  static async addManyCars(req, res) {
+    const carArray = req.body;
+
+    try {
+      const newCars = await CarServices.addManyCars(carArray);
+
+      res.send(newCars);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+
   static async updateCar(req, res) {
     const { id } = req.params;
     const newCarDetails = req.body;

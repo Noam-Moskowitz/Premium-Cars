@@ -12,6 +12,8 @@ router.get(`/one/:id`, BranchController.getOneBranch);
 
 router.post(`/`, validateBranch, BranchController.addBranch);
 
+router.post(`/many`, BranchController.addManyBranches);
+
 router.put(`/:id`, validateBranch, BranchController.editBranch);
 
 router.delete(`/:id`, BranchController.deleteBranch);

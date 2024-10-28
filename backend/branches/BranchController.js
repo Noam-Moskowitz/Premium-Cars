@@ -1,6 +1,17 @@
 import BranchServices from "./BranchServices.js";
 
 export default class BranchController {
+  static async addManyBranches(req, res) {
+    const branchArr = req.body;
+
+    try {
+      const branches = await BranchServices.addManyBranches(branchArr);
+
+      res.send(branches);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
   static async addBranch(req, res) {
     const branchInfo = req.body;
 
