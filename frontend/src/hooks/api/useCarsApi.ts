@@ -11,6 +11,8 @@ const useCarsApi = () => {
 
   const addCar = (carDetails: ICar) => sendData<ICar>(CARS_ENDPOINT, carDetails);
 
+  const addManyCars = (carArray: ICar[]) => sendData<ICar>(CARS_ENDPOINT + `/many`, carArray);
+
   const updateCar = (id: string, carDetails: ICar) =>
     updateItem<ICar>(`${CARS_ENDPOINT}/${id}`, carDetails);
 
@@ -22,6 +24,7 @@ const useCarsApi = () => {
     deleteCar,
     getOneCar,
     updateCar,
+    addManyCars,
   };
 };
 

@@ -10,9 +10,12 @@ const useUserApi = () => {
 
   const addUser = (user: IUser) => sendData(USER_ENDPOINT, user);
 
+  const addManyUsers = (usersArray: IUser[]) => sendData(USER_ENDPOINT + `/many`, usersArray);
+
   return {
     logIn,
     addUser,
+    addManyUsers,
   };
 };
 

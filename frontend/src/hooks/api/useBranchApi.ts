@@ -13,6 +13,9 @@ const useBranchApi = () => {
 
   const addBranch = (branchInfo: IBranch) => sendData(BRANCH_ENDPOINT, branchInfo);
 
+  const addManyBranches = (branchArray: IBranch[]) =>
+    sendData(BRANCH_ENDPOINT + `/many`, branchArray);
+
   const updateBranch = (branchInfo: IBranch, branchId: string) =>
     updateItem<IBranch>(`${BRANCH_ENDPOINT}/${branchId}`, branchInfo);
 
@@ -29,6 +32,7 @@ const useBranchApi = () => {
     addBranch,
     updateBranch,
     deleteBranch,
+    addManyBranches,
   };
 };
 
