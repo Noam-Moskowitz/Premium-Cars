@@ -4,10 +4,10 @@ export default class BranchServices {
   static async addManyBranches(branchArray) {
     const createdBranches = [];
     try {
-      branchArray.forEach(async (branch) => {
+      for (const branch of branchArray) {
         await Branch.create(branch);
         createdBranches.push(branch);
-      });
+      }
 
       return createdBranches;
     } catch (error) {

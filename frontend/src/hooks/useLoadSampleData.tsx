@@ -44,8 +44,6 @@ const useLoadSampleData = () => {
   ];
 
   const loadSampleData = async () => {
-    console.log(`a`);
-
     sampleDataHandlers.forEach(async ({ data, postFunction, setLoader, setSuccessFlag }) => {
       try {
         setLoader(true);
