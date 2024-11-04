@@ -5,12 +5,13 @@ import { BsShop } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { Card, CardTitle } from "../ui/card";
 import { useNavigate } from "react-router-dom";
-import useLoadSampleData from "@/hooks/useLoadSampleData";
 import SampleDataprogressContainer from "./SampleDataprogressContainer";
+import DataCreatedContainer from "./DataCreatedContainer";
 
 const PrefilDataContainer = () => {
   const navigate = useNavigate();
   const [isLoadingSampleData, setIsLoadingSampleData] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const sampleDataCards = [
     {
@@ -29,17 +30,17 @@ const PrefilDataContainer = () => {
 
   return (
     <div className="size-full min-h-[70vh] py-5 bg-accent flex flex-col gap-3 items-center justify-center rounded shadow">
-      {isLoadingSampleData ? (
-        <SampleDataprogressContainer />
+      {isDataLoaded ? (
+        <DataCreatedContainer />
+      ) : isLoadingSampleData ? (
+        <SampleDataprogressContainer handleProcessCompleted={() => setIsDataLoaded(true)} />
       ) : (
         <>
           <MdOutlineCarCrash className="text-9xl text-primary animate-pulse" />
           <h1 className="font-bold text-2xl">No Cars Found in the Database!</h1>
-          <p className="">
-            Since this is a project, the database might not contain any data initially.
-          </p>
+          <p>Since this is a project, the database might not contain any data initially.</p>
           <p>For your convenience, we can load sample data to give you the full experience.</p>
-          <p className="">Sample data will include the following:</p>
+          <p>Sample data will include the following:</p>
           <div className="flex gap-4">
             {sampleDataCards.map(({ icon, title }, i) => (
               <Card key={i} className="p-5 flex gap-3 items-end hover:scale-110 transition-all">

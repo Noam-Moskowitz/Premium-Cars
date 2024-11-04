@@ -20,6 +20,9 @@ const useLoadSampleData = () => {
   const [carsCreatedSuccessfully, setCarsCreatedSuccessfully] = useState(false);
   const [branchesCreatedSuccessfully, setBranchesCreatedSuccessfully] = useState(false);
 
+  const dataCreatedSuccesfully =
+    usersCreatedSuccessfully && carsCreatedSuccessfully && branchesCreatedSuccessfully;
+
   const [error, setError] = useState<any | null>(null);
 
   const sampleDataHandlers = [
@@ -72,6 +75,7 @@ const useLoadSampleData = () => {
     branchesCreatedSuccessfully,
     branchesLoading,
     error,
+    dataCreatedSuccesfully,
   };
 };
 

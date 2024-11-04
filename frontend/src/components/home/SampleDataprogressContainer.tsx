@@ -4,7 +4,13 @@ import ErrorComponent from "../ui/ErrorComponent";
 import { Progress } from "../ui/progress";
 import { Checkbox } from "../ui/checkbox";
 
-const SampleDataprogressContainer = () => {
+interface SampleDataprogressContainerProps {
+  handleProcessCompleted: () => void;
+}
+
+const SampleDataprogressContainer: React.FC<SampleDataprogressContainerProps> = ({
+  handleProcessCompleted,
+}) => {
   const {
     branchesCreatedSuccessfully,
     branchesLoading,
@@ -14,6 +20,7 @@ const SampleDataprogressContainer = () => {
     loadSampleData,
     usersCreatedSuccessfully,
     usersLoading,
+    dataCreatedSuccesfully,
   } = useLoadSampleData();
 
   if (error) return <ErrorComponent errorMessage={error} />;
@@ -21,6 +28,12 @@ const SampleDataprogressContainer = () => {
   useEffect(() => {
     loadSampleData();
   }, []);
+
+  useEffect(() => {
+    if (!dataCreatedSuccesfully) return;
+
+    handleProcessCompleted();
+  }, [dataCreatedSuccesfully]);
 
   return (
     <div className="size-full flex flex-col items-center gap-5">
