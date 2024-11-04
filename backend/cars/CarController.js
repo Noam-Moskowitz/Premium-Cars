@@ -75,4 +75,15 @@ export class CarController {
       res.status(500).send({ message: error.message });
     }
   }
+
+  static async deleteManyCars(req, res) {
+    const { deleteParams } = req.params;
+    try {
+      const removedCars = await CarServices.deleteManyCars(deleteParams);
+
+      res.send(removedCars);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
 }

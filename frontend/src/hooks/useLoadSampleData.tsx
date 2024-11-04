@@ -8,9 +8,9 @@ import { branchArray } from "@/consts/sample data/branches";
 import { usersArray } from "@/consts/sample data/users";
 
 const useLoadSampleData = () => {
-  const { addManyCars } = useCarsApi();
-  const { addManyBranches } = useBranchApi();
-  const { addManyUsers } = useUserApi();
+  const { addManyCars, deleteManyCars } = useCarsApi();
+  const { addManyBranches, deleteManyBranches } = useBranchApi();
+  const { addManyUsers, deleteManyUsers } = useUserApi();
 
   const [usersLoading, setUsersLoading] = useState(false);
   const [carsLoading, setCarsLoading] = useState(false);
@@ -26,27 +26,33 @@ const useLoadSampleData = () => {
     {
       setLoader: setUsersLoading,
       postFunction: addManyUsers,
+      deleteFunc: deleteManyUsers,
       setSuccessFlag: setUsersCreatedSuccessfully,
       data: usersArray,
     },
     {
       setLoader: setCarsLoading,
       postFunction: addManyCars,
+      deleteFunc: deleteManyCars,
       setSuccessFlag: setCarsCreatedSuccessfully,
       data: carsArray,
     },
     {
       setLoader: setBranchesLoading,
       postFunction: addManyBranches,
+      deleteFunc: deleteManyBranches,
       setSuccessFlag: setBranchesCreatedSuccessfully,
       data: branchArray,
     },
   ];
 
   const loadSampleData = async () => {
-    sampleDataHandlers.forEach(async ({ data, postFunction, setLoader, setSuccessFlag }) => {
+    for (const handler of sampleDataHandlers) {
+      const { data, postFunction, deleteFunc, setLoader, setSuccessFlag } = handler;
+
       try {
         setLoader(true);
+        await deleteFunc();
         await postFunction(data);
         setSuccessFlag(true);
       } catch (error) {
@@ -54,7 +60,7 @@ const useLoadSampleData = () => {
       } finally {
         setLoader(false);
       }
-    });
+    }
   };
 
   return {

@@ -2,12 +2,8 @@ import { Branch } from "./BranchModel.js";
 
 export default class BranchServices {
   static async addManyBranches(branchArray) {
-    const createdBranches = [];
     try {
-      for (const branch of branchArray) {
-        await Branch.create(branch);
-        createdBranches.push(branch);
-      }
+      const createdBranches = await Branch.insertMany(branchArray);
 
       return createdBranches;
     } catch (error) {
@@ -70,6 +66,16 @@ export default class BranchServices {
       const removedBranch = await Branch.findByIdAndDelete(id);
 
       return removedBranch;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteManyBranches(params = {}) {
+    try {
+      const removedBranches = await Branch.deleteMany(params);
+
+      return removedBranches;
     } catch (error) {
       throw error;
     }

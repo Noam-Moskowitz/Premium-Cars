@@ -49,12 +49,12 @@ const SampleDataprogressContainer = () => {
       </h1>
       <Progress
         value={
-          usersCreatedSuccessfully
-            ? 33
+          usersCreatedSuccessfully && carsCreatedSuccessfully && branchesCreatedSuccessfully
+            ? 100
             : usersCreatedSuccessfully && carsCreatedSuccessfully
             ? 66
-            : usersCreatedSuccessfully && carsCreatedSuccessfully && branchesCreatedSuccessfully
-            ? 100
+            : usersCreatedSuccessfully
+            ? 33
             : 0
         }
         className="border-2 bg-background w-[60%]"

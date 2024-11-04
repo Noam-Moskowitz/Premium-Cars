@@ -18,6 +18,8 @@ const useCarsApi = () => {
 
   const deleteCar = (id: string) => deleteItem<ICar>(CARS_ENDPOINT, id);
 
+  const deleteManyCars = (deleteParams?: any) => deleteItem(CARS_ENDPOINT + `/many`, deleteParams);
+
   return {
     getAllCars,
     addCar,
@@ -25,6 +27,7 @@ const useCarsApi = () => {
     getOneCar,
     updateCar,
     addManyCars,
+    deleteManyCars,
   };
 };
 

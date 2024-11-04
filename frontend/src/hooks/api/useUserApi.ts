@@ -1,4 +1,4 @@
-import { sendData } from "@/API/api";
+import { deleteItem, sendData } from "@/API/api";
 import { IUser } from "@/interfaces/user";
 import React from "react";
 
@@ -12,10 +12,13 @@ const useUserApi = () => {
 
   const addManyUsers = (usersArray: IUser[]) => sendData(USER_ENDPOINT + `/many`, usersArray);
 
+  const deleteManyUsers = (deleteParams?: any) => deleteItem(USER_ENDPOINT + `/many`, deleteParams);
+
   return {
     logIn,
     addUser,
     addManyUsers,
+    deleteManyUsers,
   };
 };
 

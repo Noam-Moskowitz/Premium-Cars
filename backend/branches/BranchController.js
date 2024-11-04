@@ -87,6 +87,18 @@ export default class BranchController {
     }
   }
 
+  static async deleteManyBranches(req, res) {
+    const { deleteParams } = req.params;
+
+    try {
+      const removedBranches = await BranchServices.deleteManyBranches(deleteParams);
+
+      res.send(removedBranches);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+
   static async favoriteBranch(req, res) {
     const { id, userId } = req.params;
 

@@ -11,6 +11,7 @@ router.get(`/`, checkIfAdmin, UsersController.getAllUsers);
 router.get(`/:id`, checkIfUserOrAdmin, UsersController.getUser);
 router.post(`/`, validateNewUserDetails, UsersController.addUser);
 router.put(`/:id`, checkIfUserOrAdmin, validateNewUserDetails, UsersController.updateUser);
+router.delete(`/many`, UsersController.deleteManyUsers);
 router.delete(`/:id`, checkIfUserOrAdmin, UsersController.deleteUser);
 
 export default router;

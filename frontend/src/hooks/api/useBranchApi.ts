@@ -21,6 +21,9 @@ const useBranchApi = () => {
 
   const deleteBranch = (branchId: string) => deleteItem<IBranch>(BRANCH_ENDPOINT, branchId);
 
+  const deleteManyBranches = (deleteParams?: any) =>
+    deleteItem(BRANCH_ENDPOINT + `/many`, deleteParams);
+
   const favoriteBranch = (branchId: string, userId: string) =>
     patchItem<IBranch>(`${BRANCH_ENDPOINT}/${branchId}/user/${userId}`);
 
@@ -33,6 +36,7 @@ const useBranchApi = () => {
     updateBranch,
     deleteBranch,
     addManyBranches,
+    deleteManyBranches,
   };
 };
 

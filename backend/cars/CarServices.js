@@ -32,12 +32,8 @@ export class CarServices {
   }
 
   static async addManyCars(carsArray) {
-    const createdCars = [];
     try {
-      carsArray.forEach(async (car) => {
-        await Car.create(car);
-        createdCars.push(car);
-      });
+      const createdCars = await Car.insertMany(carsArray);
 
       return createdCars;
     } catch (error) {
@@ -60,6 +56,16 @@ export class CarServices {
       const deletedCar = await Car.findByIdAndDelete(carId);
 
       return deletedCar;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteManyCars(params = {}) {
+    try {
+      const removedCars = await Car.deleteMany(params);
+
+      return removedCars;
     } catch (error) {
       throw error;
     }

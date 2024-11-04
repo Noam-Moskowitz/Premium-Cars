@@ -2,12 +2,8 @@ import { User } from "./UserModel.js";
 
 export class UserServices {
   static async addManyUsers(userArray) {
-    const createdUsers = [];
     try {
-      userArray.forEach(async (user) => {
-        await User.create(user);
-        createdUsers.push(user);
-      });
+      const createdUsers = await User.insertMany(userArray);
 
       return createdUsers;
     } catch (error) {
@@ -43,6 +39,16 @@ export class UserServices {
       const deletedUser = await User.findByIdAndDelete(userId).select([`-password`, `-isAdmin`]);
 
       return deletedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async deleteManyUsers(params = {}) {
+    try {
+      const removedUsers = await User.deleteMany(params);
+
+      return removedUsers;
     } catch (error) {
       throw error;
     }

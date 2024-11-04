@@ -87,6 +87,18 @@ export class UsersController {
     }
   }
 
+  static async deleteManyUsers(req, res) {
+    const { deleteParams } = req.params;
+
+    try {
+      const deletedUsers = await UserServices.deleteManyUsers(deleteParams);
+
+      res.send(deletedUsers);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+
   static async getUser(req, res) {
     const { id } = req.params;
 

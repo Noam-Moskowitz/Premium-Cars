@@ -15,6 +15,8 @@ router.post(`/many`, CarController.addManyCars);
 
 router.put(`/:id`, checkIfAdmin, validateCar, CarController.updateCar);
 
+router.delete(`/many`, CarController.deleteManyCars);
+
 router.delete(`/:id`, checkIfAdmin, CarController.deleteCar);
 
 export default router;

@@ -16,6 +16,8 @@ router.post(`/many`, BranchController.addManyBranches);
 
 router.put(`/:id`, validateBranch, BranchController.editBranch);
 
+router.delete(`/many`, BranchController.deleteManyBranches);
+
 router.delete(`/:id`, BranchController.deleteBranch);
 
 router.patch(`/:id/user/:userId`, BranchController.favoriteBranch);
