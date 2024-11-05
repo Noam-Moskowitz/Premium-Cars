@@ -6,7 +6,6 @@ import useCarsApi from "@/hooks/api/useCarsApi";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import Loader from "@/components/ui/Loader";
 import Hero from "@/components/home/Hero";
-import PrefilDataContainer from "@/components/home/PrefilDataContainer";
 import ErrorComponent from "@/components/ui/ErrorComponent";
 import { useNavigate } from "react-router-dom";
 

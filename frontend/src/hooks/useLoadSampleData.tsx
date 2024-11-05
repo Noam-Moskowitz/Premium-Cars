@@ -75,6 +75,7 @@ const useLoadSampleData = () => {
 
     queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
     queryClient.invalidateQueries({ queryKey: [BRANCH_QUERY_KEY] });
+    localStorage.removeItem(`users`);
   };
 
   return {

@@ -1,4 +1,4 @@
-import PrefilDataContainer from "@/components/home/PrefilDataContainer";
+import PrefilDataContainer from "@/components/sample-data/PrefilDataContainer";
 import About from "@/pages/About";
 import BranchFormPage from "@/pages/BranchFormPage";
 import BranchPage from "@/pages/BranchPage";
@@ -18,7 +18,7 @@ const MainRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/sample-data" element={<PrefilDataContainer />} />
       <Route path="/my-orders" element={<MyOrders />} />
-      <Route path="/about" element={<div></div>} />
+      <Route path="/about" element={<About />} />
       <Route path="/cars/rent/:id" element={<RentCarPage />} />
       <Route path="/cars/rent/:id/booking/:bookingId" element={<RentCarPage />} />
       <Route path="/cars/new" element={<CarFormPage />} />

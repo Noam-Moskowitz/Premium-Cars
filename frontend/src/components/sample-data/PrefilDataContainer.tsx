@@ -5,8 +5,8 @@ import { BsShop } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
 import { Card, CardTitle } from "../ui/card";
 import { useNavigate } from "react-router-dom";
+import DataCreatedContainer from "../sample-data/DataCreatedContainer";
 import SampleDataprogressContainer from "./SampleDataprogressContainer";
-import DataCreatedContainer from "./DataCreatedContainer";
 
 const PrefilDataContainer = () => {
   const navigate = useNavigate();
