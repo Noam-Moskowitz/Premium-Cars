@@ -17,6 +17,7 @@ import GearType from "./GearType";
 
 const SearchFilterContainer = () => {
   const [priceRange, setPriceRange] = useState<number[]>([]);
+  const [doors, setDoors] = useState<string | null>(null);
 
   const navItems = [
     {
@@ -25,7 +26,7 @@ const SearchFilterContainer = () => {
     },
     {
       name: `Doors`,
-      component: <Doors />,
+      component: <Doors handleConfirm={(value) => setDoors(value)} />,
     },
     {
       name: `Gear Type`,
