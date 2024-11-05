@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,10 +16,12 @@ import Doors from "./Doors";
 import GearType from "./GearType";
 
 const SearchFilterContainer = () => {
+  const [priceRange, setPriceRange] = useState<number[]>([]);
+
   const navItems = [
     {
       name: `Price`,
-      component: <PriceRange />,
+      component: <PriceRange handleConfirm={(range) => setPriceRange(range)} />,
     },
     {
       name: `Doors`,
