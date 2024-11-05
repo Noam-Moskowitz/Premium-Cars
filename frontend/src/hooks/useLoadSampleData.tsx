@@ -6,6 +6,10 @@ import useUserApi from "./api/useUserApi";
 import { carsArray } from "@/consts/sample data/cars";
 import { branchArray } from "@/consts/sample data/branches";
 import { usersArray } from "@/consts/sample data/users";
+import { useDispatch } from "react-redux";
+import { removeUser } from "@/store/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
+import { BRANCH_QUERY_KEY, CAR_QUERY_KEY } from "@/consts/reactQuery";
 
 const useLoadSampleData = () => {
   const { addManyCars, deleteManyCars } = useCarsApi();
@@ -24,6 +28,8 @@ const useLoadSampleData = () => {
     usersCreatedSuccessfully && carsCreatedSuccessfully && branchesCreatedSuccessfully;
 
   const [error, setError] = useState<any | null>(null);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const sampleDataHandlers = [
     {
@@ -50,6 +56,8 @@ const useLoadSampleData = () => {
   ];
 
   const loadSampleData = async () => {
+    dispatch(removeUser(`logOut`));
+
     for (const handler of sampleDataHandlers) {
       const { data, postFunction, deleteFunc, setLoader, setSuccessFlag } = handler;
 
@@ -64,6 +72,9 @@ const useLoadSampleData = () => {
         setLoader(false);
       }
     }
+
+    queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
+    queryClient.invalidateQueries({ queryKey: [BRANCH_QUERY_KEY] });
   };
 
   return {

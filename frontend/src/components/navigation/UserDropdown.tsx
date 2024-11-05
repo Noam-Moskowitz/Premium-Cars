@@ -22,7 +22,6 @@ const UserDropdown = () => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state: any) => state.user);
-  console.log(userInfo);
 
   const signedInMenu = [
     { label: `Profile`, icon: <HiOutlineUser size={18} /> },

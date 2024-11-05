@@ -69,7 +69,7 @@ export const BranchColumns: ColumnDef<IBranch>[] = [
     },
   },
   {
-    accessorKey: "address",
+    accessorKey: "city",
     header: "City",
     cell: ({ row }) => {
       const { city } = row.original.address;
@@ -78,7 +78,7 @@ export const BranchColumns: ColumnDef<IBranch>[] = [
     },
   },
   {
-    accessorKey: "address",
+    accessorKey: "country",
     header: "Country",
     cell: ({ row }) => {
       const { country } = row.original.address;

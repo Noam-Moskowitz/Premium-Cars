@@ -30,6 +30,12 @@ export class UsersController {
   static async addManyUsers(req, res) {
     const userArr = req.body;
 
+    await Promise.all(
+      userArr.map(async (user) => {
+        user.password = await bcrypt.hash(user.password, 10);
+      })
+    );
+
     try {
       const users = UserServices.addManyUsers(userArr);
 
