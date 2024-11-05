@@ -1,3 +1,4 @@
+import PrefilDataContainer from "@/components/home/PrefilDataContainer";
 import About from "@/pages/About";
 import BranchFormPage from "@/pages/BranchFormPage";
 import BranchPage from "@/pages/BranchPage";
@@ -15,6 +16,7 @@ const MainRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/sample-data" element={<PrefilDataContainer />} />
       <Route path="/my-orders" element={<MyOrders />} />
       <Route path="/about" element={<div></div>} />
       <Route path="/cars/rent/:id" element={<RentCarPage />} />

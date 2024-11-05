@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "animate.css";
 import CarListDropdown from "@/components/cars/CarListDropdown";
 import { useQuery } from "@tanstack/react-query";
@@ -7,9 +7,12 @@ import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import Loader from "@/components/ui/Loader";
 import Hero from "@/components/home/Hero";
 import PrefilDataContainer from "@/components/home/PrefilDataContainer";
+import ErrorComponent from "@/components/ui/ErrorComponent";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { getAllCars } = useCarsApi();
+  const navigate = useNavigate();
 
   const [isOpen, setisOpen] = useState(false);
 
@@ -19,34 +22,35 @@ const Home = () => {
     staleTime: ONE_HOUR,
   });
 
+  useEffect(() => {
+    if (!data || data.length !== 0) return;
+
+    navigate(`/sample-data`);
+  }, [data]);
+
   if (isLoading) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
     <div className="scroll-smooth">
       <header>
-        {data?.length == 0 ? (
-          <PrefilDataContainer />
-        ) : (
-          <>
-            <div className="pb-4 md:pb-0 pt-4 pl-5 animate__animated animate__fadeIn">
-              <h1 className="font-bold text-accent-foreground text-lg md:text-2xl">
-                Rent Your Car At The Click Of A Button!
-              </h1>
-              <p className="font-bold text-accent-foreground text-sm">
-                Choose A car from our huge selection!
-              </p>
-            </div>
-            <Hero
-              isOpen={isOpen}
-              carsArray={data || []}
-              handleClick={() =>
-                setisOpen((prevState) => {
-                  return !prevState;
-                })
-              }
-            />
-          </>
-        )}
+        <div className="pb-4 md:pb-0 pt-4 pl-5 animate__animated animate__fadeIn">
+          <h1 className="font-bold text-accent-foreground text-lg md:text-2xl">
+            Rent Your Car At The Click Of A Button!
+          </h1>
+          <p className="font-bold text-accent-foreground text-sm">
+            Choose A car from our huge selection!
+          </p>
+        </div>
+        <Hero
+          isOpen={isOpen}
+          carsArray={data || []}
+          handleClick={() =>
+            setisOpen((prevState) => {
+              return !prevState;
+            })
+          }
+        />
       </header>
       <CarListDropdown cars={data || []} open={isOpen} />
     </div>
