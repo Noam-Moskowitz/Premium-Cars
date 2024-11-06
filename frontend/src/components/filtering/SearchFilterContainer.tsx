@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Input } from "../ui/input";
 import { FaSearch } from "react-icons/fa";
@@ -16,11 +13,17 @@ import Doors from "./Doors";
 import GearType from "./GearType";
 import { Button } from "../ui/button";
 import { displayPriceRangeString } from "@/utils/utls";
+import { IFilter } from "@/interfaces";
 
-const SearchFilterContainer = () => {
+interface SearchFilterContainerProps {
+  onConfirmFilters: (filters: IFilter) => void;
+}
+
+const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({ onConfirmFilters }) => {
   const [priceRange, setPriceRange] = useState<number[]>([]);
   const [doors, setDoors] = useState<string | null>(null);
-  const [gearType, setGearType] = useState<string | null>(null);
+  const [gearType, setGearType] = useState<"Manual" | "Automatic" | null>(null);
+  const [searchParam, setSearchParam] = useState<string | null>(null);
 
   const navItems = [
     {
@@ -40,16 +43,37 @@ const SearchFilterContainer = () => {
     },
   ];
 
+  const handleInputChange = (value: string) => {
+    if (!value) return setSearchParam(null);
+
+    setSearchParam(value);
+  };
+
   const clearFilters = () => {
     setDoors(null);
     setGearType(null);
     setPriceRange([]);
+    setSearchParam(null);
+
+    const filters = { priceRange: [], doors: null, gearType: null, searchParam: null };
+
+    onConfirmFilters(filters);
+  };
+
+  const handleConfirm = () => {
+    const filters = { priceRange, doors, gearType, searchParam };
+
+    onConfirmFilters(filters);
   };
 
   return (
     <div className=" flex gap-1 flex-wrap justify-center border-2 border-primary rounded w-[80vw] md:w-fit shadow  mx-auto p-2">
       <div className="relative">
-        <Input placeholder="search" />
+        <Input
+          placeholder="search"
+          value={searchParam || ``}
+          onChange={(e) => handleInputChange(e.target.value)}
+        />
         <FaSearch className="absolute top-3 right-2" />
       </div>
       <div className="flex  justify-center">
@@ -69,8 +93,8 @@ const SearchFilterContainer = () => {
           </NavigationMenu>
         ))}
       </div>
-      <Button>Set Filters</Button>
-      {(gearType || doors || priceRange.length > 0) && (
+      <Button onClick={handleConfirm}>Set Filters</Button>
+      {(gearType || doors || priceRange.length > 0 || searchParam) && (
         <Button variant="link" onClick={clearFilters}>
           Clear Filters
         </Button>

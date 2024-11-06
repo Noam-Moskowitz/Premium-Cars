@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 
 interface GearTypeProps {
-  handleConfirm: (gearType: string) => void;
+  handleConfirm: (gearType: any) => void;
 }
 
 const GearType: React.FC<GearTypeProps> = ({ handleConfirm }) => {
