@@ -47,26 +47,28 @@ const SearchFilterContainer = () => {
   };
 
   return (
-    <div className=" flex gap-1 border-2 border-primary rounded w-fit shadow  mx-auto p-2">
+    <div className=" flex gap-1 flex-wrap justify-center border-2 border-primary rounded w-[80vw] md:w-fit shadow  mx-auto p-2">
       <div className="relative">
         <Input placeholder="search" />
         <FaSearch className="absolute top-3 right-2" />
       </div>
-      {navItems.map(({ name, component, selectedFilter }, i) => (
-        <NavigationMenu key={i}>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>
-                <div className="flex flex-col">
-                  {name}
-                  <p className="font-thin text-primary">{selectedFilter}</p>
-                </div>
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>{component}</NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      ))}
+      <div className="flex  justify-center">
+        {navItems.map(({ name, component, selectedFilter }, i) => (
+          <NavigationMenu key={i}>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  <div className="flex flex-col">
+                    {name}
+                    <p className="font-thin text-primary">{selectedFilter}</p>
+                  </div>
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>{component}</NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        ))}
+      </div>
       <Button>Set Filters</Button>
       {(gearType || doors || priceRange.length > 0) && (
         <Button variant="link" onClick={clearFilters}>

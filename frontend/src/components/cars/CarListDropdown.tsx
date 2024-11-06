@@ -13,9 +13,9 @@ interface CarListDropdownProps {
 const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
   return (
     <Collapsible open={open}>
-      <CollapsibleContent id="carList" className="p-10">
+      <CollapsibleContent id="carList" className="pt-10">
         <SearchFilterContainer />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10  pt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10  p-10">
           {cars?.map((car, i) => (
             <div key={i} className={`animate__animated animate__fadeInUp ${animationDelays[i]} `}>
               <CarCard key={i} car={car} />
