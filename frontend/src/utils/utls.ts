@@ -9,3 +9,18 @@ export const determineNavRoute = (route: string) => {
 };
 
 export const isValidObjectId = (value: string) => /^[a-f\d]{24}$/i.test(value);
+
+export const displayPriceRangeString = (value: number[]) => {
+  const firstValue = value[0];
+
+  switch (firstValue) {
+    case 0:
+      return `0-25$`;
+    case 25:
+      return `25-50$`;
+    case 50:
+      return `50-75$`;
+    case 75:
+      return `75$+`;
+  }
+};
