@@ -29,6 +29,9 @@ const useBookingApi = () => {
 
   const deleteBooking = (bookingId: string) => deleteItem<IBooking>(BOOKINGS_ENDPOINT, bookingId);
 
+  const deleteManyBookings = (deleteParams?: any) =>
+    deleteItem(BOOKINGS_ENDPOINT + `/many`, deleteParams);
+
   return {
     getAllBookings,
     getBookingsByCar,
@@ -39,6 +42,7 @@ const useBookingApi = () => {
     updateBooking,
     changeBookingStatus,
     deleteBooking,
+    deleteManyBookings,
   };
 };
 

@@ -114,4 +114,16 @@ export class BookingController {
       res.status(500).send({ message: error.message });
     }
   }
+
+  static async deleteManyBookings(req, res) {
+    const { deleteParams } = req.params;
+
+    try {
+      const removedBookings = await BookingServices.deleteManyBookings(deleteParams);
+
+      res.send(removedBookings);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
 }

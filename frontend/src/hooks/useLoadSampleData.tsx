@@ -9,12 +9,14 @@ import { usersArray } from "@/consts/sample data/users";
 import { useDispatch } from "react-redux";
 import { removeUser } from "@/store/userSlice";
 import { useQueryClient } from "@tanstack/react-query";
-import { BRANCH_QUERY_KEY, CAR_QUERY_KEY } from "@/consts/reactQuery";
+import { BOOKING_QUERY_KEY, BRANCH_QUERY_KEY, CAR_QUERY_KEY } from "@/consts/reactQuery";
+import useBookingApi from "./api/useBookingApi";
 
 const useLoadSampleData = () => {
   const { addManyCars, deleteManyCars } = useCarsApi();
   const { addManyBranches, deleteManyBranches } = useBranchApi();
   const { addManyUsers, deleteManyUsers } = useUserApi();
+  const { deleteManyBookings } = useBookingApi();
 
   const [usersLoading, setUsersLoading] = useState(false);
   const [carsLoading, setCarsLoading] = useState(false);
@@ -58,6 +60,12 @@ const useLoadSampleData = () => {
   const loadSampleData = async () => {
     dispatch(removeUser(`logOut`));
 
+    try {
+      await deleteManyBookings();
+    } catch (error) {
+      return setError(error);
+    }
+
     for (const handler of sampleDataHandlers) {
       const { data, postFunction, deleteFunc, setLoader, setSuccessFlag } = handler;
 
@@ -75,6 +83,7 @@ const useLoadSampleData = () => {
 
     queryClient.invalidateQueries({ queryKey: [CAR_QUERY_KEY] });
     queryClient.invalidateQueries({ queryKey: [BRANCH_QUERY_KEY] });
+    queryClient.invalidateQueries({ queryKey: [BOOKING_QUERY_KEY] });
     localStorage.removeItem(`users`);
   };
 

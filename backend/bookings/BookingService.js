@@ -101,4 +101,14 @@ export class BookingServices {
       throw error;
     }
   }
+
+  static async deleteManyBookings(params = {}) {
+    try {
+      const removedBookings = await Booking.deleteMany(params);
+
+      return removedBookings;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

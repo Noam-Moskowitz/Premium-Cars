@@ -25,6 +25,8 @@ router.put(`/:id`, checkIfUserWhoBookedOrAdmin, validateBooking, BookingControll
 
 router.patch(`/:id`, checkIfUserWhoBookedOrAdmin, BookingController.changeBookingStatus);
 
+router.delete(`/many`, BookingController.deleteManyBookings);
+
 router.delete(`/:id`, checkIfAdmin, BookingController.deleteBooking);
 
 export default router;
