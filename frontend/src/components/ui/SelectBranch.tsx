@@ -8,6 +8,7 @@ import { IBranchNames } from "@/interfaces/branch";
 import { useSelector } from "react-redux";
 import { Skeleton } from "./skeleton";
 import { isValidObjectId } from "@/utils/utls";
+import ErrorComponent from "./ErrorComponent";
 
 interface SelectBranchProps {
   handleChange: () => void;
@@ -41,6 +42,7 @@ const SelectBranch: React.FC<SelectBranchProps> = ({ handleChange, value }) => {
   }, [data]);
 
   if (isLoading) return <Skeleton />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
     <Select onValueChange={handleChange}>

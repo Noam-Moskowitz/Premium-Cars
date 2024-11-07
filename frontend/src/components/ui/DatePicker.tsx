@@ -91,8 +91,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     setDate(existingValue);
   }, [existingValue]);
 
-  console.log(date);
-
   return (
     <div>
       <Popover>
