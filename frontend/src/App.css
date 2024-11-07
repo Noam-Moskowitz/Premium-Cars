@@ -3,3 +3,21 @@
   border: 10px solid transparent;
   clip-path: polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%);
 }
+
+@keyframes expandWidth {
+  from {
+    width: 50px; /* Initial width */
+  }
+  to {
+    width: 300px; /* Expanded width */
+  }
+}
+
+@keyframes shrinkWidth {
+  from {
+    width: 300px; /* Expanded width */
+  }
+  to {
+    width: 50px; /* Initial width */
+  }
+}

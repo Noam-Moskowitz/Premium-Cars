@@ -1,5 +1,6 @@
 import SearchFilterContainer from "@/components/filtering/SearchFilterContainer";
 import OrderCard from "@/components/orders/OrderCard";
+import OrderFilter from "@/components/orders/OrderFilter";
 import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import NoResultsContainer from "@/components/ui/NoResultsContainer";
@@ -23,6 +24,7 @@ const AdminOrdersPage = () => {
 
   return (
     <div className="size-full p-5">
+      <OrderFilter />
       <SearchFilterContainer onConfirmFilters={() => {}} />
       {data.length == 0 ? (
         <NoResultsContainer title="No orders found!" />
