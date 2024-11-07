@@ -16,6 +16,7 @@ const AdminOrdersPage = () => {
     queryFn: getAllBookings,
     staleTime: ONE_HOUR,
   });
+  console.log(data);
 
   if (isLoading) return <Loader size="large" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
@@ -28,7 +29,7 @@ const AdminOrdersPage = () => {
       ) : (
         <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
           {data?.map((order) => (
-            <OrderCard key={order._id} order={order} />
+            <OrderCard key={order._id} order={order} showUser />
           ))}
         </div>
       )}

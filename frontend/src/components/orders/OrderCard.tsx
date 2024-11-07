@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { FiChevronsRight } from "react-icons/fi";
 import { Button } from "../ui/button";
 import { IBooking } from "@/interfaces/booking";
@@ -13,6 +13,7 @@ import {
   ONE_HOUR,
   SINGLE_BRANCH_KEY,
   SINGLE_CAR_KEY,
+  SINGLE_USER_KEY,
 } from "@/consts/reactQuery";
 import Loader from "../ui/Loader";
 import useBranchApi from "@/hooks/api/useBranchApi";
@@ -21,18 +22,20 @@ import { useNavigate } from "react-router-dom";
 import OrderCardBanner from "./OrderCardBanner";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import useReactQueryUtils from "@/hooks/useReactQueryUtils";
-import { useSelector } from "react-redux";
+import useUserApi from "@/hooks/api/useUserApi";
+import ErrorComponent from "../ui/ErrorComponent";
 
 interface OrderCardProps {
   order: IBooking;
+  showUser?: boolean;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
-  const { carId, price, paid, pickUpSpot, dropOffSpot, dates, status, _id } = order;
-  const userId = useSelector((store: any) => store.user._id);
+const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false }) => {
+  const { carId, price, paid, pickUpSpot, dropOffSpot, dates, status, _id, userId } = order;
   const { getOneCar } = useCarsApi();
   const { getOneBranch } = useBranchApi();
   const { changeBookingStatus } = useBookingApi();
+  const { getOneUser } = useUserApi();
   const { errorFunc, successFunc } = useReactQueryUtils();
   const navigate = useNavigate();
 
@@ -57,6 +60,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     enabled: !!dropOffSpot,
   });
 
+  const userResponse = useQuery({
+    queryFn: () => getOneUser(userId),
+    queryKey: [SINGLE_USER_KEY + userId],
+    staleTime: ONE_HOUR,
+    enabled: !!userId,
+  });
+
   const changeStatus = useMutation({
     mutationFn: () => changeBookingStatus(_id || ``),
     onSuccess: () =>
@@ -69,8 +79,30 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       ]),
   });
 
-  if (carResponse.isLoading || pickUpSpotResponse.isLoading || dropOffSpotResponse.isLoading)
+  if (
+    carResponse.isLoading ||
+    pickUpSpotResponse.isLoading ||
+    dropOffSpotResponse.isLoading ||
+    userResponse.isLoading
+  )
     return <Loader size="medium" />;
+
+  if (
+    carResponse.isError ||
+    pickUpSpotResponse.isError ||
+    dropOffSpotResponse.isError ||
+    userResponse.isError
+  )
+    return (
+      <ErrorComponent
+        errorMessage={
+          carResponse.error ||
+          pickUpSpotResponse.error ||
+          dropOffSpotResponse.error ||
+          userResponse.error
+        }
+      />
+    );
 
   return (
     <Card className="flex flex-col lg:flex-row relative">
@@ -80,6 +112,23 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         <img src={carResponse.data?.image} alt="Car" />
         <h2 className="font-bold text-lg">{`${carResponse.data?.make} ${carResponse.data?.model}`}</h2>
         <CardDescription>{carResponse.data?.year}</CardDescription>
+        {showUser && (
+          <div className="text-left">
+            <p className="font-bold">Customer Information:</p>
+            <p>
+              <span className="font-semibold">Name:</span>
+              {` ${userResponse.data.firstName} ${userResponse.data.lastName}`}
+            </p>
+            <p>
+              <span className="font-semibold">Email: </span>
+              {userResponse.data.email}
+            </p>
+            <p>
+              <span className="font-semibold">Phone: </span>
+              {userResponse.data.phone}
+            </p>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="lg:w-1/2 flex flex-col items-between md:justify-around gap-2 md:gap-10">
         <div className={`${status !== `active` && `opacity-45`}`}>
