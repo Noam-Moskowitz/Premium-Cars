@@ -5,6 +5,7 @@ import CarCard from "./CarCard";
 import { ICar } from "@/interfaces/car";
 import SearchFilterContainer from "../filtering/SearchFilterContainer";
 import { IFilter } from "@/interfaces";
+import NoResultsContainer from "../ui/NoResultsContainer";
 
 interface CarListDropdownProps {
   open: boolean;
@@ -50,13 +51,17 @@ const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
     <Collapsible open={open}>
       <CollapsibleContent id="carList" className="pt-10">
         <SearchFilterContainer onConfirmFilters={(value) => filterCars(value)} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10  p-10">
-          {filteredCars?.map((car, i) => (
-            <div key={i} className={`animate__animated animate__fadeInUp ${animationDelays[i]} `}>
-              <CarCard key={i} car={car} />
-            </div>
-          ))}
-        </div>
+        {filteredCars.length == 0 ? (
+          <NoResultsContainer title="No results found!" />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10  p-10">
+            {filteredCars?.map((car, i) => (
+              <div key={i} className={`animate__animated animate__fadeInUp ${animationDelays[i]} `}>
+                <CarCard key={i} car={car} />
+              </div>
+            ))}
+          </div>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );

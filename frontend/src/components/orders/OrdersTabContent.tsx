@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import OrderCard from "./OrderCard";
 import Loader from "../ui/Loader";
 import ErrorComponent from "../ui/ErrorComponent";
+import NoResultsContainer from "../ui/NoResultsContainer";
 
 interface OrdersTabContentProps {
   status?: string;
@@ -28,11 +29,7 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status }) => {
   return (
     <div>
       <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
-        {data?.length === 0 && (
-          <div className="size-full flex items-center justify-center p-5">
-            <h1>No orders found!</h1>
-          </div>
-        )}
+        {data?.length === 0 && <NoResultsContainer title="You dont have any orders!" />}
         {data?.map((booking) => (
           <OrderCard key={booking._id} order={booking} />
         ))}

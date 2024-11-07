@@ -1,5 +1,6 @@
 import { carColumns } from "@/components/tables/columns/CarColumns";
 import { DataTable } from "@/components/tables/DataTable";
+import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import { CAR_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import useCarsApi from "@/hooks/api/useCarsApi";
@@ -32,6 +33,8 @@ const CarsPage = () => {
   }, []);
 
   if (isLoading) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
+
   return (
     <div className="w-full min-h-[100vh] p-10">
       <DataTable

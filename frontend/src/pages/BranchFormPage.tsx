@@ -60,7 +60,7 @@ const BranchFormPage = () => {
   };
 
   if (isLoading && id) return <Loader size="large" />;
-  if (isError) return <ErrorComponent errorMessage={error.message} />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
     <div className="size-full flex items-center justify-center p-10">

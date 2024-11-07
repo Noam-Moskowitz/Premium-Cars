@@ -1,4 +1,5 @@
 import CarForm from "@/components/forms/CarForm";
+import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import { CAR_QUERY_KEY, ONE_HOUR, SINGLE_CAR_KEY } from "@/consts/reactQuery";
 import useCarsApi from "@/hooks/api/useCarsApi";
@@ -42,6 +43,7 @@ const CarFormPage = () => {
   };
 
   if (isLoading && id) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
     <div className="size-full flex items-center justify-center p-10">

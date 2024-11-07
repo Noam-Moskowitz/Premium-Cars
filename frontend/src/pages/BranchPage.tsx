@@ -1,5 +1,6 @@
 import { BranchColumns } from "@/components/tables/columns/BranchColumns";
 import { DataTable } from "@/components/tables/DataTable";
+import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import { BRANCH_NAMES_QUERY_KEY, BRANCH_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import useBranchApi from "@/hooks/api/useBranchApi";
@@ -33,6 +34,7 @@ const BranchPage = () => {
   }, []);
 
   if (isLoading) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
     <div className="w-full h-[100vh] p-10">

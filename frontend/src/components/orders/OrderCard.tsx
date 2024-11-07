@@ -81,43 +81,44 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         <h2 className="font-bold text-lg">{`${carResponse.data?.make} ${carResponse.data?.model}`}</h2>
         <CardDescription>{carResponse.data?.year}</CardDescription>
       </CardHeader>
-      <CardContent
-        className={`lg:w-1/2 flex flex-col items-between md:justify-around gap-2 md:gap-10  ${
-          status !== `active` && `opacity-45`
-        }`}
-      >
-        <div className="md:pt-10">
-          <h6 className="text-center font-bold text-lg">Price:</h6>
-          <h6 className="text-center  font-bold text-2xl text-primary">{paid ? `PAID ` : price}</h6>
-        </div>
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col font-bold items-center">
-            <h6>{pickUpSpotResponse.data?.name}</h6>
-            <h6>10:00 AM</h6>
-            <h6>{format(dates.from || ``, "LLL dd, y")}</h6>
+      <CardContent className="lg:w-1/2 flex flex-col items-between md:justify-around gap-2 md:gap-10">
+        <div className={`${status !== `active` && `opacity-45`}`}>
+          <div className="md:pt-10">
+            <h6 className="text-center font-bold text-lg">Price:</h6>
+            <h6 className="text-center  font-bold text-2xl text-primary">
+              {paid ? `PAID ` : price}
+            </h6>
           </div>
-          <FiChevronsRight size={35} className="text-primary" />
-          <div className="flex flex-col font-bold items-center">
-            <h6>{dropOffSpotResponse.data?.name}</h6>
-            <h6>15:00 PM</h6>
-            <h6>{format(dates.to || ``, "LLL dd, y")}</h6>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col font-bold items-center">
+              <h6>{pickUpSpotResponse.data?.name}</h6>
+              <h6>10:00 AM</h6>
+              <h6>{format(dates.from || ``, "LLL dd, y")}</h6>
+            </div>
+            <FiChevronsRight size={35} className="text-primary" />
+            <div className="flex flex-col font-bold items-center">
+              <h6>{dropOffSpotResponse.data?.name}</h6>
+              <h6>15:00 PM</h6>
+              <h6>{format(dates.to || ``, "LLL dd, y")}</h6>
+            </div>
           </div>
         </div>
         <div className="flex flex-col  justify-center gap-3">
-          <Button
-            disabled={status !== `active`}
-            variant="outline"
-            onClick={() => navigate(`/cars/rent/${carId}/booking/${_id}`)}
-          >
-            Edit Order
-          </Button>
-          <Button
-            disabled={status !== `active`}
-            variant="destructive"
-            onClick={() => changeStatus.mutate()}
-          >
-            Cancel Order
-          </Button>
+          {status == `active` ? (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => navigate(`/cars/rent/${carId}/booking/${_id}`)}
+              >
+                Edit Order
+              </Button>
+              <Button variant="destructive" onClick={() => changeStatus.mutate()}>
+                Cancel Order
+              </Button>
+            </>
+          ) : (
+            <Button onClick={() => navigate(`/cars/rent/${carId}`)}>Reserve Car</Button>
+          )}
         </div>
       </CardContent>
     </Card>
