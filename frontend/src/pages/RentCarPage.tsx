@@ -18,7 +18,6 @@ import {
 import Loader from "@/components/ui/Loader";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import { IBooking } from "@/interfaces/booking";
-import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 
