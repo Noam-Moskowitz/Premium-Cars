@@ -17,7 +17,7 @@ const MainRouter = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/sample-data" element={<PrefilDataContainer />} />
-      <Route path="/my-orders" element={<MyOrders />} />
+      <Route path="/my-orders/:status" element={<MyOrders />} />
       <Route path="/about" element={<About />} />
       <Route path="/cars/rent/:id" element={<RentCarPage />} />
       <Route path="/cars/rent/:id/booking/:bookingId" element={<RentCarPage />} />

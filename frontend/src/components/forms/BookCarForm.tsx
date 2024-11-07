@@ -71,12 +71,15 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
       delete bookingObj.paymentMethod;
 
       submitForm(bookingObj);
-      console.log(bookingObj);
     }
   };
 
   useEffect(() => {
     if (!existingBooking) return;
+
+    const { from, to } = existingBooking.dates ?? {};
+    existingBooking.dates.from = new Date(from);
+    existingBooking.dates.to = new Date(to);
 
     reset(existingBooking);
   }, [existingBooking]);

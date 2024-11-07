@@ -44,10 +44,6 @@ const RentCarPage = () => {
     enabled: !!bookingId,
   });
 
-  const errFunc = (err: any) => {
-    toast.error(`Booking failed!`, { description: err.message });
-  };
-
   const createNewBooking = useMutation({
     mutationFn: (bookingInfo: IBooking) => addBooking(bookingInfo),
     onSuccess: () =>
@@ -70,6 +66,7 @@ const RentCarPage = () => {
         BOOKING_QUERY_KEY,
         BOOKINGS_BY_CAR_KEY + id,
         BOOKINGS_BY_USER_KEY + userId,
+        BOOKINGS_BY_STATUS_KEY + `active`,
       ]),
     onError: errorFunc,
   });

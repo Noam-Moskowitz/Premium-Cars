@@ -9,10 +9,9 @@ import ErrorComponent from "../ui/ErrorComponent";
 
 interface OrdersTabContentProps {
   status?: string;
-  title?: string;
 }
 
-const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status, title }) => {
+const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status }) => {
   const { getBookingsByStatus, getBookingsByUser } = useBookingApi();
   const userId = useSelector((store: any) => store.user._id);
 
@@ -28,7 +27,6 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status, title }) =>
 
   return (
     <div>
-      <h1 className="text-3xl font-bold p-5">{title}</h1>
       <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
         {data?.length === 0 && (
           <div className="size-full flex items-center justify-center p-5">
