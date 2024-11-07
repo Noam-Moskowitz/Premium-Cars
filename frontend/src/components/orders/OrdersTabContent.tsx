@@ -5,10 +5,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import OrderCard from "./OrderCard";
 import Loader from "../ui/Loader";
+import ErrorComponent from "../ui/ErrorComponent";
 
 interface OrdersTabContentProps {
   status?: string;
-  title: string;
+  title?: string;
 }
 
 const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status, title }) => {
@@ -23,9 +24,10 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status, title }) =>
   });
 
   if (isLoading) return <Loader size="large" />;
+  if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
-    <div className="bg-secondary rounded shadow-md overflow-hidden">
+    <div>
       <h1 className="text-3xl font-bold p-5">{title}</h1>
       <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
         {data?.length === 0 && (

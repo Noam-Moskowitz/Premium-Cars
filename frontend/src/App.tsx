@@ -17,7 +17,7 @@ function App() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <NavBarWarpper />
-        <div className="min-h-[100vh] w-full py-8 px-4 xs:p-8">
+        <div className=" w-full  ">
           <MainRouter />
         </div>
         <Footer />

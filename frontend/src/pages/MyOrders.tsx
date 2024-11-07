@@ -37,38 +37,15 @@ const tabs: ITab = {
 
 const MyOrders = () => {
   const { checkPermissions } = useCheckToken();
-  const { getBookingsByUser } = useBookingApi();
   const userId = useSelector((store: any) => store.user._id);
-
-  const { data, isError, error, isLoading } = useQuery({
-    queryFn: () => getBookingsByUser(userId),
-    queryKey: [BOOKINGS_BY_USER_KEY + userId],
-    enabled: !!userId,
-    staleTime: ONE_HOUR,
-  });
 
   useEffect(() => {
     checkPermissions();
   }, []);
 
-  if (isLoading) return <Loader size="large" />;
-
   return (
-    <div className="size-full p-5 md:p-10">
-      <Tabs defaultValue="activeOrders" className="flex flex-col items-center">
-        <TabsList className="w-fit">
-          {tabs.headers.map(({ name, value }, i) => (
-            <TabsTrigger key={i} value={value}>
-              {name}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {tabs.content.map(({ title, value, status }, i) => (
-          <TabsContent value={value}>
-            <OrdersTabContent title={title} status={status} />
-          </TabsContent>
-        ))}
-      </Tabs>
+    <div className="size-full ">
+      <OrdersTabContent status="active" />
     </div>
   );
 };

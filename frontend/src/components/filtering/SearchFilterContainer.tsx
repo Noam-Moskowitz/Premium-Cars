@@ -70,6 +70,7 @@ const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({ onConfirm
     <div className=" flex gap-1 flex-wrap justify-center border-2 border-primary rounded w-[80vw] md:w-fit shadow  mx-auto p-2">
       <div className="relative">
         <Input
+          className="bg-accent"
           placeholder="search"
           value={searchParam || ``}
           onChange={(e) => handleInputChange(e.target.value)}
@@ -93,10 +94,10 @@ const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({ onConfirm
           </NavigationMenu>
         ))}
       </div>
-      <Button onClick={handleConfirm}>Set Filters</Button>
+      <Button onClick={handleConfirm}>Search</Button>
       {(gearType || doors || priceRange.length > 0 || searchParam) && (
         <Button variant="link" onClick={clearFilters}>
-          Clear Filters
+          Clear
         </Button>
       )}
     </div>

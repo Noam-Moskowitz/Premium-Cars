@@ -9,11 +9,11 @@ router.get(`/`, checkIfAdmin, BookingController.getAllBookings);
 
 router.get(`/one/:id`, BookingController.getOneBooking);
 
-router.get(`/user/:userId`, checkIfUserWhoBookedOrAdmin, BookingController.getBookingsByUser);
+router.get(`/user/:userId`, BookingController.getBookingsByUser);
 
 router.get(
   `/status/:status/user/:userId`,
-  checkIfUserWhoBookedOrAdmin,
+
   BookingController.getBookingsByStatus
 );
 
