@@ -16,12 +16,15 @@ import { HiOutlineUserPlus } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "@/store/userSlice";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const UserDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state: any) => state.user);
+
+  const initials = `${userInfo?.first?.charAt(0)}${userInfo?.last?.charAt(0)}`;
 
   const signedInMenu = [
     { label: `Profile`, icon: <HiOutlineUser size={18} /> },
@@ -55,16 +58,13 @@ const UserDropdown = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="border-2 border-secondary p-2 hover:bg-secondary group rounded-full cursor-pointer transition-all duration-300">
+      <DropdownMenuTrigger className="border-2 border-secondary  hover:bg-secondary group rounded-full cursor-pointer transition-all duration-300">
         {userInfo.first ? (
-          <div className="font-bold text-primary-foreground group-hover:text-primary">{`${userInfo.first.charAt(
-            0
-          )}${userInfo.last.charAt(0)}`}</div>
+          <Avatar>
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
         ) : (
-          <FiUser
-            size={18}
-            className="text-primary-foreground group-hover:text-secondary-foreground group-hover:scale-125 transition-all duration-300"
-          />
+          <FiUser className="text-primary-foreground  text-4xl p-2 group-hover:text-secondary-foreground group-hover:scale-125 transition-all duration-300" />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent>

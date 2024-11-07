@@ -1,18 +1,17 @@
 import { navBarArray, adminNavBarArray } from "@/consts/navBar";
-import { FiMoon, FiSun } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@/theme/ThemeProvider";
 import UserDropdown from "./UserDropdown";
-import { Switch } from "@/components/ui/switch";
 import { useSelector } from "react-redux";
+import ThemeToggle from "./ThemeToggle";
 
 interface DesktopNavBarProps {
   currentPage: string;
 }
 
 const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
-  const { setTheme, theme } = useTheme();
+  const { theme } = useTheme();
   const isAdmin = useSelector((store: any) => store.user.isAdmin);
 
   const [navigationArray, setNavigationArray] = useState(navBarArray);
@@ -46,24 +45,7 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
         </div>
       </div>
       <div className="flex items-center px-5 gap-5">
-        <div
-          className="relative cursor-pointer"
-          onClick={() => setTheme(theme == `light` ? `dark` : `light`)}
-        >
-          <Switch checked={theme == `dark` ? true : false} />
-          {theme == `dark` ? (
-            <FiSun
-              size={20}
-              className="absolute left-0.5 top-1/2 transform -translate-y-1/2 pb-1"
-            />
-          ) : (
-            <FiMoon
-              size={20}
-              className="absolute right-1 top-1/2 transform -translate-y-1/2 pb-1"
-            />
-          )}
-        </div>
-
+        <ThemeToggle />
         <UserDropdown />
       </div>
     </nav>
