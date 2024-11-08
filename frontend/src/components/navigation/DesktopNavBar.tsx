@@ -22,7 +22,7 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
   }, [isAdmin]);
 
   return (
-    <nav className="w-full h-16 bg-primary shadow-md flex justify-between">
+    <nav className="w-full fixed z-[100] h-16 bg-primary shadow-md flex justify-between">
       <div className="flex gap-10">
         <img
           className="p-1"
