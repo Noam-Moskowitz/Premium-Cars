@@ -11,7 +11,7 @@ import { isValidObjectId } from "@/utils/utls";
 import ErrorComponent from "./ErrorComponent";
 
 interface SelectBranchProps {
-  handleChange: () => void;
+  handleChange: (val: any) => void;
   value: string;
 }
 

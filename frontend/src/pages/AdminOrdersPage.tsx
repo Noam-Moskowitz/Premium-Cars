@@ -1,3 +1,4 @@
+import BranchFilter from "@/components/filtering/BranchFilter";
 import OrderStatus from "@/components/filtering/OrderStatus";
 import PaymentStatus from "@/components/filtering/PaymentStatus";
 import SearchFilterContainer from "@/components/filtering/SearchFilterContainer";
@@ -17,6 +18,8 @@ const AdminOrdersPage = () => {
   const [orderStatus, setOrderStatus] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const [filteredOrders, setFilteredOrders] = useState<IBooking[]>([]);
+  const [pickupSpot, setPickupSpot] = useState<string | null>(null);
+  const [dropoffSpot, setDropoffSpot] = useState<string | null>(null);
 
   const { data, error, isError, isLoading } = useQuery({
     queryKey: [BOOKING_QUERY_KEY],
@@ -35,11 +38,23 @@ const AdminOrdersPage = () => {
       name: `Payment Status`,
       selectedFilter: paymentStatus,
     },
+    {
+      component: <BranchFilter handleConfirm={(value) => setPickupSpot(value)} />,
+      name: `Collection Branch`,
+      selectedFilter: pickupSpot,
+    },
+    {
+      component: <BranchFilter handleConfirm={(value) => setDropoffSpot(value)} />,
+      name: `Return Branch`,
+      selectedFilter: dropoffSpot,
+    },
   ];
 
   const clearFilters = () => {
     setOrderStatus(null);
     setPaymentStatus(null);
+    setPickupSpot(null);
+    setDropoffSpot(null);
   };
 
   useEffect(() => {
@@ -49,7 +64,8 @@ const AdminOrdersPage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (!orderStatus && !paymentStatus) return setFilteredOrders(data || []);
+    if (!orderStatus && !paymentStatus && !pickupSpot && !dropoffSpot)
+      return setFilteredOrders(data || []);
 
     let newArray = [...data];
 
@@ -61,8 +77,16 @@ const AdminOrdersPage = () => {
       newArray = newArray.filter((order) => (paymentStatus == `Paid` ? order.paid : !order.paid));
     }
 
+    if (pickupSpot) {
+      newArray = newArray.filter((order) => order.pickUpSpot === pickupSpot);
+    }
+
+    if (pickupSpot) {
+      newArray = newArray.filter((order) => order.dropOffSpot === dropoffSpot);
+    }
+
     setFilteredOrders(newArray);
-  }, [paymentStatus, orderStatus]);
+  }, [paymentStatus, orderStatus, pickupSpot, dropoffSpot]);
 
   if (isLoading) return <Loader size="large" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
@@ -71,7 +95,7 @@ const AdminOrdersPage = () => {
     <div className="size-full p-5">
       <SearchFilterContainer
         onClear={clearFilters}
-        showClearButton={Boolean(orderStatus || paymentStatus)}
+        showClearButton={Boolean(orderStatus || paymentStatus || pickupSpot || dropoffSpot)}
         filtersArray={filterItems}
       />
       {data.length == 0 ? (
