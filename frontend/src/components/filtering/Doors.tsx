@@ -16,7 +16,7 @@ const Doors: React.FC<DoorsProps> = ({ handleConfirm }) => {
   };
 
   return (
-    <div className="p-5 w-56 flex flex-col">
+    <div className="p-5  flex flex-col">
       <>
         <label htmlFor="doorNumber">Choose amount of doors</label>
         <Input

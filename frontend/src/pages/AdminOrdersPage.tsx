@@ -25,7 +25,6 @@ const AdminOrdersPage = () => {
   return (
     <div className="size-full p-5">
       <OrderFilter />
-      <SearchFilterContainer onConfirmFilters={() => {}} />
       {data.length == 0 ? (
         <NoResultsContainer title="No orders found!" />
       ) : (

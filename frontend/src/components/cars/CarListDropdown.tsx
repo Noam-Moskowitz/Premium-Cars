@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { animationDelays } from "@/consts/style";
 import CarCard from "./CarCard";
 import { ICar } from "@/interfaces/car";
 import SearchFilterContainer from "../filtering/SearchFilterContainer";
-import { IFilter } from "@/interfaces";
 import NoResultsContainer from "../ui/NoResultsContainer";
+import PriceRange from "../filtering/PriceRange";
+import Doors from "../filtering/Doors";
+import GearType from "../filtering/GearType";
+import { displayPriceRangeString } from "@/utils/utls";
 
 interface CarListDropdownProps {
   open: boolean;
@@ -14,10 +17,37 @@ interface CarListDropdownProps {
 
 const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
   const [filteredCars, setFilteredCars] = useState<ICar[]>(cars);
+  const [priceRange, setPriceRange] = useState<number[]>([]);
+  const [doors, setDoors] = useState<string | null>(null);
+  const [gearType, setGearType] = useState<"Manual" | "Automatic" | null>(null);
+  const [searchParam, setSearchParam] = useState<string | null>(null);
 
-  const filterCars = (filterParams: IFilter) => {
-    const { doors, gearType, priceRange, searchParam } = filterParams;
+  const navItems = [
+    {
+      name: `Price`,
+      component: <PriceRange handleConfirm={(range) => setPriceRange(range)} />,
+      selectedFilter: displayPriceRangeString(priceRange),
+    },
+    {
+      name: `Doors`,
+      component: <Doors handleConfirm={(value) => setDoors(value)} />,
+      selectedFilter: doors,
+    },
+    {
+      name: `Gear Type`,
+      component: <GearType handleConfirm={(value) => setGearType(value)} />,
+      selectedFilter: gearType,
+    },
+  ];
 
+  const clearFilters = () => {
+    setDoors(null);
+    setGearType(null);
+    setPriceRange([]);
+    setSearchParam(null);
+  };
+
+  useEffect(() => {
     if (!doors && !gearType && !searchParam && priceRange.length == 0) return setFilteredCars(cars);
 
     let newArray = [...cars];
@@ -45,12 +75,18 @@ const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
     }
 
     setFilteredCars(newArray);
-  };
+  }, [doors, gearType, priceRange, searchParam]);
 
   return (
     <Collapsible open={open}>
       <CollapsibleContent id="carList" className="pt-10">
-        <SearchFilterContainer onConfirmFilters={(value) => filterCars(value)} />
+        <SearchFilterContainer
+          filtersArray={navItems}
+          handleSearch={(value) => setSearchParam(value)}
+          onClear={clearFilters}
+          showClearButton={Boolean(gearType || doors || priceRange.length > 0 || searchParam)}
+          searchValue={searchParam}
+        />
         {filteredCars.length == 0 ? (
           <NoResultsContainer title="No results found!" />
         ) : (

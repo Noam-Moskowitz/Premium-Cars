@@ -17,7 +17,7 @@ const GearType: React.FC<GearTypeProps> = ({ handleConfirm }) => {
   };
 
   return (
-    <div className="w-82 p-5 flex flex-col gap-3">
+    <div className=" p-5 flex flex-col gap-3">
       <RadioGroup onValueChange={(value) => setGearType(value)} className="flex">
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="Manual" id="manual" />

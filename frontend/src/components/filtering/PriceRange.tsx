@@ -43,7 +43,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({ handleConfirm }) => {
   return (
     <div className="p-5 flex flex-col gap-2 ">
       <RadioGroup
-        className=" w-44 grid grid-cols-2"
+        className=" grid grid-cols-2"
         onValueChange={(val) => setRange(ranges[Number(val)])}
       >
         {radioOpts.map(({ id, label, value }, i) => (
