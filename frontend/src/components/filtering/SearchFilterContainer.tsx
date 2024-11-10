@@ -12,9 +12,10 @@ import { IFilterItem } from "@/interfaces";
 interface SearchFilterContainerProps {
   onClear: () => void;
   filtersArray: IFilterItem[];
-  handleSearch: (value: string | null) => void;
+  handleSearch?: (value: string | null) => void;
   showClearButton?: boolean;
   searchValue?: string | null;
+  showSearchBar?: boolean;
 }
 
 const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({
@@ -23,8 +24,10 @@ const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({
   handleSearch,
   showClearButton = false,
   searchValue,
+  showSearchBar = false,
 }) => {
   const handleInputChange = (value: string) => {
+    if (!handleSearch) return;
     if (!value) return handleSearch(null);
 
     handleSearch(value);
@@ -32,15 +35,17 @@ const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({
 
   return (
     <div className=" flex gap-1 flex-wrap justify-center items-stretch border-2 border-primary rounded w-[80vw] md:w-fit shadow  mx-auto p-2">
-      <div className="relative">
-        <Input
-          className="bg-accent"
-          placeholder="search"
-          value={searchValue || ``}
-          onChange={(e) => handleInputChange(e.target.value)}
-        />
-        <FaSearch className="absolute top-3 right-2" />
-      </div>
+      {showSearchBar && (
+        <div className="relative">
+          <Input
+            className="bg-accent"
+            placeholder="search"
+            value={searchValue || ``}
+            onChange={(e) => handleInputChange(e.target.value)}
+          />
+          <FaSearch className="absolute top-3 right-2" />
+        </div>
+      )}
       <div className="flex px-2  justify-center flex-wrap">
         {filtersArray.map(({ name, component, selectedFilter }, i) => (
           <DropdownMenu key={i}>
