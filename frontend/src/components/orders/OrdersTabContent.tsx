@@ -23,7 +23,7 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status }) => {
     enabled: !!status || !!userId,
   });
 
-  if (isLoading) return <Loader size="large" />;
+  if (isLoading) return <Loader size="large" variant="screen" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (

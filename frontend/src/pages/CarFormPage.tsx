@@ -42,7 +42,7 @@ const CarFormPage = () => {
     }
   };
 
-  if (isLoading && id) return <Loader size="large" />;
+  if (isLoading && id) return <Loader size="large" variant="screen" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (

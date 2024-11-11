@@ -6,7 +6,7 @@ import OrderCard from "@/components/orders/OrderCard";
 import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import NoResultsContainer from "@/components/ui/NoResultsContainer";
-import { BOOKING_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
+import { BOOKING_QUERY_KEY, ONE_HOUR, SINGLE_BRANCH_KEY } from "@/consts/reactQuery";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { IFilterItem } from "@/interfaces";
@@ -23,12 +23,25 @@ const AdminOrdersPage = () => {
   const [filteredOrders, setFilteredOrders] = useState<IBooking[]>([]);
   const [pickupSpot, setPickupSpot] = useState<string | null>(null);
   const [dropoffSpot, setDropoffSpot] = useState<string | null>(null);
-  const [branchNames, setBranchNames] = useState<{ collection?: string; return?: string }>({});
 
   const { data, error, isError, isLoading } = useQuery({
     queryKey: [BOOKING_QUERY_KEY],
     queryFn: getAllBookings,
     staleTime: ONE_HOUR,
+  });
+
+  const collectionBranchResponse = useQuery({
+    queryKey: [SINGLE_BRANCH_KEY + pickupSpot],
+    queryFn: () => getOneBranch(pickupSpot || ``),
+    staleTime: ONE_HOUR,
+    enabled: !!pickupSpot,
+  });
+
+  const returnBranchResponse = useQuery({
+    queryKey: [SINGLE_BRANCH_KEY + dropoffSpot],
+    queryFn: () => getOneBranch(dropoffSpot || ``),
+    staleTime: ONE_HOUR,
+    enabled: !!dropoffSpot,
   });
 
   const filterItems: IFilterItem[] = [
@@ -45,12 +58,12 @@ const AdminOrdersPage = () => {
     {
       component: <BranchFilter handleConfirm={(value) => setPickupSpot(value)} />,
       name: `Collection Branch`,
-      selectedFilter: branchNames.collection,
+      selectedFilter: collectionBranchResponse.data?.name,
     },
     {
       component: <BranchFilter handleConfirm={(value) => setDropoffSpot(value)} />,
       name: `Return Branch`,
-      selectedFilter: branchNames.return,
+      selectedFilter: returnBranchResponse.data?.name,
     },
   ];
 
@@ -59,7 +72,6 @@ const AdminOrdersPage = () => {
     setPaymentStatus(null);
     setPickupSpot(null);
     setDropoffSpot(null);
-    setBranchNames({});
   };
 
   useEffect(() => {
@@ -93,23 +105,16 @@ const AdminOrdersPage = () => {
     setFilteredOrders(newArray);
   }, [paymentStatus, orderStatus, pickupSpot, dropoffSpot]);
 
-  useEffect(() => {
-    if (pickupSpot) {
-      getOneBranch(pickupSpot).then((res) =>
-        setBranchNames({ ...branchNames, collection: res.name })
-      );
-    }
-
-    if (dropoffSpot) {
-      getOneBranch(dropoffSpot).then((res) => setBranchNames({ ...branchNames, return: res.name }));
-    }
-  }, [pickupSpot, dropoffSpot]);
-
-  if (isLoading) return <Loader size="large" />;
-  if (isError) return <ErrorComponent errorMessage={error} />;
+  if (isLoading) return <Loader size="large" variant="screen" />;
+  if (isError || collectionBranchResponse.isError || returnBranchResponse.isError)
+    return (
+      <ErrorComponent
+        errorMessage={error || collectionBranchResponse.error || returnBranchResponse.error}
+      />
+    );
 
   return (
-    <div className="size-full p-5">
+    <div className="size-full min-h-[80vh] p-5">
       <SearchFilterContainer
         onClear={clearFilters}
         showClearButton={Boolean(orderStatus || paymentStatus || pickupSpot || dropoffSpot)}

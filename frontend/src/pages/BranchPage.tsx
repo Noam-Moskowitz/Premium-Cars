@@ -33,7 +33,7 @@ const BranchPage = () => {
     checkPermissions();
   }, []);
 
-  if (isLoading) return <Loader size="large" />;
+  if (isLoading) return <Loader size="large" variant="screen" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (

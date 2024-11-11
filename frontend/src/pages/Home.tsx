@@ -27,11 +27,11 @@ const Home = () => {
     navigate(`/sample-data`);
   }, [data]);
 
-  if (isLoading) return <Loader size="large" />;
+  if (isLoading) return <Loader size="large" variant="screen" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
-    <div className="scroll-smooth">
+    <div className="min-h-[80vh]">
       <header>
         <div className="pb-4 md:pb-0 pt-4 pl-5 animate__animated animate__fadeIn">
           <h1 className="font-bold text-accent-foreground text-lg md:text-2xl">

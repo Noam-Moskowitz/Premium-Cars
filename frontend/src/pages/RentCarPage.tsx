@@ -20,6 +20,7 @@ import useBookingApi from "@/hooks/api/useBookingApi";
 import { IBooking } from "@/interfaces/booking";
 import { useSelector } from "react-redux";
 import useReactQueryUtils from "@/hooks/useReactQueryUtils";
+import ErrorComponent from "@/components/ui/ErrorComponent";
 
 const RentCarPage = () => {
   const { checkPermissions } = useCheckToken();
@@ -83,7 +84,10 @@ const RentCarPage = () => {
   }, []);
 
   if (carResponse.isLoading || (existingBookingResponse.isLoading && bookingId))
-    return <Loader size="large" />;
+    return <Loader size="large" variant="screen" />;
+
+  if (carResponse.isError || existingBookingResponse.isError)
+    return <ErrorComponent errorMessage={carResponse.error || existingBookingResponse.error} />;
 
   return (
     <div className="w-full h-[90vh]  flex flex-col item-center justify-between bg-accent">

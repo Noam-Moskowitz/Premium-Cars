@@ -59,11 +59,11 @@ const BranchFormPage = () => {
     }
   };
 
-  if (isLoading && id) return <Loader size="large" />;
+  if (isLoading && id) return <Loader size="large" variant="screen" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
 
   return (
-    <div className="size-full flex items-center justify-center p-10">
+    <div className="size-full  flex items-center justify-center p-10">
       <BranchForm existingData={data} handleSubmit={handleSubmit} />
     </div>
   );

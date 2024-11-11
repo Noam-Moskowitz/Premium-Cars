@@ -2,9 +2,10 @@ import React from "react";
 
 interface LoaderProps {
   size: `small` | `medium` | `large`;
+  variant?: `screen` | `standard`;
 }
 
-const Loader: React.FC<LoaderProps> = ({ size }) => {
+const Loader: React.FC<LoaderProps> = ({ size, variant = `standard` }) => {
   const convertSizeToTailwindCss = (sizeParam: string) => {
     switch (sizeParam) {
       case `small`:
@@ -21,7 +22,11 @@ const Loader: React.FC<LoaderProps> = ({ size }) => {
   const loaderSize = convertSizeToTailwindCss(size);
 
   return (
-    <div className="size-full flex items-center justify-center animate-pulse">
+    <div
+      className={`${
+        variant == `screen` ? `h-[90vh] w-[90vw]` : `size-full`
+      } p-5 flex items-center justify-center animate-pulse `}
+    >
       <div className={`${loaderSize} border-primary border-dashed rounded-full animate-spin`}></div>
     </div>
   );
