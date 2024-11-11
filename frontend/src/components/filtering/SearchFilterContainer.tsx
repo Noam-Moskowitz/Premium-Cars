@@ -49,7 +49,7 @@ const SearchFilterContainer: React.FC<SearchFilterContainerProps> = ({
       <div className="flex px-2  justify-center flex-wrap">
         {filtersArray.map(({ name, component, selectedFilter }, i) => (
           <DropdownMenu key={i}>
-            <DropdownMenuTrigger className="hover:bg-accent  px-2 rounded">
+            <DropdownMenuTrigger className="hover:bg-accent  px-2 rounded min-h-10">
               <div className="flex flex-col">
                 {name}
                 <p className="font-thin text-primary">{selectedFilter}</p>

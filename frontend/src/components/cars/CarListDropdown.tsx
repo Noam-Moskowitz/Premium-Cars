@@ -86,6 +86,7 @@ const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
           onClear={clearFilters}
           showClearButton={Boolean(gearType || doors || priceRange.length > 0 || searchParam)}
           searchValue={searchParam}
+          showSearchBar
         />
         {filteredCars.length == 0 ? (
           <NoResultsContainer title="No results found!" />

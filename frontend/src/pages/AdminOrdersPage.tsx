@@ -8,6 +8,7 @@ import Loader from "@/components/ui/Loader";
 import NoResultsContainer from "@/components/ui/NoResultsContainer";
 import { BOOKING_QUERY_KEY, ONE_HOUR } from "@/consts/reactQuery";
 import useBookingApi from "@/hooks/api/useBookingApi";
+import useBranchApi from "@/hooks/api/useBranchApi";
 import { IFilterItem } from "@/interfaces";
 import { IBooking } from "@/interfaces/booking";
 import { useQuery } from "@tanstack/react-query";
@@ -15,11 +16,14 @@ import React, { useEffect, useState } from "react";
 
 const AdminOrdersPage = () => {
   const { getAllBookings } = useBookingApi();
+  const { getOneBranch } = useBranchApi();
+
   const [orderStatus, setOrderStatus] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const [filteredOrders, setFilteredOrders] = useState<IBooking[]>([]);
   const [pickupSpot, setPickupSpot] = useState<string | null>(null);
   const [dropoffSpot, setDropoffSpot] = useState<string | null>(null);
+  const [branchNames, setBranchNames] = useState<{ collection?: string; return?: string }>({});
 
   const { data, error, isError, isLoading } = useQuery({
     queryKey: [BOOKING_QUERY_KEY],
@@ -41,12 +45,12 @@ const AdminOrdersPage = () => {
     {
       component: <BranchFilter handleConfirm={(value) => setPickupSpot(value)} />,
       name: `Collection Branch`,
-      selectedFilter: pickupSpot,
+      selectedFilter: branchNames.collection,
     },
     {
       component: <BranchFilter handleConfirm={(value) => setDropoffSpot(value)} />,
       name: `Return Branch`,
-      selectedFilter: dropoffSpot,
+      selectedFilter: branchNames.return,
     },
   ];
 
@@ -55,6 +59,7 @@ const AdminOrdersPage = () => {
     setPaymentStatus(null);
     setPickupSpot(null);
     setDropoffSpot(null);
+    setBranchNames({});
   };
 
   useEffect(() => {
@@ -78,15 +83,27 @@ const AdminOrdersPage = () => {
     }
 
     if (pickupSpot) {
-      newArray = newArray.filter((order) => order.pickUpSpot === pickupSpot);
+      newArray = newArray.filter((order) => order.pickUpSpot == pickupSpot);
     }
 
-    if (pickupSpot) {
-      newArray = newArray.filter((order) => order.dropOffSpot === dropoffSpot);
+    if (dropoffSpot) {
+      newArray = newArray.filter((order) => order.dropOffSpot == dropoffSpot);
     }
 
     setFilteredOrders(newArray);
   }, [paymentStatus, orderStatus, pickupSpot, dropoffSpot]);
+
+  useEffect(() => {
+    if (pickupSpot) {
+      getOneBranch(pickupSpot).then((res) =>
+        setBranchNames({ ...branchNames, collection: res.name })
+      );
+    }
+
+    if (dropoffSpot) {
+      getOneBranch(dropoffSpot).then((res) => setBranchNames({ ...branchNames, return: res.name }));
+    }
+  }, [pickupSpot, dropoffSpot]);
 
   if (isLoading) return <Loader size="large" />;
   if (isError) return <ErrorComponent errorMessage={error} />;
@@ -98,7 +115,7 @@ const AdminOrdersPage = () => {
         showClearButton={Boolean(orderStatus || paymentStatus || pickupSpot || dropoffSpot)}
         filtersArray={filterItems}
       />
-      {data.length == 0 ? (
+      {filteredOrders.length == 0 ? (
         <NoResultsContainer title="No orders found!" />
       ) : (
         <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">

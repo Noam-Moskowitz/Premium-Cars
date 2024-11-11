@@ -16,7 +16,7 @@ const BranchFilter: React.FC<BranchFilterProps> = ({ handleConfirm }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col p-2">
       <SelectBranch handleChange={(val) => setSelectedBranch(val)} value={selectedBranch || ``} />
       <Button variant="link" onClick={handleClick}>
         Confirm
