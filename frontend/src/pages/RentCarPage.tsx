@@ -3,7 +3,7 @@ import CarDetails from "@/components/cars/CarDetails";
 import BookCarForm from "@/components/forms/BookCarForm";
 import "animate.css";
 import useCheckToken from "@/hooks/useCheckToken";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useCarsApi from "@/hooks/api/useCarsApi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -47,27 +47,35 @@ const RentCarPage = () => {
   const createNewBooking = useMutation({
     mutationFn: (bookingInfo: IBooking) => addBooking(bookingInfo),
     onSuccess: () =>
-      successFunc(`Booking saved!`, [
-        SINGLE_BOOKING_KEY + bookingId,
-        BOOKING_QUERY_KEY,
-        BOOKINGS_BY_CAR_KEY + id,
-        BOOKINGS_BY_USER_KEY + userId,
-        BOOKINGS_BY_STATUS_KEY + `canceled`,
-        BOOKINGS_BY_STATUS_KEY + `active`,
-      ]),
+      successFunc(
+        `Booking saved!`,
+        [
+          SINGLE_BOOKING_KEY + bookingId,
+          BOOKING_QUERY_KEY,
+          BOOKINGS_BY_CAR_KEY + id,
+          BOOKINGS_BY_USER_KEY + userId,
+          BOOKINGS_BY_STATUS_KEY + `canceled`,
+          BOOKINGS_BY_STATUS_KEY + `active`,
+        ],
+        `/my-orders/active`
+      ),
     onError: errorFunc,
   });
 
   const editBooking = useMutation({
     mutationFn: (bookingInfo: IBooking) => updateBooking(bookingId || ``, bookingInfo),
     onSuccess: () =>
-      successFunc(`Booking updated!`, [
-        SINGLE_BOOKING_KEY + bookingId,
-        BOOKING_QUERY_KEY,
-        BOOKINGS_BY_CAR_KEY + id,
-        BOOKINGS_BY_USER_KEY + userId,
-        BOOKINGS_BY_STATUS_KEY + `active`,
-      ]),
+      successFunc(
+        `Booking updated!`,
+        [
+          SINGLE_BOOKING_KEY + bookingId,
+          BOOKING_QUERY_KEY,
+          BOOKINGS_BY_CAR_KEY + id,
+          BOOKINGS_BY_USER_KEY + userId,
+          BOOKINGS_BY_STATUS_KEY + `active`,
+        ],
+        `/my-orders/active`
+      ),
     onError: errorFunc,
   });
 
