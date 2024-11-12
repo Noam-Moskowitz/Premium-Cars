@@ -56,7 +56,7 @@ export class UserServices {
 
   static async getOneUser(userId) {
     try {
-      const user = await User.findById(userId).select([`-password`, `-isAdmin`]);
+      const user = await User.findById(userId).select([`-password`]);
 
       return user;
     } catch (error) {

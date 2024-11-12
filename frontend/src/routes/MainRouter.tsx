@@ -32,6 +32,7 @@ const MainRouter = () => {
       <Route path="/user/login" element={<LogInPage />} />
       <Route path="/user/login/alert" element={<LogInPage title />} />
       <Route path="/user/register" element={<Register />} />
+      <Route path="/user/edit/:id" element={<Register />} />
     </Routes>
   );
 };

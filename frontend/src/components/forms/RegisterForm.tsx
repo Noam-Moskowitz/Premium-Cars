@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,10 +6,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import PasswordInput from "../ui/PasswordInput";
-import useUserApi from "@/hooks/api/useUserApi";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../ui/checkbox";
+import { IUser } from "@/interfaces/user";
 
 const formSchema = z
   .object({
@@ -31,11 +29,11 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-const RegisterForm = () => {
-  const navigate = useNavigate();
+interface RegisterFormProps {
+  submitForm: (user: IUser) => void;
+}
 
-  const { addUser } = useUserApi();
-
+const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,18 +50,7 @@ const RegisterForm = () => {
   const onSubmit = (data: any) => {
     delete data.confirmPassword;
 
-    addUser(data)
-      .then(() => {
-        toast.success(`Registration Succesful!`);
-        navigate(`/user/login`);
-      })
-      .catch((err) => {
-        console.log(`err`, err);
-
-        toast.error(`Registration failed!`, {
-          description: err.response.data.message.message || err.response.data.message,
-        });
-      });
+    submitForm(data);
   };
 
   return (

@@ -12,5 +12,6 @@ export const BRANCH_NAMES_QUERY_KEY = `branch-names-list`;
 export const SINGLE_BRANCH_KEY = `branch-`;
 
 export const SINGLE_USER_KEY = `user-`;
+export const USER_QUERY_KEY = `user-list`;
 
 export const ONE_HOUR = 3600000;

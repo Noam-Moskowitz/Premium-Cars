@@ -27,7 +27,11 @@ const UserDropdown = () => {
   const initials = `${userInfo?.first?.charAt(0)}${userInfo?.last?.charAt(0)}`;
 
   const signedInMenu = [
-    { label: `Profile`, icon: <HiOutlineUser size={18} /> },
+    {
+      label: `Profile`,
+      icon: <HiOutlineUser size={18} />,
+      action: () => navigate(`/user/edit/${userInfo._id}`),
+    },
     {
       label: `Log Out`,
       icon: <HiMiniArrowLeftStartOnRectangle size={18} />,
