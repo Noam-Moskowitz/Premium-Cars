@@ -9,5 +9,5 @@ export const adminNavBarArray = [
   { label: `Orders`, navTo: `/orders` },
   { label: `Cars`, navTo: `/cars` },
   { label: `Branches`, navTo: `/branches` },
-  { label: `About`, navTo: `/` },
+  { label: `About`, navTo: `/about` },
 ];
