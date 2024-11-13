@@ -106,8 +106,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false }) => {
 
   return (
     <Card className="flex flex-col lg:flex-row relative">
-      {status === `canceled` && <OrderCardBanner color="destructive" text="Canceled" />}
-      {status === `passed` && <OrderCardBanner color="info" text="passed" />}
+      {status === `canceled` && <OrderCardBanner variant="canceled" />}
+      {status === `passed` && <OrderCardBanner variant="fullfilled" />}
       <CardHeader className={`flex items-center lg:w-1/2 ${status !== `active` && `opacity-45`} `}>
         <img src={carResponse.data?.image} alt="Car" />
         <h2 className="font-bold text-lg">{`${carResponse.data?.make} ${carResponse.data?.model}`}</h2>

@@ -1,16 +1,17 @@
 import React from "react";
 
 interface OrderCardBannerProps {
-  color: string;
-  text: string;
+  variant: `fullfilled` | `canceled`;
 }
 
-const OrderCardBanner: React.FC<OrderCardBannerProps> = ({ color, text }) => {
+const OrderCardBanner: React.FC<OrderCardBannerProps> = ({ variant }) => {
   return (
     <div
-      className={`w-full bg-${color}  text-destructive-foreground absolute top-5 shadow-lg p-1 flex items-center justify-center`}
+      className={`w-full ${
+        variant == `canceled` ? `bg-destructive` : `bg-info`
+      }  text-destructive-foreground absolute top-5 shadow-lg p-1 flex items-center justify-center`}
     >
-      <p className="font-bold uppercase">{text}</p>
+      <p className="font-bold uppercase">{variant == `canceled` ? `Canceled` : `Fulfilled`}</p>
     </div>
   );
 };
