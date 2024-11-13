@@ -8,10 +8,12 @@ export interface IUserData {
 }
 
 export interface IUser {
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
   password: string;
   isAdmin?: boolean;
+  __v?: string;
 }
