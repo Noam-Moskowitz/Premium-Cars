@@ -1,5 +1,4 @@
 import RegisterForm from "@/components/forms/RegisterForm";
-import ProfileContainer from "@/components/profile/ProfileContainer";
 import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import { ONE_HOUR, SINGLE_USER_KEY, USER_QUERY_KEY } from "@/consts/reactQuery";
@@ -7,7 +6,6 @@ import useUserApi from "@/hooks/api/useUserApi";
 import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 import { IUser } from "@/interfaces/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
 import { useParams } from "react-router-dom";
 
 const RegisterPage = () => {
