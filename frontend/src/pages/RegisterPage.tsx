@@ -50,11 +50,10 @@ const RegisterPage = () => {
 
   return (
     <div className="size-full min-h-[85vh] flex flex-col items-center justify-center">
-      {id ? (
-        <ProfileContainer user={existingUserResponse.data} />
-      ) : (
-        <RegisterForm submitForm={(user) => handleSubmit(user)} />
-      )}
+      <RegisterForm
+        submitForm={(user) => handleSubmit(user)}
+        existingUser={existingUserResponse.data}
+      />
     </div>
   );
 };

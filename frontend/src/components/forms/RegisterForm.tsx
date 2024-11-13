@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,49 +9,66 @@ import PasswordInput from "../ui/PasswordInput";
 import { Checkbox } from "../ui/checkbox";
 import { IUser } from "@/interfaces/user";
 
-const formSchema = z
-  .object({
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
-    email: z.string().email("Please enter a valid email address"),
-    phone: z.string().min(10, "Please enter a valid phone number"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters long")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/\d/, "Password must contain at least one number")
-      .regex(/[\W_]/, "Password must contain at least one special character"),
-    confirmPassword: z.string(),
-    isAdmin: z.boolean(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
+  isAdmin: z.boolean(),
+});
+
+const passwordSchema = z.object({
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/\d/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
+});
+
+const SchemaWithPassword = formSchema.merge(passwordSchema);
 
 interface RegisterFormProps {
   submitForm: (user: IUser) => void;
+  existingUser?: IUser;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm, existingUser }) => {
+  const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
+  const formSchemeToUse = existingUser ? formSchema : SchemaWithPassword;
+
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchemeToUse),
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
       phone: "",
       password: "",
-      confirmPassword: "",
       isAdmin: false,
     },
   });
 
+  const { reset } = form;
+
   const onSubmit = (data: any) => {
-    delete data.confirmPassword;
+    if (!existingUser) {
+      const passwordsMatch = data.password == confirmPassword;
+
+      if (!passwordsMatch) return setConfirmPasswordError(`Value does not match password!`);
+
+      setConfirmPasswordError(null);
+    }
 
     submitForm(data);
   };
+
+  useEffect(() => {
+    if (!existingUser) return;
+
+    reset(existingUser);
+  }, [existingUser]);
 
   return (
     <Form {...form}>
@@ -137,37 +154,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm }) => {
             )}
           />
         </div>
-        <div className="flex flex-col md:flex-row gap-5 justify-between">
-          {/* Password Field */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-primary font-bold">Password</FormLabel>
-                <FormControl>
-                  <PasswordInput value={field.value} onChange={field.onChange} />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
+        {!existingUser && (
+          <div className="flex flex-col md:flex-row gap-5 justify-between">
+            {/* Password Field */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel className="text-primary font-bold">Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage className="text-primary" />
+                </FormItem>
+              )}
+            />
 
-          {/* Confirm Password Field */}
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-primary font-bold">Confirm Password</FormLabel>
-                <FormControl>
-                  <PasswordInput value={field.value} onChange={field.onChange} />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-        </div>
+            {/* Confirm Password Field */}
+
+            <FormItem className="w-full">
+              <FormLabel className="text-primary font-bold">Confirm Password</FormLabel>
+              <FormControl>
+                <PasswordInput
+                  value={confirmPassword || ``}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </FormControl>
+              <p className="text-primary">{confirmPasswordError}</p>
+            </FormItem>
+          </div>
+        )}
         <FormField
           control={form.control}
           name="isAdmin"
