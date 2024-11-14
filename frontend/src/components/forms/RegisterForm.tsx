@@ -9,24 +9,24 @@ import PasswordInput from "../ui/PasswordInput";
 import { Checkbox } from "../ui/checkbox";
 import { IUser } from "@/interfaces/user";
 
-const formSchema = z.object({
+const baseSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  isAdmin: z.boolean(),
 });
 
-const passwordSchema = z.object({
+const registerSchema = z.object({
   password: z
     .string()
     .min(8, "Password must be at least 8 characters long")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/\d/, "Password must contain at least one number")
     .regex(/[\W_]/, "Password must contain at least one special character"),
+  isAdmin: z.boolean(),
 });
 
-const SchemaWithPassword = formSchema.merge(passwordSchema);
+const extendedSchema = baseSchema.merge(registerSchema);
 
 interface RegisterFormProps {
   submitForm: (user: IUser) => void;
@@ -36,7 +36,7 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm, existingUser }) => {
   const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
-  const formSchemeToUse = existingUser ? formSchema : SchemaWithPassword;
+  const formSchemeToUse = existingUser ? baseSchema : extendedSchema;
 
   const form = useForm({
     resolver: zodResolver(formSchemeToUse),
@@ -155,54 +155,56 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm, existingUser })
           />
         </div>
         {!existingUser && (
-          <div className="flex flex-col md:flex-row gap-5 justify-between">
-            {/* Password Field */}
+          <>
+            <div className="flex flex-col md:flex-row gap-5 justify-between">
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-primary font-bold">Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Confirm Password Field */}
+
+              <FormItem className="w-full">
+                <FormLabel className="text-primary font-bold">Confirm Password</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    value={confirmPassword || ``}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </FormControl>
+                <p className="text-primary">{confirmPasswordError}</p>
+              </FormItem>
+            </div>
             <FormField
               control={form.control}
-              name="password"
+              name="isAdmin"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-primary font-bold">Password</FormLabel>
+                <FormItem className="w-full flex items-end gap-2">
                   <FormControl>
-                    <PasswordInput value={field.value} onChange={field.onChange} />
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(value) => field.onChange(value)}
+                    />
                   </FormControl>
+                  <FormLabel className="text-primary font-bold">
+                    Admin Account <span className="font-normal">(For project purposes)</span>
+                  </FormLabel>
                   <FormMessage className="text-primary" />
                 </FormItem>
               )}
             />
-
-            {/* Confirm Password Field */}
-
-            <FormItem className="w-full">
-              <FormLabel className="text-primary font-bold">Confirm Password</FormLabel>
-              <FormControl>
-                <PasswordInput
-                  value={confirmPassword || ``}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </FormControl>
-              <p className="text-primary">{confirmPasswordError}</p>
-            </FormItem>
-          </div>
+          </>
         )}
-        <FormField
-          control={form.control}
-          name="isAdmin"
-          render={({ field }) => (
-            <FormItem className="w-full flex items-end gap-2">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(value) => field.onChange(value)}
-                />
-              </FormControl>
-              <FormLabel className="text-primary font-bold">
-                Admin Account <span className="font-normal">(For project purposes)</span>
-              </FormLabel>
-              <FormMessage className="text-primary" />
-            </FormItem>
-          )}
-        />
 
         {/* Submit Button */}
         <Button type="submit">Register</Button>
