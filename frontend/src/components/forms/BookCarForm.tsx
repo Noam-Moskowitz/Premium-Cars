@@ -40,6 +40,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
   const [price, setPrice] = useState(existingBooking?.price || carPrice);
   const [openModal, setOpenModal] = useState(false);
   const [paid, setPaid] = useState(existingBooking?.paid || false);
+  const [booking, setBooking] = useState<IBooking | null>(null);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,21 +58,30 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
   const { reset } = form;
 
   const onSubmit = (data: any) => {
+    const bookingObj = {
+      ...data,
+      carId: id,
+      userId,
+      paid,
+      price: price,
+    };
+
+    delete bookingObj.paymentMethod;
+
     if (data.paymentMethod === `credit` && !paid) {
       setOpenModal(true);
+      setBooking(bookingObj);
     } else {
-      const bookingObj = {
-        ...data,
-        carId: id,
-        userId,
-        paid,
-        price: price,
-      };
-
-      delete bookingObj.paymentMethod;
-
       submitForm(bookingObj);
     }
+  };
+
+  const handleSuccesuflPayment = () => {
+    setPaid(true);
+
+    const bookingToSubmit = { ...booking, paid: true };
+
+    submitForm(bookingToSubmit);
   };
 
   useEffect(() => {
@@ -184,7 +194,7 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
         open={openModal}
         closeModal={() => setOpenModal(false)}
         price={existingBooking?.price || price}
-        hasPaid={() => setPaid(true)}
+        hasPaid={handleSuccesuflPayment}
       />
     </>
   );

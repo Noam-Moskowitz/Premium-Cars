@@ -54,7 +54,6 @@ const RentCarPage = () => {
           BOOKING_QUERY_KEY,
           BOOKINGS_BY_CAR_KEY + id,
           BOOKINGS_BY_USER_KEY + userId,
-          BOOKINGS_BY_STATUS_KEY + `canceled`,
           BOOKINGS_BY_STATUS_KEY + `active`,
         ],
         `/my-orders/active`
