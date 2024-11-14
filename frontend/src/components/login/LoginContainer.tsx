@@ -76,7 +76,6 @@ const LoginContainer = () => {
         <LogInForm selectedEmail={selectedUser} handleClick={() => setOpenForm(false)} />
       )}
       <div className="flex justify-between text-primary underline py-4">
-        <p className="cursor-pointer">Forgot Password</p>
         <p className="cursor-pointer" onClick={() => navigate(`/user/register`)}>
           Register
         </p>

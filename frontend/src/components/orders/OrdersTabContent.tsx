@@ -16,15 +16,17 @@ const OrdersTabContent: React.FC<OrdersTabContentProps> = ({ status }) => {
   const { getBookingsByStatus, getBookingsByUser } = useBookingApi();
   const userId = useSelector((store: any) => store.user._id);
 
+  console.log(userId);
+
   const { data, error, isError, isLoading } = useQuery({
     queryFn: status ? () => getBookingsByStatus(status, userId) : () => getBookingsByUser(userId),
     queryKey: status ? [BOOKINGS_BY_STATUS_KEY + status] : [BOOKINGS_BY_USER_KEY + userId],
     staleTime: ONE_HOUR,
-    enabled: !!status || !!userId,
+    enabled: status ? !!userId && !!status : !!userId,
   });
 
   if (isLoading) return <Loader size="large" variant="screen" />;
-  if (isError) return <ErrorComponent errorMessage={error} />;
+  if (isError) return <ErrorComponent errorMessage={error.message} />;
 
   return (
     <div>

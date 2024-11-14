@@ -17,14 +17,39 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "@/store/userSlice";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  BOOKING_QUERY_KEY,
+  BOOKINGS_BY_STATUS_KEY,
+  BOOKINGS_BY_USER_KEY,
+  USER_QUERY_KEY,
+} from "@/consts/reactQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UserDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const userInfo = useSelector((state: any) => state.user);
 
   const initials = `${userInfo?.first?.charAt(0)}${userInfo?.last?.charAt(0)}`;
+
+  const logUserOut = async () => {
+    dispatch(removeUser(`logOut`));
+
+    const keysToInvalidate = [
+      BOOKING_QUERY_KEY,
+      BOOKINGS_BY_USER_KEY + userInfo._id,
+      BOOKINGS_BY_STATUS_KEY + `active`,
+      USER_QUERY_KEY,
+    ];
+
+    for (const key of keysToInvalidate) {
+      await queryClient.invalidateQueries({ queryKey: [key] });
+    }
+
+    navigate(`/`);
+  };
 
   const signedInMenu = [
     {
@@ -35,9 +60,7 @@ const UserDropdown = () => {
     {
       label: `Log Out`,
       icon: <HiMiniArrowLeftStartOnRectangle size={18} />,
-      action: () => {
-        dispatch(removeUser(`logOut`));
-      },
+      action: logUserOut,
     },
   ];
   const signedOutMenu = [
