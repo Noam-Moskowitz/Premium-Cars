@@ -11,6 +11,7 @@ import { BOOKINGS_BY_CAR_KEY, ONE_HOUR, SINGLE_BOOKING_KEY } from "@/consts/reac
 import { useParams } from "react-router-dom";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface DatePickerProps {
   onChange: (date: DateRange) => void;
@@ -51,6 +52,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     if (range.from) {
       range.from = new Date(range.from);
     }
+
+    const bookingExistsWithinSelectedRange = bookedDates?.filter(
+      ({ from, to }) =>
+        new Date(from).getTime() >= range.from?.getTime() &&
+        new Date(to).getTime() <= range.to?.getTime()
+    );
+
+    if (bookingExistsWithinSelectedRange.length > 0)
+      return toast.error(`Some of the dates you are trying to reserve are occupied!`);
 
     setDate(range);
 
