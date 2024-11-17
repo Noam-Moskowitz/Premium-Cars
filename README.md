@@ -1,5 +1,4 @@
-Here's the updated README with the additional information:  
-
+  
 ---
 
 # Premium Cars  
@@ -165,4 +164,3 @@ Choose **yes** to populate the app with sample data, providing a complete projec
 
 ---  
 
-Let me know if you need more changes!
