@@ -67,7 +67,7 @@ const LoginContainer = () => {
               ))
             )}
           </div>
-          <Button variant="link" className=" px-0" onClick={handleManualSignIn}>
+          <Button variant="link" className=" px-0 text-center w-full" onClick={handleManualSignIn}>
             Sign in with a different account
           </Button>
         </>
@@ -76,7 +76,7 @@ const LoginContainer = () => {
         <LogInForm selectedEmail={selectedUser} handleClick={() => setOpenForm(false)} />
       )}
       <div className="flex justify-between text-primary underline py-4">
-        <p className="cursor-pointer" onClick={() => navigate(`/user/register`)}>
+        <p className="cursor-pointer text-center w-full" onClick={() => navigate(`/user/register`)}>
           Register
         </p>
       </div>
