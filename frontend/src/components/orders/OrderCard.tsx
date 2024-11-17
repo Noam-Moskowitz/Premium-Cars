@@ -20,23 +20,20 @@ import useBranchApi from "@/hooks/api/useBranchApi";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import OrderCardBanner from "./OrderCardBanner";
-import useBookingApi from "@/hooks/api/useBookingApi";
-import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 import useUserApi from "@/hooks/api/useUserApi";
 import ErrorComponent from "../ui/ErrorComponent";
 
 interface OrderCardProps {
   order: IBooking;
   showUser?: boolean;
+  handleCancel: () => void;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false, handleCancel }) => {
   const { carId, price, paid, pickUpSpot, dropOffSpot, dates, status, _id, userId } = order;
   const { getOneCar } = useCarsApi();
   const { getOneBranch } = useBranchApi();
-  const { changeBookingStatus } = useBookingApi();
   const { getOneUser } = useUserApi();
-  const { errorFunc, successFunc } = useReactQueryUtils();
   const navigate = useNavigate();
 
   const carResponse = useQuery({
@@ -65,18 +62,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false }) => {
     queryKey: [SINGLE_USER_KEY + userId],
     staleTime: ONE_HOUR,
     enabled: !!userId,
-  });
-
-  const changeStatus = useMutation({
-    mutationFn: () => changeBookingStatus(_id || ``),
-    onSuccess: () =>
-      successFunc(`Order cancled!`, [
-        BOOKING_QUERY_KEY,
-        BOOKINGS_BY_STATUS_KEY + `canceled`,
-        BOOKINGS_BY_STATUS_KEY + `active`,
-        BOOKINGS_BY_CAR_KEY + carId,
-        BOOKINGS_BY_USER_KEY + userId,
-      ]),
   });
 
   if (
@@ -161,7 +146,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false }) => {
               >
                 Edit Order
               </Button>
-              <Button variant="destructive" onClick={() => changeStatus.mutate()}>
+              <Button variant="destructive" onClick={handleCancel}>
                 Cancel Order
               </Button>
             </>

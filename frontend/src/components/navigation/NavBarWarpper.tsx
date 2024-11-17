@@ -8,6 +8,7 @@ const NavBarWarpper = () => {
   const location = useLocation();
 
   const activePage = determineNavRoute(location.pathname);
+
   return (
     <div>
       <div className="hidden md:block">

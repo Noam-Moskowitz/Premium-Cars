@@ -13,7 +13,7 @@ export const validateBooking = (req, res, next) => {
 
 export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
   const token = req.headers.authorization;
-  const { id, userId, status } = req.params;
+  const { id, userId } = req.params;
 
   if (!token) return res.status(401).send({ message: `User not authorized!` });
 

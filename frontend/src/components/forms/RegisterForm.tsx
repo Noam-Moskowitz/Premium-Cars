@@ -74,7 +74,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm, existingUser })
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md mt-5 w-2/3 md:w-auto animate__animated animate__fadeIn"
+        className="bg-accent p-10 rounded-md flex flex-col gap-5 shadow-md mt-5 w-full md:w-auto animate__animated animate__fadeIn"
       >
         <h1 className="text-primary text-center font-bold text-3xl uppercase">Register</h1>
         <div className="flex flex-col md:flex-row gap-5 justify-between">

@@ -94,7 +94,11 @@ const RentCarPage = () => {
     return <Loader size="large" variant="screen" />;
 
   if (carResponse.isError || existingBookingResponse.isError)
-    return <ErrorComponent errorMessage={carResponse.error || existingBookingResponse.error} />;
+    return (
+      <ErrorComponent
+        errorMessage={carResponse.error?.message || existingBookingResponse.error?.message}
+      />
+    );
 
   return (
     <div className="w-full h-[90vh]  flex flex-col item-center justify-between bg-accent">

@@ -20,21 +20,18 @@ const CreatedUserContainer: React.FC<CreatedUserContainerProps> = ({
   return (
     <div className="flex flex-col">
       {Object.keys(userCredentials).map((key, i) => (
-        <>
+        <div key={i}>
           <h6 className=" w-full  text-left text-xs   font-semibold">
             {i == 0 ? `Email:` : `Password:`}
           </h6>
-          <div
-            key={key}
-            className="bg-background shadow-inner flex justify-between items-center p-2 gap-3 "
-          >
+          <div className="bg-background shadow-inner flex justify-between items-center p-2 gap-3 ">
             <p>{userCredentials[key]}</p>
             <FiCopy
               className="cursor-pointer hover:scale-110 hover:bg-accent transition-all"
               onClick={() => copyToClipBoard(userCredentials[key])}
             />
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

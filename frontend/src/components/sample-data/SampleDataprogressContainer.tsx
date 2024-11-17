@@ -23,7 +23,7 @@ const SampleDataprogressContainer: React.FC<SampleDataprogressContainerProps> = 
     dataCreatedSuccesfully,
   } = useLoadSampleData();
 
-  if (error) return <ErrorComponent errorMessage={error} />;
+  if (error) return <ErrorComponent errorMessage={error.message} />;
 
   useEffect(() => {
     loadSampleData();

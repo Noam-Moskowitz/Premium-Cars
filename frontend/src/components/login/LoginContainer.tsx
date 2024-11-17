@@ -46,7 +46,7 @@ const LoginContainer = () => {
   }, []);
 
   return (
-    <div className="bg-accent  p-10 rounded-md shadow-md md:w-96 mt-5 animate__animated animate__fadeIn">
+    <div className="bg-accent  p-10 rounded-md shadow-md w-full md:w-96 mt-5 animate__animated animate__fadeIn">
       <h1 className="text-primary text-center font-bold text-3xl uppercase">log in</h1>
       {!openForm && (
         <>

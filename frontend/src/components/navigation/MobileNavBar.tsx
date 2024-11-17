@@ -24,6 +24,12 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ currentPage }) => {
     setNavigationArray(isAdmin ? adminNavBarArray : navBarArray);
   }, [isAdmin]);
 
+  useEffect(() => {
+    if (!currentPage) return;
+
+    setActivePage(currentPage);
+  }, [currentPage]);
+
   return (
     <nav className="w-full h-16 bg-primary shadow-md flex items-center justify-between z-50">
       <div className="border-2 rounded-lg ml-3 z-[100]">

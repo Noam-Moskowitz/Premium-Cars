@@ -28,7 +28,7 @@ const Home = () => {
   }, [data]);
 
   if (isLoading) return <Loader size="large" variant="screen" />;
-  if (isError) return <ErrorComponent errorMessage={error} />;
+  if (isError) return <ErrorComponent errorMessage={error.message} />;
 
   return (
     <div className="min-h-[80vh]">

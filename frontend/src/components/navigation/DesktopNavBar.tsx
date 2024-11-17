@@ -21,6 +21,12 @@ const DesktopNavBar: React.FC<DesktopNavBarProps> = ({ currentPage }) => {
     setNavigationArray(isAdmin ? adminNavBarArray : navBarArray);
   }, [isAdmin]);
 
+  useEffect(() => {
+    if (!currentPage) return;
+
+    setActivePage(currentPage);
+  }, [currentPage]);
+
   return (
     <nav className="w-full fixed z-[100] h-16 bg-primary shadow-md flex justify-between">
       <div className="flex gap-10">

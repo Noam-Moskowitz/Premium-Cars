@@ -33,7 +33,7 @@ const CarsPage = () => {
   }, []);
 
   if (isLoading) return <Loader size="large" variant="screen" />;
-  if (isError) return <ErrorComponent errorMessage={error} />;
+  if (isError) return <ErrorComponent errorMessage={error.message} />;
 
   return (
     <div className="w-full min-h-[100vh] p-10">

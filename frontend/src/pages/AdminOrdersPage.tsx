@@ -3,26 +3,42 @@ import OrderStatus from "@/components/filtering/OrderStatus";
 import PaymentStatus from "@/components/filtering/PaymentStatus";
 import SearchFilterContainer from "@/components/filtering/SearchFilterContainer";
 import OrderCard from "@/components/orders/OrderCard";
+import DeleteModal from "@/components/ui/DeleteModal";
 import ErrorComponent from "@/components/ui/ErrorComponent";
 import Loader from "@/components/ui/Loader";
 import NoResultsContainer from "@/components/ui/NoResultsContainer";
-import { BOOKING_QUERY_KEY, ONE_HOUR, SINGLE_BRANCH_KEY } from "@/consts/reactQuery";
+import {
+  BOOKING_QUERY_KEY,
+  BOOKINGS_BY_CAR_KEY,
+  BOOKINGS_BY_STATUS_KEY,
+  BOOKINGS_BY_USER_KEY,
+  ONE_HOUR,
+  SINGLE_BRANCH_KEY,
+} from "@/consts/reactQuery";
 import useBookingApi from "@/hooks/api/useBookingApi";
 import useBranchApi from "@/hooks/api/useBranchApi";
+import useReactQueryUtils from "@/hooks/useReactQueryUtils";
 import { IFilterItem } from "@/interfaces";
 import { IBooking } from "@/interfaces/booking";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 const AdminOrdersPage = () => {
-  const { getAllBookings } = useBookingApi();
+  const { getAllBookings, changeBookingStatus } = useBookingApi();
   const { getOneBranch } = useBranchApi();
+  const { errorFunc, successFunc } = useReactQueryUtils();
 
   const [orderStatus, setOrderStatus] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const [filteredOrders, setFilteredOrders] = useState<IBooking[]>([]);
   const [pickupSpot, setPickupSpot] = useState<string | null>(null);
   const [dropoffSpot, setDropoffSpot] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [orderToCancel, setOrderToCancel] = useState<{
+    orderId?: string;
+    carId?: string;
+    userId?: string;
+  }>({});
 
   const { data, error, isError, isLoading } = useQuery({
     queryKey: [BOOKING_QUERY_KEY],
@@ -43,6 +59,24 @@ const AdminOrdersPage = () => {
     staleTime: ONE_HOUR,
     enabled: !!dropoffSpot,
   });
+
+  const changeStatus = useMutation({
+    mutationFn: () => changeBookingStatus(orderToCancel.orderId || ``),
+    onSuccess: () =>
+      successFunc(`Order cancled!`, [
+        BOOKING_QUERY_KEY,
+        BOOKINGS_BY_STATUS_KEY + `canceled`,
+        BOOKINGS_BY_STATUS_KEY + `active`,
+        BOOKINGS_BY_CAR_KEY + orderToCancel.carId || ``,
+        BOOKINGS_BY_USER_KEY + orderToCancel.userId,
+      ]),
+    onError: errorFunc,
+  });
+
+  const handleDelete = (carId: string, orderId: string, userId: string) => {
+    setOrderToCancel({ orderId, carId, userId });
+    setOpenModal(true);
+  };
 
   const filterItems: IFilterItem[] = [
     {
@@ -109,27 +143,44 @@ const AdminOrdersPage = () => {
   if (isError || collectionBranchResponse.isError || returnBranchResponse.isError)
     return (
       <ErrorComponent
-        errorMessage={error || collectionBranchResponse.error || returnBranchResponse.error}
+        errorMessage={
+          error?.message ||
+          collectionBranchResponse.error?.message ||
+          returnBranchResponse.error?.message
+        }
       />
     );
 
   return (
-    <div className="size-full min-h-[80vh] p-5">
-      <SearchFilterContainer
-        onClear={clearFilters}
-        showClearButton={Boolean(orderStatus || paymentStatus || pickupSpot || dropoffSpot)}
-        filtersArray={filterItems}
+    <>
+      <div className="size-full min-h-[80vh] p-5">
+        <SearchFilterContainer
+          onClear={clearFilters}
+          showClearButton={Boolean(orderStatus || paymentStatus || pickupSpot || dropoffSpot)}
+          filtersArray={filterItems}
+        />
+        {filteredOrders.length == 0 ? (
+          <NoResultsContainer title="No orders found!" />
+        ) : (
+          <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
+            {filteredOrders?.map((order) => (
+              <OrderCard
+                key={order._id}
+                order={order}
+                showUser
+                handleCancel={() => handleDelete(order.carId, order._id || ``, order.userId)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <DeleteModal
+        handleConfirm={changeStatus.mutate}
+        handleOpenChange={setOpenModal}
+        open={openModal}
+        variant="cancel"
       />
-      {filteredOrders.length == 0 ? (
-        <NoResultsContainer title="No orders found!" />
-      ) : (
-        <div className="flex flex-col m-auto md:w-2/3 gap-5 p-5 animate__animated animate__fadeInUp ">
-          {filteredOrders?.map((order) => (
-            <OrderCard key={order._id} order={order} showUser />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
