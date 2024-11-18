@@ -106,9 +106,11 @@ const LogInForm: React.FC<LogInFormProps> = ({ selectedEmail, handleClick }) => 
         <Button type="submit">Login</Button>
       </form>
       {!selectedEmail && (
-        <Button variant="link" className="px-0 mt-4" onClick={handleClick}>
-          Use a saved account
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button variant="link" className="px-0 mt-4" onClick={handleClick}>
+            Use a saved account
+          </Button>
+        </div>
       )}
     </Form>
   );

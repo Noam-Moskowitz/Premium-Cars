@@ -207,7 +207,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ submitForm, existingUser })
         )}
 
         {/* Submit Button */}
-        <Button type="submit">Register</Button>
+        <Button type="submit">{existingUser ? `Confirm` : `Register`}</Button>
       </form>
     </Form>
   );

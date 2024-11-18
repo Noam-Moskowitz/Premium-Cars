@@ -135,7 +135,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}
-            disabled={[{ before: new Date() }, ...bookedDates]}
+            disabled={[{ before: new Date() }, ...bookedDates, new Date()]}
             modifiers={{ occupiedDates: bookedDates }}
             modifiersClassNames={{
               occupiedDates: ` line-through bg-secondary`,

@@ -13,6 +13,7 @@ import SelectBranch from "../ui/SelectBranch";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IBooking } from "@/interfaces/booking";
+import { format } from "date-fns";
 
 const formSchema = z.object({
   pickUpSpot: z.string().min(1, "Pickup spot is required"),
@@ -141,11 +142,21 @@ const BookCarForm: React.FC<BookCarFormProps> = ({ carPrice, existingBooking, su
                 <FormItem className="pb-4">
                   <FormLabel>Dates</FormLabel>
                   <FormControl>
-                    <DatePicker
-                      existingValue={field.value}
-                      onChange={field.onChange}
-                      setDayAmount={(days) => setPrice(days * carPrice)}
-                    />
+                    {existingBooking?.paid ? (
+                      <div className="hover:cursor-not-allowed">
+                        {field.value.from && format(field.value.from, "LLL dd, y")} -
+                        {field.value.to && format(field.value.to, "LLL dd, y")}
+                        <p className="text-xs font-semibold">
+                          Changing the dates after paying is not allowed!
+                        </p>
+                      </div>
+                    ) : (
+                      <DatePicker
+                        existingValue={field.value}
+                        onChange={field.onChange}
+                        setDayAmount={(days) => setPrice(days * carPrice)}
+                      />
+                    )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>

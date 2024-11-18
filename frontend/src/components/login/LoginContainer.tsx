@@ -67,7 +67,7 @@ const LoginContainer = () => {
               ))
             )}
           </div>
-          <Button variant="link" className=" px-0 text-center w-full" onClick={handleManualSignIn}>
+          <Button variant="link" className=" px-0 text-center w-full " onClick={handleManualSignIn}>
             Sign in with a different account
           </Button>
         </>

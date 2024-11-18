@@ -16,7 +16,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   return (
     <Card className="bg-accent shadow-md  hover:shadow-lg ">
       <CardHeader>
-        <img className="h-full" src={image} alt="Car" />
+        <img className="h-full rounded" src={image} alt="Car" />
         <SpecsIconContainer specs={{ doors, gear, seatAmount }} />
       </CardHeader>
       <CardContent>

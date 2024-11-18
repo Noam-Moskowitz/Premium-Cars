@@ -27,34 +27,42 @@ const About = () => {
 
   return (
     <div className="min-h-[80vh] px-2 md:p-16">
-      <h1 className="font-bold text-2xl md:text-4xl text-center md:text-left">
+      <h1 className="font-bold text-2xl md:text-4xl text-center md:text-left animate__animated animate__fadeIn">
         About Premium Cars
       </h1>
-      <p className="p-2 text-center md:text-left">
+      <p className="p-2 text-center md:text-left animate__animated animate__fadeIn">
         At <strong>Premium Cars</strong>, our mission is to revolutionize the car rental experience
         by making it as simple and seamless as the click of a button. Gone are the days of lengthy
         phone calls and tedious back-and-forth with rental agencies. With our platform, users can
         easily browse available vehicles, compare prices, and book their preferred car instantly.
       </p>
 
-      <AboutParagraph
-        icon={<FaRegLightbulb className="text-7xl " />}
-        subtitle="Our Vision"
-        content="We aim to bring transparency and convenience to car rentals, empowering users to make
+      <div className="overflow-hidden">
+        <AboutParagraph
+          className="animate__animated  animate__fadeInDown delay-150 animate__faster"
+          icon={<FaRegLightbulb className="text-7xl " />}
+          subtitle="Our Vision"
+          content="We aim to bring transparency and convenience to car rentals, empowering users to make
             informed decisions with minimal effort. Whether you're planning a weekend getaway or a
             business trip, Premium Cars ensures you spend less time booking and more time on the
             road."
-      />
+        />
+      </div>
 
-      <AboutParagraph
-        icon={<FaRegMap className="text-7xl" />}
-        subtitle="Who We Serve"
-        content="Our platform caters to anyone looking to rent a car. From occasional drivers to frequent
+      <div className="overflow-hidden">
+        <AboutParagraph
+          className="animate__animated animate__fadeInDown delay-300 "
+          icon={<FaRegMap className="text-7xl" />}
+          subtitle="Who We Serve"
+          content="Our platform caters to anyone looking to rent a car. From occasional drivers to frequent
         travelers, we offer a streamlined solution for all your rental needs."
-      />
+        />
+      </div>
 
-      <h2 className="font-bold text-center text-xl pb-3">Key Features</h2>
-      <div className="flex flex-col md:flex-row  p-2 gap-5 justify-center m-auto ">
+      <h2 className="font-bold text-center text-xl pb-3 animate__animated animate__fadeInDown delay-500">
+        Key Features
+      </h2>
+      <div className="flex flex-col md:flex-row  p-2 gap-5 justify-center m-auto animate__animated animate__fadeInDown delay-500">
         {features.map(({ content, icon, title }, i) => (
           <Card
             key={i}
@@ -71,13 +79,16 @@ const About = () => {
         ))}
       </div>
 
-      <AboutParagraph
-        icon={<FaShieldAlt className="text-7xl" />}
-        subtitle="Why Choose Premium Cars?"
-        content="Our platform stands out for its simplicity and user-friendly interface. Designed with the
+      <div className="overflow-hidden">
+        <AboutParagraph
+          className="animate__animated animate__fadeInDown delay-700"
+          icon={<FaShieldAlt className="text-7xl" />}
+          subtitle="Why Choose Premium Cars?"
+          content="Our platform stands out for its simplicity and user-friendly interface. Designed with the
         user in mind, Premium Cars offers a hassle-free experience, ensuring even first-time users
         can navigate and book with ease."
-      />
+        />
+      </div>
     </div>
   );
 };

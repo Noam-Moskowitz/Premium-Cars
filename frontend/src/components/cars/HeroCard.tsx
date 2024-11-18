@@ -15,7 +15,7 @@ const HeroCard: React.FC<HeroCardProps> = ({ img, price, make, model, id }) => {
 
   return (
     <div className="flex flex-col items-center gap-3 py-5">
-      <img className="w-full md:w-[500px]" src={img} alt="" />
+      <img className="w-full md:w-[500px] rounded" src={img} alt="" />
       <h1 className="font-bold text-lg md:text-3xl">
         {make} {model}
       </h1>
