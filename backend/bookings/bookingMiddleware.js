@@ -25,10 +25,11 @@ export const checkIfUserWhoBookedOrAdmin = async (req, res, next) => {
     } else {
       bookingsUser = await Booking.findById(id).select({ userId: 1 });
     }
-    console.log(bookingsUser);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
+
+  if (!bookingsUser) return res.status(404).send({ message: `Could not verify user` });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.status(401).send(err.message);
