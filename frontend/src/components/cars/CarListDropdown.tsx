@@ -77,6 +77,12 @@ const CarListDropdown: React.FC<CarListDropdownProps> = ({ open, cars }) => {
     setFilteredCars(newArray);
   }, [doors, gearType, priceRange, searchParam]);
 
+  useEffect(()=>{
+    if(!cars) return 
+
+    setFilteredCars(cars)
+  },[cars])
+
   return (
     <Collapsible open={open}>
       <CollapsibleContent id="carList" className="pt-10">

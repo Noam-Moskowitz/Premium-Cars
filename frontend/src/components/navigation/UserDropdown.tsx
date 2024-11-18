@@ -88,7 +88,7 @@ const UserDropdown = () => {
       <DropdownMenuTrigger className="border-2 border-secondary  hover:bg-secondary group rounded-full cursor-pointer transition-all duration-300">
         {userInfo.first ? (
           <Avatar>
-            <AvatarFallback>{initials}</AvatarFallback>
+            <AvatarFallback className="capitalize">{initials}</AvatarFallback>
           </Avatar>
         ) : (
           <FiUser className="text-primary-foreground  text-4xl p-2 group-hover:text-secondary-foreground group-hover:scale-125 transition-all duration-300" />

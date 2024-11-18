@@ -38,7 +38,7 @@ const MyOrders = () => {
   }, []);
 
   return (
-    <div className="size-full p-10">
+    <div className="size-full p-10 min-h-[70vh]">
       <div className="flex justify-around items-center">
         <h1 className="text-xl md:text-4xl font-bold">{title}</h1>
         <Button variant="secondary" className="flex gap-2" onClick={() => navigate(navLink)}>
