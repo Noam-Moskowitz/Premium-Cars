@@ -8,7 +8,6 @@ export class UsersController {
 
     try {
       const user = await UserServices.logInUser(email);
-      console.log(user);
 
       const token = jwt.sign(
         {
@@ -56,8 +55,6 @@ export class UsersController {
 
       res.send(newUser);
     } catch (error) {
-      console.log(error);
-
       res.status(500).send({ message: error.message });
     }
   }
