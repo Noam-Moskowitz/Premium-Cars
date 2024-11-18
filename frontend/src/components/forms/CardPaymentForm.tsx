@@ -48,7 +48,6 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({ amountToPay, paid }) 
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
     paid();
   };
 

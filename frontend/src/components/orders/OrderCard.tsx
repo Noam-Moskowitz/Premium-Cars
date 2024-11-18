@@ -1,20 +1,11 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { FiChevronsRight } from "react-icons/fi";
 import { Button } from "../ui/button";
 import { IBooking } from "@/interfaces/booking";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useCarsApi from "@/hooks/api/useCarsApi";
-import {
-  BOOKING_QUERY_KEY,
-  BOOKINGS_BY_CAR_KEY,
-  BOOKINGS_BY_STATUS_KEY,
-  BOOKINGS_BY_USER_KEY,
-  ONE_HOUR,
-  SINGLE_BRANCH_KEY,
-  SINGLE_CAR_KEY,
-  SINGLE_USER_KEY,
-} from "@/consts/reactQuery";
+import { ONE_HOUR, SINGLE_BRANCH_KEY, SINGLE_CAR_KEY, SINGLE_USER_KEY } from "@/consts/reactQuery";
 import Loader from "../ui/Loader";
 import useBranchApi from "@/hooks/api/useBranchApi";
 import { format } from "date-fns";
@@ -102,15 +93,15 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, showUser = false, handleCa
             <p className="font-bold">Customer Information:</p>
             <p>
               <span className="font-semibold">Name:</span>
-              {` ${userResponse.data.firstName} ${userResponse.data.lastName}`}
+              {` ${userResponse?.data?.firstName} ${userResponse?.data?.lastName}`}
             </p>
             <p>
               <span className="font-semibold">Email: </span>
-              {userResponse.data.email}
+              {userResponse?.data?.email}
             </p>
             <p>
               <span className="font-semibold">Phone: </span>
-              {userResponse.data.phone}
+              {userResponse?.data?.phone}
             </p>
           </div>
         )}
