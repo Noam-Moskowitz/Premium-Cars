@@ -101,7 +101,7 @@ const RentCarPage = () => {
     );
 
   return (
-    <div className="w-full h-[90vh]  flex flex-col item-center justify-between bg-accent">
+    <div className="w-full min-h-[90vh]  flex flex-col item-center justify-between bg-accent">
       <div className="md:h-[60vh] pb-10 flex items-center animate__animated animate__fadeIn">
         <img
           className=" md:w-[500px] lg:w-[700px] m-auto"

@@ -11,7 +11,23 @@ import { FaCcMastercard } from "react-icons/fa6";
 const formSchema = z.object({
   cardName: z.string().min(1, "Cardholder name is required"),
   cardNumber: z.string().regex(/^\d{16}$/, "Card number must be 16 digits"),
-  expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry date must be in MM/YY format"),
+  expiryDate: z
+    .string()
+    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry date must be in MM/YY format")
+    .refine(
+      (date) => {
+        const [month, year] = date.split("/").map(Number);
+
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear() % 100;
+
+        return year > currentYear || (year === currentYear && month >= currentMonth);
+      },
+      {
+        message: "Expiry date cannot be before the current month",
+      }
+    ),
   cvv: z.string().regex(/^\d{3,4}$/, "CVV must be 3 or 4 digits"),
 });
 

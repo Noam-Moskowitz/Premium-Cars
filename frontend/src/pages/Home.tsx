@@ -15,14 +15,14 @@ const Home = () => {
 
   const [isOpen, setisOpen] = useState(false);
 
-  const { data, error, isError, isLoading } = useQuery({
+  const { data, error, isError, isLoading, isStale } = useQuery({
     queryKey: [CAR_QUERY_KEY],
     queryFn: getAllCars,
     staleTime: ONE_HOUR,
   });
 
   useEffect(() => {
-    if (!data || data.length !== 0) return;
+    if (isStale || !data || data.length !== 0) return;
 
     navigate(`/sample-data`);
   }, [data]);
